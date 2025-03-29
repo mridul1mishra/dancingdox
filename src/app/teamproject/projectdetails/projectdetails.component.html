@@ -1,0 +1,79 @@
+<div class="dashboard">
+  <div *ngIf="project">
+    <div class="project-header">
+      <h2>{{ project.title }} <span class="status">{{ project.status }}</span></h2>
+      <p><strong>Project Scope:</strong> {{ project.scope }} | <strong>Participants:</strong> {{ project.participants }}</p>
+      <p><strong>Host:</strong> {{ project.host }}</p>
+      <p><strong>Created on:</strong> {{ project.createdOn }} | <strong>Due Date:</strong> {{ project.dueDate }} <span class="due-warning">3 days left</span></p>
+      <p>{{ project.description }}</p>
+      <p><strong>Project ID:</strong> {{ project.projectId }} <button class="support-btn">Support Documents</button></p>
+    </div></div>
+    <div *ngIf="!project">
+      <p>Project not found.</p>
+    </div>
+  
+    <div class="recent-uploads">
+      <h3>Recent Uploads</h3>
+      <div class="upload-list">
+        <div class="upload-item" *ngFor="let upload of recentuploads">
+          <p><strong>{{ upload.name }}</strong> <span class="upload-time">{{ upload.time }}</span></p>
+          <p>{{ upload.file }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="required-documents">
+      <h3>Required Documents</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>SL</th>
+            <th>Document Name</th>
+            <th>Format</th>
+            <th>Maximum Size</th>
+            <th>Upload Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doc of requiredDocument; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ doc.name }}</td>
+            <td>{{ doc.format.join(', ') }}</td>
+            <td>{{ doc.size }}</td>
+            <td>{{ doc.uploadDate }}</td>
+            <td [ngClass]="doc.status.toLowerCase()">{{ doc.status }}</td>
+            <td><button class="attach-btn">Attach</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="comments-container">
+    <h3>Comments</h3>
+    <span class="total-comments">Total Comments </span>
+  
+    <div class="comment-input">
+      <textarea  placeholder="Type comment here..."></textarea>
+      <div class="actions">
+        <button class="emoji-btn">😊</button>
+        <button class="attach-btn">📎</button>
+        <button class="send-btn" >Send</button>
+      </div>
+    </div>
+  
+    <div class="comment-list">
+      <div class="comment-item" *ngFor="let comment of comments">
+        <img [src]="comment.avatar" alt="User Avatar" class="avatar">
+        <div class="comment-content">
+          <p class="comment-author">{{ comment.name }} <span class="comment-date">Commented on {{ comment.date }}</span></p>
+          <p class="comment-text">{{ comment.content }}</p>
+        </div>
+        <button class="reply-btn">Reply</button>
+      </div>
+    </div>
+  </div>
+  
+  
+  

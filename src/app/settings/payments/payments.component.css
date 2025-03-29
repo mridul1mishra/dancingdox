@@ -1,0 +1,110 @@
+/* General styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9fafb;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Card styling */
+  .card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  /* Button styles */
+  .btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .btn-primary {
+    background-color: #6366f1;
+    color: white;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #4f46e5;
+  }
+  
+  .btn-secondary {
+    background-color: transparent;
+    border: 1px solid #d1d5db;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #e5e7eb;
+  }
+  
+  /* Progress bar */
+  .progress-bar {
+    width: 100%;
+    background-color: #e5e7eb;
+    height: 6px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  
+  .progress-bar-inner {
+    height: 100%;
+    background-color: #22c55e;
+    border-radius: 4px;
+  }
+  
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 12px 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+  }
+  
+  tr {
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .status-success {
+    background-color: #d1fae5;
+    color: #10b981;
+  }
+  
+  .status-failed {
+    background-color: #fee2e2;
+    color: #ef4444;
+  }
+  
+  /* Icon download */
+  .download-icon {
+    color: #3b82f6;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .download-icon:hover {
+    color: #1e40af;
+  }
+  

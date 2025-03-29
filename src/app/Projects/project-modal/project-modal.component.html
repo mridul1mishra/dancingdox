@@ -1,0 +1,20 @@
+<div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div class="icon">
+            <img src="SuccessIcon.png" alt="Success">
+        </div>
+        <h2>Team Project Created</h2>
+        <p>A Transformer Based Approach To Detect Suicidal Ideation</p>
+        
+        <div class="details">
+            <div><strong>Project Scope</strong> <br> Private</div>
+            <div><strong>Participants</strong> <br> 12</div>
+        </div>
+      <div class="actions">
+        <button (click)="closeModal()">Cancel</button>
+        <button class="primary" (click)="closeModal()">Go to Project</button>
+      </div>
+    </div>
+  </div>
+  

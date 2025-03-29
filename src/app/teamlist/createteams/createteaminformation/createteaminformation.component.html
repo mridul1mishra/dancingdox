@@ -1,0 +1,32 @@
+<div class="team-info-container">
+    <nav class="breadcrumb">
+      <span>My Teams</span> > <span>Create Team</span>
+    </nav>
+  
+    <h2>Team Information</h2>
+  
+    <div class="team-form">
+      <div class="form-group">
+        <label for="teamName">Team Name</label>
+        <input type="text" id="teamName" [(ngModel)]="teamName">
+      </div>
+  
+      <div class="form-group">
+        <label for="teamType">Team Type</label>
+        <select id="teamType" [(ngModel)]="teamType">
+          <option *ngFor="let type of teamTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="teamDetails">Team Details</label>
+        <textarea id="teamDetails" [(ngModel)]="teamDetails"></textarea>
+      </div>
+  
+      <div class="form-actions">
+        <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+        <button class="next-btn" (click)="onNext()">Next</button>
+      </div>
+    </div>
+  </div>
+  

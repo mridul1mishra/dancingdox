@@ -1,0 +1,80 @@
+<div class="my-teams-container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="header-left">
+        <h2>Team Projects</h2>
+        <p>Manage your teams effortlessly—view, edit, and add members with ease.</p>
+      </div>
+      <div class="header-right">
+        <button class="create-team-btn"><a routerLink="/teams/create-teams">Create New Team</a></button>
+      </div>
+    </div>
+  
+    <!-- Tabs -->
+    <ul class="tabs">
+      <li [class.active]="selectedTab === 'overview'" (click)="setTab('overview')">Overview</li>
+      <li [class.active]="selectedTab === 'active'" (click)="setTab('active')">Active</li>
+      <li [class.active]="selectedTab === 'inactive'" (click)="setTab('inactive')">Inactive</li>
+      <li [class.active]="selectedTab === 'bin'" (click)="setTab('bin')">Bin</li>
+    </ul>
+  
+    
+    <!-- Cards (Only show if 'overview' tab is selected, for example) -->
+    <a routerLink="/teams/team-details">
+    <div class="cards-container" *ngIf="selectedTab === 'overview'">
+      
+      <div *ngFor="let team of teams" class="team-card">
+        <div class="menu">⋮</div>
+        <div class="card-header">
+          <img src="SnowUIIcon.png" alt="Research Logo" class="icon">
+          <span class="text">{{ team.title }}</span>
+          
+        </div>
+        <div class="card-body">
+          <p>Total Projects: <br />{{ team.totalProjects }}</p>
+          <p>Members: <br />{{ team.members }}</p>
+          <p>Status: <br />{{ team.status }}</p>
+        </div>
+        <div class="card-footer">
+          <div class="teamleft">
+          <p>Created on {{ team.createdOn }}</p>
+          </div>
+          <div class="teamright">
+            <p class="teamtype">{{ team.type }}</p>
+          
+            <p>
+              <img src="image-owner.png" alt="Boy">
+            </p>
+          </div>
+        </div>        
+        
+      </div>
+    
+    </div>
+  </a>
+    <!-- Similarly, you could filter or show different teams for the Active/Inactive tabs -->
+    <div class="cards-container" *ngIf="selectedTab === 'active'">
+      <div *ngFor="let team of teams" class="team-card"  >
+        
+        <!-- Similar structure as above -->
+        <div class="card-header">
+          <h3>{{ team.title }}</h3>
+        </div>
+        <div class="card-body">
+          <p>Total Projects: {{ team.totalProjects }}</p>
+          <p>Members: {{ team.members }}</p>
+          <p>Created on {{ team.createdOn }}</p>
+          <p>Status: {{ team.status }}</p>
+        </div>
+        <div class="card-footer">
+          <button (click)="toggleTeamStatus(team)">
+            Make {{ team.status === 'Inactive' ? 'Active' : 'Inactive' }}
+          </button>
+        
+      </div>
+      </div>
+    </div>
+  
+    <!-- Repeat similar *ngIf blocks for 'inactive' and 'bin' if needed -->
+  </div>
+  

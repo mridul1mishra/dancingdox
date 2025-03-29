@@ -1,0 +1,67 @@
+<div class="container">
+    <h2>Personal Info</h2>
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+      <div class="profile-section">
+        <img [src]="imageUrl" alt="Profile Picture" class="profile-pic" />
+        <input type="file" (change)="onFileChange($event)" />
+      </div>
+  
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" formControlName="firstName" />
+      </div>
+  
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" formControlName="lastName" />
+      </div>
+  
+      <div class="form-group">
+        <label>Address Line 1</label>
+        <input type="text" formControlName="address1" />
+      </div>
+  
+      <div class="form-group">
+        <label>Address Line 2</label>
+        <input type="text" formControlName="address2" />
+      </div>
+  
+      <div class="form-group">
+        <label>Town/City</label>
+        <input type="text" formControlName="city" />
+      </div>
+  
+      <div class="form-group">
+        <label>Postcode</label>
+        <input type="text" formControlName="postalCode" />
+      </div>
+  
+      <div class="form-group">
+        <label>Country</label>
+        <input type="text" formControlName="country" />
+      </div>
+  
+      <div class="form-group">
+        <label>Organization</label>
+        <input type="text" formControlName="organization" />
+      </div>
+  
+      <div class="form-group">
+        <label>Designation</label>
+        <select formControlName="designation">
+          <option value="Professor">Professor</option>
+          <option value="Associate Professor">Associate Professor</option>
+          <option value="Lecturer">Lecturer</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Is this address also your invoice address?</label>
+        <input type="radio" formControlName="invoiceAddress" [value]="true" /> Yes
+        <input type="radio" formControlName="invoiceAddress" [value]="false" /> No
+      </div>
+  
+      <button type="submit">Update Profile</button>
+    </form>
+  </div>
+  

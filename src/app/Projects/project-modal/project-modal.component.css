@@ -1,0 +1,46 @@
+.modal-overlay {
+    position: fixed;
+    top: 100px;
+    left: 500px;
+    width: 865px;
+    height: 540px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-table{
+    display: flex;
+  }
+   .details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.details div {
+    font-size: 14px;
+    color: #444;
+}
+
+  p{
+    all: unset;
+  }
+  .modal-content {
+    
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .actions {
+    margin-top: 10px;
+  }
+  
+  .primary {
+    background: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+  }
+  

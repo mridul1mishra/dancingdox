@@ -1,0 +1,116 @@
+<div class="container">
+    <h2>Project Information</h2>
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+      <!-- Team Name -->
+      <div class="form-group">
+        <label>Team:</label><strong>The Interdisciplinary Research and Innovation Consortium</strong>
+        <a href="#" class="change-team">Change Team</a>
+      </div>
+  
+      <!-- Project Name -->
+      <div class="form-container">
+        <div class="form-group1">
+          <label for="project-name">Project Name</label>
+          <input type="text" id="project-name" placeholder="A Transformer Based Approach To Detect Suicidal Ideation">
+      </div>
+      <div class="form-group1">
+          <label>Project Scope</label>
+          <div class="radio-group">
+              <label><input type="radio" name="scope" value="public"> Public</label>
+              <label><input type="radio" name="scope" value="private" checked> Private</label>
+          </div>
+      </div>
+      <div class="form-group1" style="padding-left: 112px;">
+          <label>Collecting doc for an event? (Optional)</label>
+          <div class="radio-group">
+              <label><input type="radio" name="event" value="yes" checked> Yes</label>
+              <label><input type="radio" name="event" value="no"> No</label>
+          </div>
+      </div>
+        
+      </div>
+  
+      <!-- Project Details -->
+      <div class="form-container">
+        <div class="form-group1">
+        <label>Project Details (Optional)</label>
+        <textarea formControlName="projectDetails" placeholder="Enter details" style="width: 1120px;"></textarea>
+      </div>
+      </div>
+  
+     
+  
+      <!-- Start and End Date -->
+      <div class="form-container">
+        <div class="form-group1">
+        <label>Start Date</label>
+        <input type="date" formControlName="startDate" style="width: 537px;"/></div>
+        <div class="form-group1">
+          <label>End Date</label>
+        <input type="date" formControlName="endDate" style="width: 537px;" />
+      </div>
+      </div>
+  
+      
+      <div class="form-container">
+         <!-- Time Zone -->
+        <div class="form-group1">
+        <label>Select Time Zone</label>
+        <select formControlName="timeZone" style="width: 537px;">
+          <option value="GMT-9">Adak, Hawaii, United States (GMT -9:00)</option>
+          <option value="GMT-5">New York, United States (GMT -5:00)</option>
+        </select>
+      </div>
+      <!-- Reminder -->
+      <div class="form-group1">
+        <label>Reminder (Optional)</label>
+          <select formControlName="reminder" style="width: 537px;">
+          <option value="1hour">1 hour before</option>
+          <option value="24hours">24 hours before</option>
+          </select>
+      </div>
+      </div>
+  
+      
+      <div class="form-container">
+        <!-- Co-Host Emails -->
+        <div class="form-group1">
+          <label>Co-Host (Access to all documents)</label>
+          <input type="text" formControlName="coHostEmails" placeholder="Enter emails separated by commas" style="width: 537px;" />  </div>     
+        <!-- Support Staff -->
+        <div class="form-group1">
+          <label>Add Support Staff (Optional)</label>
+          <input type="email" formControlName="supportStaff" placeholder="Enter email" style="width: 537px;"/>
+        </div>
+    </div>
+    <div class="form-container">
+      <!-- File Upload -->
+      <div class="form-group1">
+        <label>Supporting File</label>
+        <input type="file" (change)="onFileChange($event)" />
+        <div *ngIf="uploadedFile">
+          <span>{{ uploadedFile.name }}</span>
+          <button type="button" (click)="removeFile()">❌</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-container">
+      <!-- Terms & Conditions -->
+      <div class="terms">
+        <label>
+          <input type="checkbox" formControlName="terms" />
+          I accept the <a href="#">Terms & Conditions</a>
+        </label>
+      </div>
+      <!-- Buttons -->
+      <div class="buttons">
+        <button type="button" class="cancel">Cancel</button>
+        <button type="submit" class="proceed" (click)="showModal = true">Proceed</button>
+      </div>
+    </div>
+  
+      
+    </form>
+    <app-project-modal [showModal]="showModal" (close)="showModal = false"></app-project-modal>
+  </div>
+  
