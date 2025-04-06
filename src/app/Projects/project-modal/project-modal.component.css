@@ -1,0 +1,90 @@
+.modal-overlay {
+    position: fixed;
+    top: 100px;
+    left: 500px;
+    width: 865px;
+    height: 540px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-table{
+    display: flex;
+  }
+   .details {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 150px;
+}
+.cancel{
+  background-color: white;
+  color: #333;
+  border: 1px solid #ccc;
+  width: 145px;
+  height: 46px;
+  border-radius: 6px;
+  transition: background 0.2s ease-in-out;
+}
+.add-button {
+  background-color: #4F46E5;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background 0.2s ease-in-out;
+  width: 145px;
+  height: 46px;
+}
+.details div {
+    font-size: 14px;
+    color: #444;
+}
+.footer{
+  display: flex;
+  gap: 20px;
+  padding-top: 10px;
+  align-content: flex-end;
+  flex-wrap: wrap;
+  justify-content: end;
+}
+  p{
+    all: unset;
+  }
+  .modal-content {
+    
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .actions {
+    margin-top: 10px;
+  }
+  
+  .primary {
+    background: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+  }
+  .close-btn{
+    position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      color: #666;
+      cursor: pointer;
+      font-weight: bold;
+  }
+  .project{
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+  }

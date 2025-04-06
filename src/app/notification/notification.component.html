@@ -1,0 +1,58 @@
+<div class="notifications-container">
+    <!-- Header Section -->
+    <div class="notifications-header">
+      <div>
+        <h2>Notifications</h2>
+        <p>Manage Your Profile: Update Picture, Personal Details, and Address</p>
+      </div>
+    </div>
+  
+    <!-- Tabs & Actions -->
+    <div class="notifications-actions">
+      <ul class="tabs">
+        <!-- Currently only one tab (All) -->
+        <li
+          [class.active]="selectedTab === 'all'"
+          (click)="setTab('all')"
+        >
+          All
+        </li>
+        <li
+          [class.active]="selectedTab === 'Unread'"
+          (click)="setTab('Unread')"
+        >
+          Unread
+        </li>
+        <li
+          [class.active]="selectedTab === 'Read'"
+          (click)="setTab('Read')"
+        >
+          Read
+        </li>
+      </ul>
+      <button class="mark-all-btn" (click)="markAllAsRead()">
+        Mark all as read
+      </button>
+    </div>
+  
+    <!-- Notification List -->
+    <div class="notifications-list">
+      <div
+        class="notification-item"
+        *ngFor="let notification of notifications"
+        [class.read]="notification.read"
+      >
+        <div class="notification-content">
+          <div class="notification-text">
+            <span class="notification-date">{{ notification.dateTime }}</span>
+            <p>{{ notification.message }}</p>
+          </div>
+          <div class="notification-actions">
+            <!-- Example 3-dot menu button -->
+            <button class="dots-btn">⋮</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

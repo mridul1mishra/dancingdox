@@ -1,0 +1,35 @@
+<div class="dashboard-container">
+    <div class="header-section">
+      <div class="header-left">
+        <h2>Personal Projects</h2>
+        <p>This is sample text demonstrating professional and user-friendly approach</p>
+      </div>
+      <div class="header-right">
+        <button class="create-team-btn" (click)="addNewProject()">Create Project</button>
+      </div>
+    </div>
+    <ul class="tabs">
+      <li class="active">Active Projects</li>
+      <li>Drafts</li>
+      <li>Past Projects</li>
+      <li>Bin</li>
+    </ul>
+  <div class="project-list">
+      
+      <app-projectcard
+        *ngFor="let project of projects"
+        [project]="project">
+      </app-projectcard>
+    
+    </div>
+  
+    <div class="pagination">
+      <button class="prev">&laquo; Previous</button>
+      <button class="active">1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>4</button>
+      <button class="next">Next &raquo;</button>
+    </div>
+  </div>
+  

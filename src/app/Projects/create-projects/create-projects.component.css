@@ -1,0 +1,51 @@
+.container {
+  text-align: center;
+ 
+  background-color: #ffffff;
+  max-height: 800px;
+  border: 1px solid #eee;
+  
+  margin-left: 32px;
+  margin-top: 10px;
+  margin-right: 32px;
+  }
+  a{
+    all: unset;
+  }
+  .breadcrumb {
+    font-size: 14px;
+    color: gray;
+    margin-bottom: 10px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .project-options {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+  
+  .personal-project-link {
+    display: block;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #4F46E5;
+    text-decoration: none;
+    text-align: left;
+    margin-left: 20px;
+    padding-bottom: 20px;
+  }
+  

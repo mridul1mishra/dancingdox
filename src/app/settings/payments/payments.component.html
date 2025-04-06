@@ -1,0 +1,68 @@
+<div class="container">
+    <!-- Current Plan Summary -->
+    <div class="card">
+      <h2 class="section-title">Current Plan Summary</h2>
+      <div class="plan-details">
+        <div class="plan-info">
+          <p><strong>Plan Name:</strong> {{ planName }}</p>
+          <p><strong>Billing Cycle:</strong> {{ billingCycle }}</p>
+          <p><strong>Total Cost:</strong> <span class="price">${{ totalCost }}</span></p>
+          <p><strong>Usage:</strong> {{ usageUsed }} GB of {{ usageTotal }} GB used</p>
+          <div class="progress-bar">
+            <div class="progress-bar-inner" [style.width.%]="usagePercentage"></div>
+          </div>
+        </div>
+        <div class="plan-actions">
+          <button class="btn btn-secondary">Cancel Plan</button>
+          <button class="btn btn-primary">Upgrade</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Payment Method -->
+    <div class="card">
+      <h2 class="section-title">Payment Method</h2>
+      <div class="payment-method">
+        <div class="card-info">
+          <img src="assets/mastercard-icon.png" alt="MasterCard" class="card-icon">
+          <div>
+            <p><strong>{{ paymentMethod.type }}</strong></p>
+            <p>**** **** **** {{ paymentMethod.lastFourDigits }}</p>
+            <p>Expiry on {{ paymentMethod.expiryDate }}</p>
+            <p>{{ paymentMethod.email }}</p>
+          </div>
+        </div>
+        <button class="btn btn-secondary">Change</button>
+      </div>
+    </div>
+  
+    <!-- Billing History -->
+    <div class="card">
+      <h2 class="section-title">Billing History</h2>
+      <p class="description">Effortlessly handle your billing and invoices right here.</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Reference</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bill of billingHistory">
+            <td>{{ bill.product }}</td>
+            <td>{{ bill.reference }}</td>
+            <td>{{ bill.amount }} USD</td>
+            <td>{{ bill.date }}</td>
+            <td><span [class]="getStatusClass(bill.status)">{{ bill.status }}</span></td>
+            <td><i class="download-icon">&#x1F4E5;</i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

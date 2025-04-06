@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap');
+
+
+body {
+    font-family: Plus Jakarta Sans, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f6fa;
+    display: flex;
+    flex-direction: column;
+  }
+  a {
+    text-decoration: none;
+  }
+  
+  .layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  .profile-info-name{
+    all: unset;
+    font-size: 14px;
+    height: 20px; 
+  }
+  
+  .profile-info-type{
+    all: unset;
+    color: #4F627D;
+    font-size: 12px;
+    height: 16px;
+  }
+  .profile-info{
+    width: 130px;
+    height: 36px;
+    display: flex;
+    flex-direction: column;
+  }
+  .main {
+    display: flex;
+    flex: 1;
+  }
+  
+  .sidebar {
+    width: 298px;
+    height: 100%;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  .menu {
+    margin-bottom: 40px;
+  }
+  .menu-section{
+    width: 298px;
+    height: max-content;
+  }
+  .menu-section h5 {
+    width: 242px;
+    height: 22px;
+    font-size: 16px;
+    color: #94A3B8;
+    margin-bottom: 10px;
+  }
+  .menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu ul li {
+    display: flex;
+    align-items: center;
+    width: 242px;
+    height: 40px;
+    padding: 5px 0;
+    font-size: 14px;
+    cursor: pointer;
+    color: #121A26;
+    gap: 12px;
+  }
+  .custom-icon{
+    padding-left: 12px;
+  }
+  .menu ul li i {
+    font-size: 18px;
+    margin-right: 15px;
+    color: #999;
+  }
+  
+  .menu ul li.active {
+    color: #6c63ff;
+    font-weight: bold;
+  }
+  .cloud-storage {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+  .storage-info {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  .storage-info i {
+    font-size: 18px;
+    margin-right: 10px;
+  }
+  
+  .storage-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .storage-used {
+    height: 100%;
+    background-color: #67c23a;
+  }
+  .storage-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .upgrade-link {
+    color: #409eff;
+    text-decoration: none;
+    font-weight: bold;
+  }  
+  .teams{
+    height: 22px;
+    width: 182px;    
+  }
+
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .settings-header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  
+  .settings-content {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .settings-card {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .settings-card h4 {
+    margin: 10px 0;
+  }
+  .writer{
+    color: #6c63ff;
+  }
+  .latest-activity {
+    width: 298px;
+    height: 728px;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .activity-item {
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 5px 5px 5px 5px;
+  }
+  
+  .activity-item small {
+    color: #777;
+  }
+  
+
+
+
+
+
+  
+  
+  .submenu {
+    list-style: none;
+    padding-left: 30px;
+    display: none;
+  }
+  .menu-item.parent.active .expand-icon {
+    transform: rotate(180deg);
+  }
+  .menu {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Parent Menu Item */
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    position: relative;
+  }
+  
+  .menu-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  .custom-icon {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  
+  .expand-icon {
+    margin-left: auto;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  
+  /* Submenu */
+  .submenu {
+    list-style: none;
+    padding-left: 30px;
+    display: block;
+  }
+  
+  .menu-item.parent.active .submenu {
+    display: block;
+  }
+  
+  /* Submenu Item */
+  .submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 70px!important;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 14px;
+  }
+  
+  .submenu-item:hover {
+    background: rgba(0, 0, 0, 0.08);
+  }

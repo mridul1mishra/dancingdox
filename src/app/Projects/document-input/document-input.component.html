@@ -1,0 +1,77 @@
+<div class="container">
+    <div class="form-group"><label for="docCount" class="label">Number of Documents</label>
+    <div class="input-group"><input type="number" id="docCount" class="input-box" [(ngModel)]="docCount" min="1" value="2">
+    <button class="add-button" (click)="addDocuments()">Add</button></div></div>
+    <div *ngFor="let doc of documents; let i = index" class="container-card">  
+        <div class="form-group">
+            <label for="docCount" class="label">Document Name</label>
+         <input class="input-box" type="number" [(ngModel)]="doc.name" placeholder="National ID"> 
+        </div>
+        <div class="form-group">
+            <label for="docCount" class="label">Document Type</label>            
+            <select [(ngModel)]="doc.type">
+                <option>.pdf</option>
+                <option>.doc</option>
+                <option>.xlsx</option>
+            </select>
+        </div>
+        
+    
+        <div class="form-group">
+            <label for="docCount" class="label">Max Size</label>
+            <input class="label" type="number" [(ngModel)]="doc.maxSize" placeholder="Max Size">
+        </div>
+        <div class="form-group">
+            <label  for="docCount" class="label">Size Unit</label>
+            <select class="label" [(ngModel)]="doc.sizeUnit">
+                <option>KB</option>
+                <option>Mb</option>
+            </select>
+        </div>
+        <div class="form-group second-row"><label for="docCount" class="label">Document Position Controls</label> 
+            <div class="position-controls">
+                <button (click)="moveUp(i)" [disabled]="i === 0">▲</button>
+                <button (click)="moveDown(i)" [disabled]="i === documents.length - 1">▼</button>
+            </div>
+        </div>
+        <div class="form-group second-row two-col">
+            <label>Document Template (Optional)</label>
+            <form class="upload-box" >
+                <label class="file-upload">
+                  <input type="file" id="file-upload" name="file" accept="image/*" (change)="handleFileUpload($event, i)">
+                 <span class="file-upload"></span><p style="padding-left: 10px;">Browse File</p>
+                </label> 
+                
+                <!--<div class="upload-section">
+                    <div class="file-upload">            
+                        <input id="upload-section" type="file" (change)="handleFileUpload($event, i)">
+                        <label for="file-upload" class="custom-file-upload">
+                            Upload Your Image
+                        </label>
+                    </div>
+                    <div *ngIf="doc.uploadedFile" class="file-preview">
+                        <span>{{ doc.uploadedFile.name }}</span>
+                        <button (click)="removeFile(i)">❌</button>
+                    </div>
+                </div>-->
+            </form>
+        </div>
+        <div *ngIf="doc.uploadedFile" class="form-group second-row two-col">
+            <form class="file-add"><i class="material-icons icon">insert_drive_file</i><span >{{ doc.uploadedFile.name }}</span>
+            <i class="material-icons icon2" (click)="removeFile(i)">cancel</i></form>
+        </div>
+        
+    
+        
+        
+</div>
+
+<div class="footer" *ngIf="documents.length>0">
+    <button class="cancel">Cancel</button>
+    <button class="add-button" (click)="showModal = true">Proceed</button>
+</div>
+  
+  
+</div>
+
+<app-project-modal [showModal]="showModal" (close)="showModal = false"></app-project-modal>

@@ -1,0 +1,19 @@
+
+<div class="project-card">
+  <a routerLink="/projects/{{ project.id }}" >
+    <div class="menu">⋮</div>
+    <div class="card-header">{{ project.title }}</div>
+    <div class="info">
+     <div class="rating"><p class="icon"><i class="material-icons" style="color: lightgray;">task</i></p><p>{{ project.rating }}/10</p></div>
+     <div class="rating"><p class="icon"><i class="material-icons" style="color: lightgray;">message</i><p>{{ project.comments }}</p></div>
+    </div>
+    <div class="info">
+      <div class="rating"><p><i class="material-icons" style="color: lightgray;">calendar_today</i></p><p class="projcal">{{ project.startDate }} - {{ project.endDate }}</p></div>
+      <div class="rating">
+        <p class="visibility" [ngClass]="project.visibility.toLowerCase()">{{ project.visibility }}</p>
+        <p><img _ngcontent-ng-c2842756854="" src="image-owner.png" alt="Boy"></p>
+  </div>
+  </div>
+  </a>
+  
+  </div>
