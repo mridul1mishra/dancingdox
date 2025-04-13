@@ -41,19 +41,6 @@
                   <input type="file" id="file-upload" name="file" accept="image/*" (change)="handleFileUpload($event, i)">
                  <span class="file-upload"></span><p style="padding-left: 10px;">Browse File</p>
                 </label> 
-                
-                <!--<div class="upload-section">
-                    <div class="file-upload">            
-                        <input id="upload-section" type="file" (change)="handleFileUpload($event, i)">
-                        <label for="file-upload" class="custom-file-upload">
-                            Upload Your Image
-                        </label>
-                    </div>
-                    <div *ngIf="doc.uploadedFile" class="file-preview">
-                        <span>{{ doc.uploadedFile.name }}</span>
-                        <button (click)="removeFile(i)">❌</button>
-                    </div>
-                </div>-->
             </form>
         </div>
         <div *ngIf="doc.uploadedFile" class="form-group second-row two-col">
@@ -68,7 +55,7 @@
 
 <div class="footer" *ngIf="documents.length>0">
     <button class="cancel">Cancel</button>
-    <button class="add-button" (click)="showModal = true">Proceed</button>
+    <button class="add-button" (click)="projectCreate()">Proceed</button>
 </div>
   
   

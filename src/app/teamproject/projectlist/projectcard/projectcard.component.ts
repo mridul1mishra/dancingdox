@@ -1,18 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Project } from '../../../service/project.interface.service';
 
 
-interface Project {
-  id: number;
-  title: string;
-  rating: number;
-  comments: number;
-  startDate: string;
-  endDate: string;
-  visibility: 'Public' | 'Private';
-  members: string[];
-}
+
 
 @Component({
   selector: 'app-projectcard',

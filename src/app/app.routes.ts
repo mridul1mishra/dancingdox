@@ -16,6 +16,7 @@ import { TeamprojectComponent } from './Projects/teamproject/teamproject.compone
 import { IndependentprojectComponent } from './Projects/independentproject/independentproject.component';
 import { CreateteaminformationComponent } from './teamlist/createteams/createteaminformation/createteaminformation.component';
 import { DocumentInputComponent } from './Projects/document-input/document-input.component';
+import { TestcomponentComponent } from './testcomponent/testcomponent.component';
 
 export const routes: Routes = [
     { path: '', component: DashboardComponent }, // Default route
@@ -27,12 +28,13 @@ export const routes: Routes = [
     { path: 'projectslist', component: CreateProjectsComponent },
     { path: 'Settings', component: SettingsComponent },
     { path: 'projects/joinproject', component: JoinprojectComponent },
-    { path: 'projects/project-start', component: DocumentInputComponent },
+    { path: 'project/createindependentproject/project-start', component: DocumentInputComponent },
     { path: 'projects/projectdetail', component: ProjectdetailsComponent },
     { path: 'projects/:id', component: ProjectdetailsComponent },
     { path: 'projects', component: ProjectlistComponent },
+    { path: 'testpath', component: TestcomponentComponent },
     { path: 'Settings/profile', component: PersonalinfoComponent },
-    { path: 'createindependentproject', component: GetProjectDetailsComponent },
+    { path: 'project/createindependentproject', component: GetProjectDetailsComponent },
 
     { path: 'pricingplan', component: PricingplanComponent },
     { path: '**', redirectTo: '' } // Wildcard route for 404

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 import { ProjectModalComponent } from '../project-modal/project-modal.component';
 
@@ -17,15 +18,13 @@ export class GetProjectDetailsComponent {
   openModal() {
     this.showModal = true;
   }
-  onNavigateprojectstart(){
-    this.router.navigate(['projects/project-start'])
-  }
+  
   closeModal() {
     this.showModal = false;
   }
   projectForm: FormGroup;
   uploadedFile: File | null = null;
-  constructor(private router: Router,private fb: FormBuilder) {
+  constructor(private router: Router,private fb: FormBuilder, private http: HttpClient) {
     this.projectForm = this.fb.group({
       projectName: ['', Validators.required],
       projectDetails: [''],
@@ -39,6 +38,24 @@ export class GetProjectDetailsComponent {
       supportStaff: [''],
       terms: [false, Validators.requiredTrue]
     });
+  }
+  onNavigateprojectstart(){
+    
+
+    const projectData = {
+      ...this.projectForm.value, id: 2,
+      members: this.projectForm.value.members
+        ? this.projectForm.value.members.split(',').map((member: string) => member.trim())  // Split members into an array
+        : [] 
+    };
+    console.log('Project Data:', projectData);
+    this.http.post('http://localhost:3000/add-project', projectData).subscribe({
+      next: () => {
+        console.log('Project added to CSV!');        
+      },
+      error: (err) => console.error('Failed to add project:', err),
+    });
+    this.router.navigate(['project/createindependentproject/project-start']);
   }
   onSubmit() {
     if (this.projectForm.valid) {
