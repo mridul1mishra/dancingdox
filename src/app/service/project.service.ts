@@ -6,30 +6,7 @@ import { Project } from './project.interface.service';
 })
 export class ProjectService {
 
-  private projects: Project[] = [
-  {
-    id: 1,
-    title: 'Angular Project',
-    docCount: 4,
-    docCounttotal: 7,
-    comments: 10,
-    startDate: '2025-01-01',
-    endDate: '2025-12-31',
-    visibility: 'Public',
-    members: ['Alice', 'Bob']
-  },
-  {
-    id: 2,
-    title: 'React Project',
-    docCount: 4,
-    docCounttotal: 7,
-    comments: 5,
-    startDate: '2025-02-01',
-    endDate: '2025-11-30',
-    visibility: 'Private',
-    members: ['Charlie', 'Dave']
-  }
-];
+  projects: Project[] = [];
   // Method to get all projects
   getProjects(): Project[] {
     return this.projects;

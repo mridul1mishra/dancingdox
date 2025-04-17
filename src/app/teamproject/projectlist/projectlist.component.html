@@ -14,7 +14,7 @@
       <li>Past Projects</li>
       <li>Bin</li>
     </ul>
-  <div class="project-list">
+  <div class="project-list" *ngIf="projects$ | async as projects; else loading">
       
       <app-projectcard
         *ngFor="let project of projects"
@@ -32,4 +32,6 @@
       <button class="next">Next &raquo;</button>
     </div>
   </div>
-  
+  <ng-template #loading>
+    <p>Loading projects...</p>
+  </ng-template>

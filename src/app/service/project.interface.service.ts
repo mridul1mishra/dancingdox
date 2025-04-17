@@ -1,6 +1,10 @@
 export interface Project {
     id: number;
+    Name: string;
+    scope: string;
     title: string;
+    participants: number;
+    host: string;
     docCount: number;
     docCounttotal: number;
     comments: number;
@@ -8,4 +12,6 @@ export interface Project {
     endDate: string;
     visibility: 'Public' | 'Private';
     members: string[];
+    collabCount: number;
+    documents: string[];
   }

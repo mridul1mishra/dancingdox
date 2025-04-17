@@ -1,0 +1,29 @@
+<div class="dashboard">
+    <div *ngIf="project">
+      <div class="project-header">
+        <h2>{{ project.Name }} <span class="status"></span></h2>
+        <p><strong>Project Scope:</strong> {{ project.visibility }} | <strong>Participants:</strong> {{ project.participants }}</p>
+        <p><strong>Host:</strong> {{ project.host }}</p>
+        <p><strong>Created on:</strong> {{ project.startDate }} | <strong>Due Date:</strong> {{ project.endDate }} 
+        <span class="due-warning"> {{ getDaysLeft(project.endDate) }} Days Left</span></p>
+        <p>{{ project.title }}</p>
+        <p><strong>Project ID:</strong> {{ project.id }} </p>
+      </div>
+    </div>
+      <div *ngIf="!project">
+        <p>Project not found.</p>
+      </div>
+      <div class="recent-uploads">
+        <h3>Recent Uploads</h3>
+        <div class="upload-list">
+          <div class="upload-item" *ngFor="let upload of recentuploads">
+            <p><strong>{{ upload.name }}</strong> <span class="upload-time">{{ upload.time }}</span></p>
+            <p>{{ upload.file }}</p>
+          </div>
+        </div>
+      </div>
+    
+</div>
+      
+    
+    

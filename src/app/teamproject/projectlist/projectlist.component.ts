@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ProjectcardComponent } from './projectcard/projectcard.component';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
-import { ProjectService } from '../../service/project.service';
+import { DataService } from '../../service/data.service';
 import { Project } from '../../service/project.interface.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-projectlist',
@@ -13,13 +14,13 @@ import { Project } from '../../service/project.interface.service';
   styleUrl: './projectlist.component.css'
 })
 export class ProjectlistComponent implements OnInit {
-  constructor(private router: Router,private projectService: ProjectService) {}
+  constructor(private router: Router,private dataService: DataService) {}
   
-  projects: Project[] = [];
+  projects$!: Observable<Project[]>;
 
   ngOnInit(): void {
     // Fetching all projects from the service
-    this.projects = this.projectService.getProjects();
+    this.projects$ = this.dataService.getAllProjects();
   }
   createNewProject(){
     this.router.navigate(['project/createindependentproject']);
