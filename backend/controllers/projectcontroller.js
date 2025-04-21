@@ -15,7 +15,7 @@ exports.addProject = (req, res) => {
   const comments = 10;
   const collabCount = 1;
 
-  const newRow = `${project.id},${project.projectName},${project.docCount},${docCounttotal},${comments},${project.startDate},${project.endDate},${project.projectScope},${project.supportStaff},${collabCount}\n`;
+  const newRow = `${project.id},${project.title},${project.projectName},${project.docCount},${docCounttotal},${comments},${project.startDate},${project.endDate},${project.projectScope},${project.supportStaff},${collabCount}\n`;
   console.log('Received Project Data:', newRow);
 
   fs.appendFile(csvPath, newRow, (err) => {

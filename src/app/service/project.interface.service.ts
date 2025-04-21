@@ -14,4 +14,5 @@ export interface Project {
     members: string[];
     collabCount: number;
     documents: string[];
+    Host: string;
   }

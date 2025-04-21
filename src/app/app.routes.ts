@@ -40,7 +40,6 @@ export const routes: Routes = [
     { path: 'Settings/profile', component: PersonalinfoComponent },
     { path: 'project/createindependentproject/project-start/collaborator', component: CollaboratorComponent },
     { path: 'project/createindependentproject', component: GetProjectDetailsComponent },
-
     { path: 'pricingplan', component: PricingplanComponent },
     { path: '**', redirectTo: '' } // Wildcard route for 404
 ];

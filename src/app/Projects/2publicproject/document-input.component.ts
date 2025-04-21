@@ -100,11 +100,10 @@ export class DocumentInputComponent {
       next: (data) => {
         this.projects = data;
         this.lastProject = data[data.length - 1];
-  
         // Update last project
         this.lastProject.docCount = this.docCount;
         this.lastProject.documents = allFilenames;
-  
+        console.log("doccount:", this.lastProject.docCount )
         this.http.post('http://localhost:3000/update-projects', this.projects).subscribe({
           next: () => console.log('CSV updated successfully'),
           error: err => console.error('Error updating CSV:', err)
