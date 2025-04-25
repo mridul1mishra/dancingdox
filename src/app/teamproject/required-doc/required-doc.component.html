@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="card-header">
+      <h3>Required Documents</h3>
+      <div class="upload-summary">
+        <span>Total Uploaded Documents</span>
+        <strong>3/4</strong>
+      </div>
+    </div>
+  
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>SL</th>
+          <th>Document Name</th>
+          <th>Format</th>
+          <th>Maximum Size</th>
+          <th>Upload Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let doc of documents; let i = index">
+          <td>{{ ('0' + (i + 1)).slice(-2) }}</td>
+          <td>{{ doc.name }}</td>
+          <td>{{ doc.format }}</td>
+          <td>{{ doc.maxSize }}</td>
+          <td>{{ doc.date }}</td>
+          <td>
+            <span  class="status-pill">
+              {{ doc.status }}
+            </span>
+          </td>
+          <td>
+            <div class="action-btn">
+              <ng-container *ngIf="doc.file; else attachBtn">
+                <span>{{ doc.file }}</span>
+                <button class="icon-button" title="Edit">
+                  ✎
+                </button>
+              </ng-container>
+              <ng-template #attachBtn>
+                <button class="attach-btn">
+                  📎 Attach
+                </button>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

@@ -1,0 +1,81 @@
+.table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .download-all-btn {
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  
+  thead {
+    background-color: #f5f5f5;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  td > span {
+    vertical-align: middle;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .actions .icon {
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .success {
+    color: green;
+  }
+  
+  .error {
+    color: red;
+  }
+  
+  .pending {
+    color: orange;
+  }
+  
+  /* Placeholder icons, replace with real icons or a library like Font Awesome */
+  .download-icon::before { content: '⬇️'; }
+  .view-icon::before { content: '👁️'; }
+  .check-icon::before { content: '✅'; }
+  .cross-icon::before { content: '❌'; }
+  .dots-icon::before { content: '⋯'; }
+  

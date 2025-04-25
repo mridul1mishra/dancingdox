@@ -21,6 +21,7 @@ import { DynamicprojectdetailsComponent } from './teamproject/dynamicprojectdeta
 import { CollaboratorComponent } from './Projects/3publicproject/collaborator.component';
 
 
+
 export const routes: Routes = [
     { path: '', component: DashboardComponent }, // Default route
     { path: 'teams', component: TeamsComponent },

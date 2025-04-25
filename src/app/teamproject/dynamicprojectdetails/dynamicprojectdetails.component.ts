@@ -4,6 +4,8 @@ import { DataService } from '../../service/data.service';
 import { Observable } from 'rxjs';
 import { Project } from '../../service/project.interface.service';
 import { CommonModule } from '@angular/common';
+import { ColloboratorDocComponent } from "../colloborator-doc/colloborator-doc.component";
+import { RequiredDocComponent } from "../required-doc/required-doc.component";
 export const recentUploads = [
   { id:1, name: 'Jillur Rahman', file: 'National Identity Card24.pdf', time: '12:41 AM 12 Oct, 2025' },
   { id:1, name: 'Kalam Nil', file: 'National Identity Card24.pdf', time: '11:30 AM 12 Oct, 2025' },
@@ -13,7 +15,7 @@ export const recentUploads = [
 ];
 @Component({
   selector: 'app-dynamicprojectdetails',
-  imports: [CommonModule],
+  imports: [CommonModule, ColloboratorDocComponent, RequiredDocComponent],
   templateUrl: './dynamicprojectdetails.component.html',
   styleUrl: './dynamicprojectdetails.component.css'
 })

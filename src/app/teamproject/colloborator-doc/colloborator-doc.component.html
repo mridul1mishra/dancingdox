@@ -1,0 +1,49 @@
+<div class="table-container">
+    <div class="table-header">
+      <h2>Documents Collections (10/40)</h2>
+      <button class="download-all-btn">Download All</button>
+    </div>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>Member Name</th>
+          <th>Email</th>
+          <th>Number of Files</th>
+          <th>Uploaded Documents</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let member of members">
+          <td>
+            <img [src]="member.imageurl" alt="avatar" class="avatar" />
+            <span>{{ member.CollabName }}</span>
+          </td>
+          <td>{{ member.CollabEmail }}</td>
+          <td>{{ member.filesUploaded }} Out of {{ member.totalFiles }}</td>
+          <td>{{ member.documents.join(', ') }}</td>
+         
+          <td class="actions">
+            <button title="Download"><i class="icon download-icon"></i></button>
+            <button title="View"><i class="icon view-icon"></i></button>
+            <button [ngClass]="{
+              'success': member.status === 'success',
+              'error': member.status === 'error',
+              'pending': member.status === 'pending'
+            }">
+              <i
+                class="icon"
+                [ngClass]="{
+                  'check-icon': member.status === 'success',
+                  'cross-icon': member.status === 'error',
+                  'dots-icon': member.status === 'pending'
+                }"
+              ></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

@@ -1,0 +1,5 @@
+id,name,format,maxSize,date,status,File,projectID
+1,National Identity Card,JPG PDF DOC,300 KB,12/10/2025,Accepted,Nid.pdf,1
+2,Research Proposal,JPG PDF DOC,300 KB,12/10/2025,Rejected,Abstract.doc,1
+3,Methodology Names,JPG PDF DOC,300 KB,12/10/2025,Declined,Research Paper.doc,1
+4,Abstract of the paper,JPG PDF DOC,300 KB,12/10/2025,In Review,Paper.pdf,2

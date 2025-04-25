@@ -1,0 +1,7 @@
+id,CollabName,CollabEmail,imageurl,filesUploaded,totalFiles,documents,status,ProjectID
+1,Alice Smith,Alice@gmail.com,https://i.pravatar.cc/150?img=1,3,4,NID.pdf;Abstract.doc;Research Paper.doc;Paper.pdf,pending,2
+2,Bob Johnson,bob@gmail.com,https://i.pravatar.cc/150?img=2,4,4,NID.pdf;Abstract.doc;Research Paper.doc;Paper.pdf,success,1
+3,Clara Garcia,clara@gmail.com,https://i.pravatar.cc/150?img=3,3,4,NID.pdf;Abstract.doc;Research Paper.doc;Paper.pdf,pending,1
+4,Emma Lee,emma@gmail.com,https://i.pravatar.cc/150?img=4,3,4,NID.pdf;Abstract.doc;Research Paper.doc;Paper.pdf,success,1
+5,Grace Taylor,grace@gmail.com,https://i.pravatar.cc/150?img=5,4,4,NID.pdf;Abstract.doc;Research Paper.doc;Paper.pdf,pending,1
+6,Isabella Clark,isabella@gmail.com,https://i.pravatar.cc/150?img=6,2,4,NID.pdf;Abstract.doc;Research Paper.doc;Paper.pdf,success,1
