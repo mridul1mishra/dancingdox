@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const projectRoutes = require('./routes/projects');
-const uploadRoute = require('./routes/uploadnew');
+const uploadRoute = require('./routes/uploadfile');
 const docRoutes = require('./routes/docs');
 const collabRoutes = require('./routes/collab');
 

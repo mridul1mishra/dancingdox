@@ -7,7 +7,7 @@
     <div *ngFor="let doc of documents; let i = index" class="container-card">  
         <div class="form-group">
             <label for="docCount" class="label">Document Name</label>
-         <input class="input-box" type="number" [(ngModel)]="doc.name" placeholder="National ID"> 
+         <input class="input-box" type="text" [(ngModel)]="doc.name" placeholder="National ID"> 
         </div>
         <div class="form-group">
             <label for="docCount" class="label">Document Type</label>            
