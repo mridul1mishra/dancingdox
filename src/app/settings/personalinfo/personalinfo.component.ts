@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-personalinfo',
@@ -9,21 +10,27 @@ import { CommonModule } from '@angular/common';
   styleUrl: './personalinfo.component.css'
 })
 export class PersonalinfoComponent {
-  profileForm: FormGroup;
+  user: any;
   imageUrl: string = 'assets/default-profile.png'; // Default profile image
-  constructor(private fb: FormBuilder) {
-    this.profileForm = this.fb.group({
-      firstName: ['Khinkal'],
-      lastName: ['Atomadze'],
-      address1: ['180 E Green St'],
-      address2: ['Suit, Unit, Building'],
-      city: ['Athens, Georgia'],
-      postalCode: ['4610'],
-      country: ['United States'],
-      organization: ['University of Georgia'],
-      designation: ['Professor'],
-      invoiceAddress: [true]
-    });
+  constructor(private oauthService: OAuthService) {}
+  ngOnInit(): void {
+    this.getUserProfile();
+  }
+
+  getUserProfile() {
+    console.log('getuserprofile');
+    if (this.oauthService.hasValidAccessToken()) {
+      this.oauthService.loadUserProfile().then((profile: any) => {
+        this.user = profile.info;
+        console.log('User Profile:', this.user);
+      }).catch(error => {
+        console.error('Error loading user profile:', error);
+      });
+    } else {
+      console.log('Access token is invalid or missing');
+      // Optionally trigger login flow if no valid token
+      this.oauthService.initLoginFlow();
+    }
   }
   onFileChange(event: any) {
     const file = event.target.files[0];
@@ -37,6 +44,6 @@ export class PersonalinfoComponent {
   }
 
   updateProfile() {
-    console.log(this.profileForm.value);
+    
   }
 }

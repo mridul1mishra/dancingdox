@@ -19,12 +19,16 @@ import { DocumentInputComponent } from './Projects/2publicproject/document-input
 import { TestcomponentComponent } from './testcomponent/testcomponent.component';
 import { DynamicprojectdetailsComponent } from './teamproject/dynamicprojectdetails/dynamicprojectdetails.component';
 import { CollaboratorComponent } from './Projects/3publicproject/collaborator.component';
-
+import { OAuthCallbackComponent } from './oauth-callback/oauth-callback.component';
+import { LoginComponent } from './login/login.component';
 
 
 export const routes: Routes = [
-    { path: '', component: DashboardComponent }, // Default route
+    
     { path: 'teams', component: TeamsComponent },
+    { path: 'callback', component: OAuthCallbackComponent },
+    { path: 'login', component: LoginComponent },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'teams/team-details', component: TeamDetailsComponent },
     { path: 'teams/create-teams', component: CreateteamsComponent },
     { path: 'teams/teaminformation', component: CreateteaminformationComponent },
