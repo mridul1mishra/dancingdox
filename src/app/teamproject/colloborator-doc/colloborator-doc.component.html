@@ -15,29 +15,29 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let member of members">
+        <tr *ngFor="let member of projects">
           <td>
-            <img [src]="member.imageurl" alt="avatar" class="avatar" />
-            <span>{{ member.CollabName }}</span>
+            <img [src]="" alt="avatar" class="avatar" />
+            <span>{{ member.Name }}</span>
           </td>
-          <td>{{ member.CollabEmail }}</td>
-          <td>{{ member.filesUploaded }} Out of {{ member.totalFiles }}</td>
+          <td>{{ member.Host }}</td>
+          <td>{{ member.documents }} Out of {{ member.docCounttotal }}</td>
           <td>{{ member.documents.join(', ') }}</td>
          
           <td class="actions">
             <button title="Download"><i class="icon download-icon"></i></button>
             <button title="View"><i class="icon view-icon"></i></button>
             <button [ngClass]="{
-              'success': member.status === 'success',
-              'error': member.status === 'error',
-              'pending': member.status === 'pending'
+              'success': member.scope === 'success',
+              'error': member.scope === 'error',
+              'pending': member.scope === 'pending'
             }">
               <i
                 class="icon"
                 [ngClass]="{
-                  'check-icon': member.status === 'success',
-                  'cross-icon': member.status === 'error',
-                  'dots-icon': member.status === 'pending'
+                  'check-icon': member.scope === 'success',
+                  'cross-icon': member.scope === 'error',
+                  'dots-icon': member.scope === 'pending'
                 }"
               ></i>
             </button>

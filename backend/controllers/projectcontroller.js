@@ -38,6 +38,7 @@ exports.getCSV = (req, res) => {
   });
 };
 
+
 exports.updateProjects = (req, res) => {
   const projects = req.body;
 
@@ -49,8 +50,19 @@ exports.updateProjects = (req, res) => {
   const csvRows = projects.map(project => {
     return headers.map(h => {
       let val = project[h];
-      if (Array.isArray(val)) return val.join(';');
-      return val;
+
+      if (Array.isArray(val)) {
+        // Handle array of objects (like documents)
+        if (val.length > 0 && typeof val[0] === 'object') {
+          // Convert each document object to just the filename or other desired fields
+          const jsonString = JSON.stringify(val).replace(/"/g, '""');
+          return `"${jsonString}"`;
+        }
+        // Handle array of strings
+        return val.join(';');
+      }
+
+      return val !== undefined && val !== null ? val : '';
     }).join(',');
   });
 

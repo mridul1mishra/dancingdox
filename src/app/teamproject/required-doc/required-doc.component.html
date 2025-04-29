@@ -20,21 +20,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let doc of documents; let i = index">
+        <tr *ngFor="let doc of docData?.documents; let i = index">
           <td>{{ ('0' + (i + 1)).slice(-2) }}</td>
           <td>{{ doc.name }}</td>
-          <td>{{ doc.format }}</td>
+          <td>{{ doc.type }}</td>
           <td>{{ doc.maxSize }}</td>
-          <td>{{ doc.date }}</td>
+          <td>Today <!--{{ doc.date }}--></td>
           <td>
             <span  class="status-pill">
-              {{ doc.status }}
+              &nbsp;
+              <!--{{ doc.status }}-->
             </span>
           </td>
           <td>
             <div class="action-btn">
-              <ng-container *ngIf="doc.file; else attachBtn">
-                <span>{{ doc.file }}</span>
+              <ng-container *ngIf="doc.filename; else attachBtn">
+                <span>{{ doc.filename }}</span>
                 <button class="icon-button" title="Edit">
                   ✎
                 </button>

@@ -11,7 +11,7 @@ const uploadMultipleFiles = (req, res) => {
       return res.status(400).json({ message: 'No files uploaded' });
     }
 
-    console.log('Files uploaded:', req.files);
+    console.log('Files uploaded:', req.files, req.filename);
 
     return res.status(200).json({
       message: 'Files uploaded successfully',

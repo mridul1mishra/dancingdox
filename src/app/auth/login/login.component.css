@@ -1,0 +1,93 @@
+/* Global reset to remove default padding/margins */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Center the page content */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  /* Container to center the login form */
+  .login-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Maximum width for the form */
+  }
+  
+  /* Heading for the login form */
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Style for the form inputs */
+  input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #007BFF; /* Blue border on focus */
+    outline: none;
+  }
+  
+  /* Submit and logout button styling */
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Logout button styling when logged in */
+  button.logout {
+    background-color: #dc3545; /* Red color for logout */
+  }
+  
+  button.logout:hover {
+    background-color: #c82333; /* Darker red on hover */
+  }
+  
+  /* Make the buttons responsive */
+  @media (max-width: 600px) {
+    .login-container {
+      padding: 20px;
+      width: 90%;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    button {
+      font-size: 14px;
+    }
+  }
+  

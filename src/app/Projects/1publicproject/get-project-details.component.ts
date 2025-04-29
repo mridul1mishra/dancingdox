@@ -12,7 +12,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-get-project-details',
-  imports: [CommonModule, ReactiveFormsModule, ProjectModalComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './get-project-details.component.html',
   styleUrl: './get-project-details.component.css'
 })

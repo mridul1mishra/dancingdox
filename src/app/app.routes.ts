@@ -20,7 +20,8 @@ import { TestcomponentComponent } from './testcomponent/testcomponent.component'
 import { DynamicprojectdetailsComponent } from './teamproject/dynamicprojectdetails/dynamicprojectdetails.component';
 import { CollaboratorComponent } from './Projects/3publicproject/collaborator.component';
 import { OAuthCallbackComponent } from './oauth-callback/oauth-callback.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 
 export const routes: Routes = [
@@ -28,7 +29,8 @@ export const routes: Routes = [
     { path: 'teams', component: TeamsComponent },
     { path: 'callback', component: OAuthCallbackComponent },
     { path: 'login', component: LoginComponent },
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'register', component: RegisterComponent },    
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'teams/team-details', component: TeamDetailsComponent },
     { path: 'teams/create-teams', component: CreateteamsComponent },
     { path: 'teams/teaminformation', component: CreateteaminformationComponent },
@@ -38,7 +40,6 @@ export const routes: Routes = [
     { path: 'projects/joinproject', component: JoinprojectComponent },
     { path: 'project/createindependentproject/project-start', component: DocumentInputComponent },
     { path: 'projects/projectdetail', component: ProjectdetailsComponent },
-    //{ path: 'projects/:id', component: ProjectdetailsComponent },
     { path: 'projects/:id', component: DynamicprojectdetailsComponent },
     { path: 'projects', component: ProjectlistComponent },
     { path: 'testpath', component: TestcomponentComponent },

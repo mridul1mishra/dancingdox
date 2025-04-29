@@ -1,4 +1,5 @@
 export interface Project {
+    find(arg0: (project: any) => any): unknown;
     id: number;
     Name: string;
     scope: string;
@@ -13,6 +14,14 @@ export interface Project {
     visibility: 'Public' | 'Private';
     members: string[];
     collabCount: number;
-    documents: string[];
+    documents: DocumentMetadata[];
     Host: string;
+    Role: string;
+  }
+  export interface DocumentMetadata {
+    name: string;
+    type: string;
+    maxSize: number;
+    sizeUnit: string;
+    filename: string;
   }
