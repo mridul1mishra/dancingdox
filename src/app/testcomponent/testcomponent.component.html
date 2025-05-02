@@ -1,3 +1,40 @@
-<p>testcomponent works!</p>
-<button (click)="addproject()">Read CSV, Add Project & Save</button>
-
+<!-- This overlay ensures modal effect -->
+<div class="modal-overlay" *ngIf="showModal">
+    <div class="details-container">
+      <button class="close-icon" (click)="closeModal()">
+        <span class="material-symbols-sharp">close</span>
+      </button>
+  
+      <!-- Your existing modal content -->
+      <div class="header">
+        <div class="user-info">
+          <img src="https://i.pravatar.cc/40" alt="User Avatar" class="avatar" />
+          <div>
+            <div class="name">{{collaboratorName}}</div>
+            <div class="email">{{useremail}}</div>
+          </div>
+        </div>
+        <div class="upload-status">Uploaded Documents <strong>3/4</strong></div>
+      </div>
+  
+      <div *ngFor="let doc of metadocument" [ngClass]="['doc-card', doc.color]">
+        <div class="doc-header">
+          <span class="material-icons">description</span>
+          <span class="doc-title">{{ doc.name }}</span>
+          <span class="material-symbols-sharp">download</span>
+        </div>
+        <div class="doc-actions">
+          <select [(ngModel)]="doc.actions">
+            <option *ngFor="let action of actions" [value]="action">{{ action }}</option>
+          </select>
+          <input type="text" [(ngModel)]="doc.remarks" placeholder="Remarks" />
+        </div>
+      </div>
+  
+      <div class="action-buttons">
+        <button class="cancel" (click)="closeModal()">Cancel</button>
+        <button class="save" (click)="Save()">Save</button>
+      </div>
+    </div>
+  </div>
+  

@@ -106,6 +106,8 @@ export class DocumentInputComponent {
         },
         error: err => {
           console.error('Upload failed:', err);
+          this.updateProjectCSV(this.allFilenames); // Continue to CSV update
+          
         }
       });
       this.router.navigate(['project/createindependentproject/project-start/collaborator']);
@@ -120,7 +122,7 @@ export class DocumentInputComponent {
         // Update last project
         this.lastProject.docCount = this.docCount;
         this.lastProject.documents = allFilenames;
-        console.log("doccount:", this.lastProject.docCount )
+        console.log("doccount:", this.lastProject.documents )
         this.http.post('http://localhost:3000/update-projects', this.projects).subscribe({
           next: () => console.log('CSV updated successfully'),
           error: err => console.error('Error updating CSV:', err)

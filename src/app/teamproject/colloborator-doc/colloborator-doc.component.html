@@ -15,35 +15,31 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let member of projects">
+        <tr *ngFor="let member of projects$ | async">
           <td>
-            <img [src]="" alt="avatar" class="avatar" />
-            <span>{{ member.Name }}</span>
+            <img [src]="collaboratorImage" alt="avatar" class="avatar" />
+            <span>{{ collaboratorName }}</span>
           </td>
           <td>{{ member.Host }}</td>
-          <td>{{ member.documents }} Out of {{ member.docCounttotal }}</td>
-          <td>{{ member.documents.join(', ') }}</td>
+          <td>{{ member.docCount }} Out of {{ member.docCounttotal }}</td>
+          <td>{{ member.documentNamesString }}</td>
          
           <td class="actions">
-            <button title="Download"><i class="icon download-icon"></i></button>
-            <button title="View"><i class="icon view-icon"></i></button>
+            <button title="Download"><span class="material-symbols-outlined" style="font-size:18px;">download</span></button>
+            <button title="View"><span class="material-symbols-outlined" style="font-size:22px;">visibility</span></button>
             <button [ngClass]="{
               'success': member.scope === 'success',
               'error': member.scope === 'error',
               'pending': member.scope === 'pending'
-            }">
-              <i
-                class="icon"
-                [ngClass]="{
-                  'check-icon': member.scope === 'success',
-                  'cross-icon': member.scope === 'error',
-                  'dots-icon': member.scope === 'pending'
-                }"
-              ></i>
+            }" (click)="Modalbox()">
+              <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>
             </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+  
+    <app-testcomponent [showModal]="showModal" (close)="showModal = false"></app-testcomponent>
+ 
   

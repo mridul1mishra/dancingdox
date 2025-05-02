@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,9 @@ export class AuthService {
   }
   logout(): Observable<any> {
     return this.http.post(`${this.apiUrl}/logout`, {});
+  }
+  getUserName(email:string):  Observable<{ name: string, image: string, email:string }>{
+    return this.http.get<{ name: string, image: string, email: string }>(`http://localhost:3000/api/get?email=${email}`);
   }
   isLoggedIn(): boolean {
     return this.isAuthenticated;
@@ -55,6 +58,7 @@ export class AuthService {
     if (!token) {
       return null;
     }
+    console.log(this.decodeToken(token));
     return this.decodeToken(token);
   }
 }

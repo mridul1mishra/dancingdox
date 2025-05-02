@@ -1,79 +1,71 @@
-import { Component, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Project } from '../service/project.interface.service';
-import { Observable, Subscription } from 'rxjs';
-import { CsvService } from '../service/savedata.service';
-
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../service/auth.service';
+import { DataService } from '../service/data.service';
+import { ActivatedRoute } from '@angular/router';
+import { DocumentMetadata, Project, ProjectWithDocuments } from '../service/project.interface.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-testcomponent',
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule ],
   templateUrl: './testcomponent.component.html',
   styleUrl: './testcomponent.component.css'
 })
 export class TestcomponentComponent {
-  private subscription: Subscription = new Subscription();
-  constructor(private http: HttpClient) {}
-  newProject = {
-    id: 0,
-    title: '',
-    docCount: 0,
-    docCounttotal: 0,
-    comments: 0,
-    startDate: '',
-    endDate: '',
-    visibility: 'Private',
-    members: ''
-  };
-  addproject(): void{
-    const projectData = {
-      ...this.newProject,
-      members: this.newProject.members.split(',').map(member => member.trim()) // Convert members into an array
-    };
-    this.http.post('http://localhost:3000/add-project', projectData).subscribe({
-      next: () => {
-        console.log('Project added to CSV!');
-        
-      },
-      error: (err) => console.error('Failed to add project:', err)
-    });
+  actions = ['Accept', 'Reject', 'In Review'];
+  
+  collaboratorName: string | undefined;
+  projects: Project[] | undefined;
+  @Input() showModal = false;
+  @Output() close = new EventEmitter<void>();
+useremail: string | undefined;
+metadocument: DocumentMetadata[] | undefined;
+  constructor(private authService: AuthService,private dataService: DataService,private route: ActivatedRoute) {}
+  closeModal() {
+    this.close.emit();
   }
-  saveData(){
-    this.http.get('http://localhost:3000/get-csv', { responseType: 'text' }).subscribe({
-      next: (csv) => {        
-        // Handle the successful response
-        
-        if (!csv) {
-          console.error('Received empty data from the server.');
-          return;
-        }
-        const rows = this.parseCSV(csv);
-        const updatedCSV = this.convertToCSV(rows);
-        this.http.post('http://localhost:3000/save-csv', { csv: updatedCSV }).subscribe({
-          next: (response) => {
-            console.log('CSV updated and saved:', response);
-          },
-          error: (error) => {
-            console.error('Error saving CSV:', error);
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const user = this.authService.getUserDetails();
+    console.log('user details',user);
+    if (user?.email) {
+      this.authService.getUserName(user.email).subscribe(data => {
+        this.collaboratorName = data.name;
+        this.useremail = data.email;
+      });
+    }
+    this.getProjectById(id);   
+  }
+  getProjectById(id: number): void {
+        this.dataService.getProjectById(id).subscribe((projects: Project[] | undefined) => {
+          if (projects && projects.length > 0) {
+            const currentUsername = this.authService.getUserDetails()?.email;
+            const matchingProject = projects.find(project =>
+              project.Host.trim().toLowerCase() === currentUsername?.trim().toLowerCase()
+            );
+            if (matchingProject) {
+              const colors = ['blue', 'green', 'orange'];   
+              // Optional: assign to component variable if needed
+              this.metadocument = matchingProject.documents.map((doc, index) => ({
+                ...doc,
+                color: colors[index % colors.length] as 'blue' | 'green' | 'orange',
+                actions: 'Accept',
+                remarks: 'Well Written document. thanks'
+              }));              
+            } else {
+              console.warn('No project matched current user.');
+            }
+            
+            this.projects = projects;
+          } else {
+            console.warn('No projects found with this ID');
           }
         });
-      },
-      error: (err) => {
-        // Handle errors
-        console.error('Error loading CSV:', err);
       }
-    });
-  }
-  parseCSV(csvData: string): string[][] {
-    const rows = csvData.split('\n').map(row => row.split(','));
-    return rows;
-  }
-  convertToCSV(rows: string[][]): string {
-    if (!rows || rows.length === 0) {
-      console.error('Rows are empty, cannot convert to CSV.');
-      return '';
-    }
-    return rows.map(row => row.join(',')).join('\n');
+  
+  save(): void{
+    
   }
 }

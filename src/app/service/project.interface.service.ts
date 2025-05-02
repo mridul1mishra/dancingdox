@@ -1,5 +1,8 @@
+import { Observable } from "rxjs";
+
 export interface Project {
-    find(arg0: (project: any) => any): unknown;
+    collabName: any;
+    documentNamesString: any;    
     id: number;
     Name: string;
     scope: string;
@@ -24,4 +27,13 @@ export interface Project {
     maxSize: number;
     sizeUnit: string;
     filename: string;
+    color?: string;
+    actions?: string;
+    remarks?: string;
+  }
+  export interface ProjectWithDocuments extends Project {
+    documentNamesString: string;
+  }
+  export interface ProjectWithDocuments extends Project {
+    documentNamesString: string;
   }

@@ -1,0 +1,150 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.details-container {
+  position: relative;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  overflow-y: auto;
+  width: 90%;
+  max-width: 700px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .name {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .email {
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  .upload-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .doc-card {
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f5f5f5;
+  }
+  
+  .doc-card.blue {
+    border-left: 4px solid #3f51b5;
+  }
+  
+  .doc-card.orange {
+    border-left: 4px solid #ff9800;
+  }
+  
+  .doc-card.green {
+    border-left: 4px solid #4caf50;
+  }
+  
+  .doc-header {
+    display: flex;
+    align-self: left;
+    justify-content: space-between;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+  }
+  .doc-title {
+    position: absolute;
+    left: 12%;
+    transform: translateX(-50%);
+    font-weight: 500;
+  }
+  .doc-header .material-icons,
+  .doc-header .material-symbols-sharp {
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+  }
+  
+  .doc-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  select,
+  input[type="text"] {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 140px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 1.5rem;
+  }
+  
+  button.cancel {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #555;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  button.save {
+    background-color: #3f51b5;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .close-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #666;
+    z-index: 10;
+  }
+  
+  .close-icon .material-symbols-sharp {
+    font-size: 15px;
+  }

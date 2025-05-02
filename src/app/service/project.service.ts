@@ -27,5 +27,6 @@ export class ProjectService {
     if (this.projects.length === 0) return null;
     return this.projects[this.projects.length - 1];
   }
+  
 }
 

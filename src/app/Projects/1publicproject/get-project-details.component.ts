@@ -9,6 +9,7 @@ import { Project } from '../../service/project.interface.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-get-project-details',
@@ -30,7 +31,7 @@ export class GetProjectDetailsComponent {
   
   projectForm: FormGroup;
   uploadedFile: File | null = null;
-  constructor(private router: Router,private fb: FormBuilder, private http: HttpClient,private dataService: DataService) {
+  constructor(private router: Router,private fb: FormBuilder, private http: HttpClient,private dataService: DataService,private authService: AuthService) {
     this.projectForm = this.fb.group({
       id: [null],
       projectName: ['', Validators.required],
@@ -47,11 +48,13 @@ export class GetProjectDetailsComponent {
     });
   }
   async onNavigateprojectstart(){
-    const lastProjectId = await firstValueFrom(this.getLastProject());   
+    const lastProjectId = await firstValueFrom(this.getLastProject()); 
+    console.log(this.authService.getUserDetails()?.email);  
     const projectData = {
       // Manually setting the new id
      ...this.projectForm.value, // Spread form values
      id: lastProjectId !== null ? lastProjectId + 1 : 1,
+     Host: this.authService.getUserDetails()?.email,
      members: this.projectForm.value.members
    ? this.projectForm.value.members.split(',').map((member: string) => member.trim())  // Split members into an array
    : []

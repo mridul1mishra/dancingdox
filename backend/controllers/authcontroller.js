@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const users = require('../user');
 const fs = require('fs');
 const path = require('path');
+const csv = require('csv-parser');
 
 const csvFilePath = path.join(__dirname, '../public/data/users.csv');
 
@@ -87,4 +88,33 @@ exports.register = (req, res) => {
       res.status(201).json({ message: 'User registered and saved to CSV' });
     });
   });
+};
+exports.getCSV = (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email query parameter is required' });
+  }
+
+  const results = [];
+
+  fs.createReadStream(csvFilePath)
+    .pipe(csv())
+    .on('data', (row) => {
+      if (row.email?.trim().toLowerCase() === email.trim().toLowerCase()) {
+        results.push(row);
+      }
+    })
+    .on('end', () => {
+      if (results.length > 0) {
+        const { name, image,email } = results[0];
+        res.json({ name, image, email });// Return first matching user
+      } else {
+        res.status(404).json({ error: 'User not found' });
+      }
+    })
+    .on('error', (err) => {
+      console.error('Error reading CSV:', err);
+      res.status(500).json({ error: 'Server error while reading CSV' });
+    });
 };
