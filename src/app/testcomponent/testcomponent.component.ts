@@ -6,6 +6,7 @@ import { DataService } from '../service/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentMetadata, Project, ProjectWithDocuments } from '../service/project.interface.service';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-testcomponent',
@@ -22,7 +23,7 @@ export class TestcomponentComponent {
   @Output() close = new EventEmitter<void>();
 useremail: string | undefined;
 metadocument: DocumentMetadata[] | undefined;
-  constructor(private authService: AuthService,private dataService: DataService,private route: ActivatedRoute) {}
+  constructor(private authService: AuthService,private dataService: DataService,private route: ActivatedRoute,private http: HttpClient) {}
   closeModal() {
     this.close.emit();
   }
@@ -66,6 +67,21 @@ metadocument: DocumentMetadata[] | undefined;
       }
   
   save(): void{
+    const matchingproject = this.projects?.find( p => p.Role.toLowerCase() === 'collaborator' && p.Host === this.useremail)
     
+    if (matchingproject) {
+      matchingproject.documents = this.metadocument ??[];
+    }
+    const payload = {
+      role: 'Collaborator',     // e.g. 'admin'
+      host: this.useremail, // e.g. 'dropbox'
+      projects: this.projects
+    };
+console.log(this.projects);
+    this.http.post('http://localhost:3000/updateProjectDocuments', payload)
+        .subscribe({
+          next: () => console.log('Projects updated successfully in CSV'),
+          error: (err) => console.error('Error updating CSV:', err)
+        });
   }
 }

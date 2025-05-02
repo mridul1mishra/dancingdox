@@ -1,5 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const { parse } = require('csv-parse/sync');
+const { stringify } = require('csv-stringify/sync');
+
 
 const csvPath = path.join(__dirname, '../public/projects.csv');
 
@@ -76,3 +79,64 @@ exports.updateProjects = (req, res) => {
     res.json({ message: 'CSV updated' });
   });
 };
+exports.updateProjectDocuments = (req, res) => {
+  const { role: requestRole, host: requestHost, projects: incomingProjects } = req.body;
+
+  if (!Array.isArray(incomingProjects)) {
+    return res.status(400).send('Invalid format');
+  }
+
+  let existingData;
+  try {
+    const csvData = fs.readFileSync(csvPath, 'utf8');
+    existingData = parse(csvData, {
+      columns: true,
+      skip_empty_lines: true
+    });
+  } catch (err) {
+    console.error('Error reading CSV:', err);
+    return res.status(500).send('Failed to read existing CSV');
+  }
+
+  const updatedData = existingData.map(row => {
+    const match = incomingProjects.find(
+      p => Number(p.id) === Number(row.id) && p.Role === requestRole && p.Host === requestHost
+    );
+
+    if (match) {
+      console.log(`Updating for role: ${requestRole} | Host: ${requestHost} | ID: ${match.id}`);
+      console.log('Matched project data:', match);
+      return {
+        ...row,
+        id: match.id,
+        Name: match.Name,
+        docCount: match.docCount,
+        docCounttotal: match.docCounttotal,
+        comments: match.comments,
+        startDate: match.startDate,
+        endDate: match.endDate,
+        visibility: match.visibility,
+        members: Array.isArray(match.members) ? match.members.join(';') : '',
+        collabCount: match.collabCount,
+        Host: match.Host,
+        Role: match.Role,
+        title: match.title,
+        documents: Array.isArray(match.documents)
+  ? JSON.stringify(match.documents).replace(/"/g, '""') // Escape for CSV
+  : ''
+      };
+    }
+
+    return row;
+  });
+
+  try {
+    const csvOutput = stringify(updatedData, { header: true });
+    fs.writeFileSync(csvPath, csvOutput, 'utf8');
+    res.json({ message: 'CSV updated successfully' });
+  } catch (err) {
+    console.error('Error writing CSV:', err);
+    res.status(500).send('Failed to write updated CSV');
+  }  
+};
+
