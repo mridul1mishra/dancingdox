@@ -41,6 +41,6 @@ export class ProjectlistComponent implements OnInit {
     });
   }
   createNewProject(){
-    this.router.navigate(['project/createindependentproject']);
+    this.router.navigate(['createproject']);
   }
 }

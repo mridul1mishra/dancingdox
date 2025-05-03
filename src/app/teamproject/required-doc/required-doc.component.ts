@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { DocumentService } from '../../service/document.service';
 import { Document } from '../../service/document.interface.service';
 import { ActivatedRoute } from '@angular/router';
-import { Project } from '../../service/project.interface.service';
+import { DocumentMetadata, Project } from '../../service/project.interface.service';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { Project } from '../../service/project.interface.service';
   styleUrl: './required-doc.component.css'
 })
 export class RequiredDocComponent {
-  documents: Document[] = [];
+  documents: DocumentMetadata[] = [];
   @Input() docData!: Project | undefined; 
   
   projectId!: string;

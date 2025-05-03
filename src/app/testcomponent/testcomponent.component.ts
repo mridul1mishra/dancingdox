@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
@@ -16,9 +16,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TestcomponentComponent {
   actions = ['Accept', 'Reject', 'In Review'];
-  
   collaboratorName: string | undefined;
-  projects: Project[] | undefined;
+  projects: Project | undefined;
+  @Input() selectedMember: any; // Use your member interface if defined
   @Input() showModal = false;
   @Output() close = new EventEmitter<void>();
 useremail: string | undefined;
@@ -36,48 +36,30 @@ metadocument: DocumentMetadata[] | undefined;
         this.collaboratorName = data.name;
         this.useremail = data.email;
       });
-    }
-    this.getProjectById(id);   
+    }  
   }
-  getProjectById(id: number): void {
-        this.dataService.getProjectById(id).subscribe((projects: Project[] | undefined) => {
-          if (projects && projects.length > 0) {
-            const currentUsername = this.authService.getUserDetails()?.email;
-            const matchingProject = projects.find(project =>
-              project.Host.trim().toLowerCase() === currentUsername?.trim().toLowerCase()
-            );
-            if (matchingProject) {
-              const colors = ['blue', 'green', 'orange'];   
-              // Optional: assign to component variable if needed
-              this.metadocument = matchingProject.documents.map((doc, index) => ({
-                ...doc,
-                color: colors[index % colors.length] as 'blue' | 'green' | 'orange',
-                actions: 'Accept',
-                remarks: 'Well Written document. thanks'
-              }));              
-            } else {
-              console.warn('No project matched current user.');
-            }
-            
-            this.projects = projects;
-          } else {
-            console.warn('No projects found with this ID');
-          }
-        });
-      }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedMember'] && this.selectedMember) {
+      this.projects = this.selectedMember; // or this.selectedMember.documents if needed
+    }
+  }
   
   save(): void{
-    const matchingproject = this.projects?.find( p => p.Role.toLowerCase() === 'collaborator' && p.Host === this.useremail)
-    
-    if (matchingproject) {
-      matchingproject.documents = this.metadocument ??[];
+    if (!this.projects) {
+      console.error('Projects data is missing');
+      return;  // Exit the function if `this.projects` is undefined
     }
+  
+    console.log('project document', this.projects.documents);  
+  if (!Array.isArray(this.projects?.documents)) {
+    this.projects.documents = [];// Ensure that documents is always an array
+  }
     const payload = {
-      role: 'Collaborator',     // e.g. 'admin'
+      role: this.projects?.Role,     // e.g. 'admin'
       host: this.useremail, // e.g. 'dropbox'
-      projects: this.projects
+      projects: [this.projects]
     };
-console.log(this.projects);
+
     this.http.post('http://localhost:3000/updateProjectDocuments', payload)
         .subscribe({
           next: () => console.log('Projects updated successfully in CSV'),

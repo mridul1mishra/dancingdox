@@ -17,9 +17,11 @@ import { TestcomponentComponent } from "../../testcomponent/testcomponent.compon
 })
 export class ColloboratorDocComponent {
   showModal = false;
+  
   collaboratorName: string | undefined;
   collaboratorImage: string | undefined;
   projects$: Observable<Project[]> = of([]);
+  selectedMember: any;
     constructor(private collabService: colloboratorService,private route: ActivatedRoute,private authService: AuthService,private dataService: DataService) {}
     ngOnInit(): void {
       const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -34,8 +36,22 @@ export class ColloboratorDocComponent {
       this.getProjectById(id);     
     }
     
-    Modalbox()
+    Modalbox(member: any) 
     {
+      const colors = ['blue', 'green', 'orange'];
+      console.log('Opening modal for:', member); // For debugging
+      const enrichedDocs = member.documents.map((doc: any, index: number) => ({
+        ...doc,
+        color: colors[index % colors.length] as 'blue' | 'green' | 'orange',
+        actions: 'Accept',
+        remarks: 'Well Written document. thanks',
+      }));
+    
+      // Store the enhanced data in selectedMember or a new property
+      this.selectedMember = {
+        ...member,
+        documents: enrichedDocs
+      };
       this.showModal = true;
     }
     closeModal() {

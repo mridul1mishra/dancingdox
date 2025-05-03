@@ -26,12 +26,15 @@ project?: Project;
       if (projects && projects.length > 0) {
         const currentUsername = this.authService.getUserDetails()?.email;
         
-        console.log('Projects:', projects);
+        console.log('Projectslength:', projects);
       
-        const matchingProject = projects.find(project =>
-          project.Host.trim().toLowerCase() === currentUsername?.trim().toLowerCase()
-        );
-  
+        const matchingProject = projects.find(project => {
+          return (
+            project.Host.trim().toLowerCase() === currentUsername?.trim().toLowerCase() &&
+            project.Role?.toLowerCase() === 'owner'
+          );
+        });
+        console.log('matching project',matchingProject);
         if (matchingProject) {
           this.project = matchingProject;
         } else {

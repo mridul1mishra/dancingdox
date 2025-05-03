@@ -31,7 +31,8 @@ export class DataService {
   
         if (key === 'documents') {
           try {
-            row[key] = value ? JSON.parse(value) : [];
+            const fixedJson = value.replace(/""/g, '"'); 
+            row[key] = value ? JSON.parse(fixedJson) : [];
           } catch (e) {
             console.error('Error parsing documents:', value);
             row[key] = [];

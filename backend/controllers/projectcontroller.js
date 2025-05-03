@@ -81,13 +81,22 @@ exports.updateProjects = (req, res) => {
 };
 exports.updateProjectDocuments = (req, res) => {
   const { role: requestRole, host: requestHost, projects: incomingProjects } = req.body;
-
+  console.log('Incoming request body:', req.body);  // Log the entire request body
+  // Validate that incomingProjects is an array and that each project contains the expected fields
   if (!Array.isArray(incomingProjects)) {
-    return res.status(400).send('Invalid format');
+    return res.status(400).send('Invalid format: projects should be an array');
+  }
+
+  // Validate each project
+  for (let project of incomingProjects) {
+    if (!project.id || !project.Role || !project.Host) {
+      return res.status(400).send('Invalid project format: missing id, Role, or Host');
+    }
   }
 
   let existingData;
   try {
+    // Read the existing CSV data
     const csvData = fs.readFileSync(csvPath, 'utf8');
     existingData = parse(csvData, {
       columns: true,
@@ -98,14 +107,25 @@ exports.updateProjectDocuments = (req, res) => {
     return res.status(500).send('Failed to read existing CSV');
   }
 
+  // Update existing data based on incoming project data
   const updatedData = existingData.map(row => {
     const match = incomingProjects.find(
-      p => Number(p.id) === Number(row.id) && p.Role === requestRole && p.Host === requestHost
+      p => Number(p.id) === Number(row.id) &&
+           p.Role === requestRole &&
+           p.Host === requestHost &&
+           row.Role === p.Role &&
+           row.Host === p.Host
     );
 
     if (match) {
       console.log(`Updating for role: ${requestRole} | Host: ${requestHost} | ID: ${match.id}`);
       console.log('Matched project data:', match);
+
+      // Ensure that documents is properly handled
+      const documents = Array.isArray(match.documents)
+        ? JSON.stringify(match.documents).replace(/"/g, '""') // Escape for CSV
+        : ''; // Empty string if no documents
+
       return {
         ...row,
         id: match.id,
@@ -116,14 +136,12 @@ exports.updateProjectDocuments = (req, res) => {
         startDate: match.startDate,
         endDate: match.endDate,
         visibility: match.visibility,
-        members: Array.isArray(match.members) ? match.members.join(';') : '',
+        members: Array.isArray(match.members) ? match.members.join(';') : '',  // Join array for CSV
         collabCount: match.collabCount,
         Host: match.Host,
         Role: match.Role,
         title: match.title,
-        documents: Array.isArray(match.documents)
-  ? JSON.stringify(match.documents).replace(/"/g, '""') // Escape for CSV
-  : ''
+        documents: documents
       };
     }
 
@@ -131,6 +149,7 @@ exports.updateProjectDocuments = (req, res) => {
   });
 
   try {
+    // Convert updated data back to CSV and save
     const csvOutput = stringify(updatedData, { header: true });
     fs.writeFileSync(csvPath, csvOutput, 'utf8');
     res.json({ message: 'CSV updated successfully' });

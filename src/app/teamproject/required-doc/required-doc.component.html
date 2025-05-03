@@ -28,8 +28,7 @@
           <td>Today <!--{{ doc.date }}--></td>
           <td>
             <span  class="status-pill">
-              &nbsp;
-              <!--{{ doc.status }}-->
+              {{ doc?.actions || 'No Action' }}
             </span>
           </td>
           <td>
