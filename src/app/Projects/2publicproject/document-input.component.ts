@@ -106,7 +106,7 @@ export class DocumentInputComponent {
           this.router.navigate([`project/createindependentproject/project-start/collaborator/${Number(this.route.snapshot.paramMap.get('id'))}`]);
           }
           else {
-            this.router.navigate([`project/createprivateproject/project-start/collaborator/${Number(this.route.snapshot.paramMap.get('id'))}`]);
+            this.router.navigate([`project/createprivateproject/project-start/assignment/${Number(this.route.snapshot.paramMap.get('id'))}`]);
           }
         },
         error: err => {

@@ -36,7 +36,7 @@ export class AssigndoctocollabComponent {
         if(data){
           this.project = data;  // handle success
           this.documents = this.project.documents;
-          console.log('Documents:', this.documents);
+          
           this.users = Array.isArray(this.project.Collaborator)
                     ? this.project.Collaborator
                     : JSON.parse(this.project.Collaborator || '[]');
@@ -82,23 +82,30 @@ export class AssigndoctocollabComponent {
     }
   }
   getAssignedUsers(docname: string): Collaborator[] {
-    console.log('getAssignedUsers called', docname);
-    if (!this.project) {
-      console.warn('Project not loaded yet');
-      return [];
-    }
-    if (!this.project.docassigned) {
-      console.warn('assignedCollab not initialized');
-      return [];
-    }
-    if (!this.project || !this.project.docassigned) return [];
-
+    
+     // Check if docname is provided
+  if (!docname) {
+    console.warn('Invalid docname:', docname);
+    return [];
+  }
+     // Ensure the project and assigned collaborators are present
+  if (!this.project || !this.project.docassigned) {
+    console.warn('Project or assigned collaborators not available');
+    return [];
+  }
+    
+  
     const docCollab = this.project.docassigned.find(dc => dc.docname === docname);
     if (!docCollab) return [];
   
-    return docCollab.assignedcollabs
-      .map(ac => this.users.find(u => u.email === ac.assignedcollabemail))
-      .filter((user): user is Collaborator => !!user); // filter out undefined
+    const assignedUsers = docCollab.assignedcollabs
+    .map(ac => this.users.find(u => u.email === ac.assignedcollabemail))
+    .filter((user): user is Collaborator => !!user);
+
+      if (assignedUsers.length === 0) {
+        console.warn('No valid users found for document:', docname);
+      }
+      return assignedUsers;
   }
   onSearchInput(event: Event): void {
     const input = event.target as HTMLInputElement;

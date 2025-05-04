@@ -48,7 +48,7 @@ export const routes: Routes = [
     { path: 'project/createindependentproject/project-start/collaborator/:id', component: CollaboratorComponent },
     { path: 'project/createindependentproject', component: GetProjectDetailsComponent },
     { path: 'project/createprivateproject', component: GetProjectDetailsComponent },
-    { path: 'project/createprivateproject/project-start/collaborator/assignment/:id', component: AssigndoctocollabComponent },
+    { path: 'project/createprivateproject/project-start/assignment/:id', component: AssigndoctocollabComponent },
     { path: 'project/createprivateproject/add-collaborator/:id', component: AddCollaboratorComponent },
     { path: 'project/createprivateproject/project-start/:id', component: DocumentInputComponent },
     { path: 'pricingplan', component: PricingplanComponent },
