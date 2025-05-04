@@ -16,10 +16,7 @@ app.use('/public', express.static('public')); // if needed to serve files
 app.get('/', (req, res) => {
   res.send('🚀 Welcome to my Node API!');
 });
-
-
 app.use('/', uploadRoute);
-
 // Route registration
 app.use('/', projectRoutes);
 app.use('/docs', docRoutes);

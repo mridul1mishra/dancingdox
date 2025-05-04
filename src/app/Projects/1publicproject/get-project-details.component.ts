@@ -47,9 +47,13 @@ export class GetProjectDetailsComponent {
       terms: [false, Validators.requiredTrue]
     });
   }
+  ngOnInit(): void {
+    const url = this.router.url;
+    const scope = url.includes('createprivateproject') ? 'private' : 'public';
+    this.projectForm.patchValue({ projectScope: scope });
+  }
   async onNavigateprojectstart(){
-    const lastProjectId = await firstValueFrom(this.getLastProject()); 
-    console.log(this.authService.getUserDetails()?.email);  
+    const lastProjectId = await firstValueFrom(this.getLastProject());   
     const projectData = {
       // Manually setting the new id
      ...this.projectForm.value, // Spread form values
@@ -59,14 +63,20 @@ export class GetProjectDetailsComponent {
    ? this.projectForm.value.members.split(',').map((member: string) => member.trim())  // Split members into an array
    : []
    };
-   console.log('Project Data:', projectData);
    this.http.post('http://localhost:3000/add-project', projectData).subscribe({
      next: () => {
        console.log('Project added to CSV!');        
      },
      error: (err) => console.error('Failed to add project:', err),
    });
-    this.router.navigate(['project/createindependentproject/project-start']);
+   if (this.router.url.includes('createindependentproject')) {
+    console.log('createindependentproject000');
+    this.router.navigate([`project/createindependentproject/project-start/${projectData.id}`]);
+    }
+    else{
+      console.log('createprivateproject000:',projectData.id);
+      this.router.navigate([`project/createprivateproject/add-collaborator/${projectData.id}`]);
+    }
   }
   getLastProject() {
     return this.dataService.getAllProjects().pipe(

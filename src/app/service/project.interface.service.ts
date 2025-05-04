@@ -20,6 +20,13 @@ export interface Project {
     documents: DocumentMetadata[];
     Host: string;
     Role: string;
+    Collaborator: Collaborator[];
+    docassigned: DocumentCollab[];
+  }
+  export interface Collaborator {
+    name: string;
+    email: string;
+    avatar?: string;
   }
   export interface DocumentMetadata {
     name: string;
@@ -30,6 +37,16 @@ export interface Project {
     color?: string;
     actions?: string;
     remarks?: string;
+    title?: string;
+  search?: string;
+  colorClass?: string;
+  }
+  export interface AssignedCollaborator {
+    assignedcollabemail: string;
+  }
+  export interface DocumentCollab {
+    docname: string;
+    assignedcollabs: AssignedCollaborator[];
   }
   export interface ProjectWithDocuments extends Project {
     documentNamesString: string;

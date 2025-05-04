@@ -158,4 +158,79 @@ exports.updateProjectDocuments = (req, res) => {
     res.status(500).send('Failed to write updated CSV');
   }  
 };
+exports.updateProjectDocumentsCollabs = async (req, res) => {
+  id = req.params.id; // Assuming docassigned contains the new assignedCollab data
+  docassigned = req.body.data;
+  updateAssignedCollab(id, docassigned)
+    .then(() => {
+      res.status(200).json({ message: 'Assigned collaborators updated successfully' });
+    })
+    .catch((error) => {
+      console.error('Error updating project:', error);
+      res.status(500).json({ message: 'Error updating project' });
+    });
+};
+function readCSV() {
+  const fileContent = fs.readFileSync(csvPath);
+  return parse(fileContent, {
+    columns: true,  // Use the first row as column names
+    skip_empty_lines: true,
+  });
+}
+function convertToCSV(data) {
+  const headers = Object.keys(data[0]);
+  const rows = data.map(row => headers.map(field => row[field]).join(','));
+  return [headers.join(','), ...rows].join('\n');
+}
+function updateAssignedCollab(projectId, assignedCollabData) {
+  return new Promise((resolve, reject) => {
+    try {
+      // Read CSV data
+      const csvData = readCSV();
+      console.log('Updating project with ID:', projectId);
+      // Find the project by ID
+      const projectIndex = csvData.findIndex(project => project.id == projectId);
+
+      if (projectIndex === -1) {
+        reject(new Error('Project not found'));
+        return;
+      }
+
+      // Update the assignedCollab for the project
+      csvData[projectIndex].assignedCollab = JSON.stringify(assignedCollabData);
+
+      // Convert the updated data back to CSV
+      const updatedCSV = convertToCSV(csvData);
+
+      // Save the updated CSV file
+      fs.writeFileSync(csvPath, updatedCSV);
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+// Function to write updated projects back to the CSV
+function writeCSV(projects) {
+  const data = projects.map((project) => {
+    // Convert assignedCollab back to string format for CSV
+    project.assignedCollab = JSON.stringify(project.assignedCollab);
+    return project;
+  });
+
+  const csvString = data
+    .map((project) =>
+      `${project.id},${project.name},${project.assignedCollab}`
+    )
+    .join('\n');
+
+  // Add the header line for CSV
+  const csvHeader = 'id,name,assignedCollab\n';
+
+  fs.writeFile(csvPath, csvHeader + csvString, 'utf8', (err) => {
+    if (err) {
+      console.error('Error writing CSV:', err);
+    }
+  });
+}
 

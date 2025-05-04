@@ -1,0 +1,67 @@
+.container {
+    padding: 20px;
+  }
+  
+  .document-section {
+    border-left: 5px solid;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .border-blue { border-color: #3f51b5; }
+  .border-green { border-color: #4caf50; }
+  .border-orange { border-color: #ff9800; }
+  .border-cyan { border-color: #00bcd4; }
+  
+  .collaborator-chip {
+    display: inline-flex;
+    align-items: center;
+    background: #e0e0e0;
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .collaborator-chip img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  
+  .dropdown {
+    background: white;
+    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 1000;
+    width: 300px;
+  }
+  
+  .dropdown-item {
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+  }
+  
+  button[type="submit"] {
+    background: #5f3dc4;
+    color: white;
+  }
+  

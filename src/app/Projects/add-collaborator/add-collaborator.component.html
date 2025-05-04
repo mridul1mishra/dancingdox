@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="input-group">
+        <input
+        type="email"
+        [(ngModel)]="email"
+        (ngModelChange)="onEmailChange($event)"
+        placeholder="Email" />
+      <button class="btn" (click)="addCollaborator()">Add</button>
+    </div>
+    <div *ngIf="!isEmailSet">
+    <div class="title">
+      Collaborators List <span class="badge">{{ collaborators.length }} Members</span>
+    </div>
+    
+    <div class="collaborator" *ngFor="let c of collaborators; let i = index">
+        <div class="info" (click)="setEmail(c.email)">
+          <div class="avatar"></div>
+          <div class="email-block">
+            <div class="name">{{ c.name }}</div>
+            <div class="email">{{ c.email }}</div>
+          </div>
+        </div>
+        <div class="remove" (click)="removeCollaborator(i)">Remove ✕</div>
+      </div>
+    </div>
+    <div *ngIf="filteredCollaborators.length && !isSuggestionSet" class="suggestions">
+        <div
+          class="suggestion" *ngFor="let c of filteredCollaborators"
+          (click)="setEmail(c.email)">
+          <div class="avatar"></div>
+          <div class="details">
+            <div class="name">{{ c.name }}</div>
+            <div class="email">{{ c.email }}</div>
+          </div>
+        </div>
+    </div>
+  
+    <div class="footer">
+      <button class="back-btn" (click)="onBack()">Back</button>
+      <button class="proceed-btn" (click)="onProceed()">Proceed</button>
+    </div>
+  </div>
+  

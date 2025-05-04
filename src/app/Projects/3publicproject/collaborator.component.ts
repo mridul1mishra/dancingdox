@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import {  OnInit } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ProjectModalComponent } from '../project-modal/project-modal.component';
 import { Project } from '../../service/project.interface.service';
 import { DataService } from '../../service/data.service';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-collaborator',
-  imports: [CommonModule, FormsModule, ProjectModalComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './collaborator.component.html',
   styleUrl: './collaborator.component.css'
 })
@@ -21,7 +21,7 @@ export class CollaboratorComponent {
   documents: any[] = [];
   showModal = false; // Ensure this is initialized
   showDialog = false;
-  constructor(private dataService: DataService,private http: HttpClient) {}
+  constructor(private dataService: DataService,private http: HttpClient,private router: Router,private route: ActivatedRoute) {}
   openModal() {
     this.showModal = true;
   }
@@ -46,7 +46,9 @@ export class CollaboratorComponent {
         console.error('Error loading projects:', error);
       }
     });
-    this.showDialog = true;
+    this.router.navigate(['project/createindependentproject/project-start/collaborator/assignment/' + Number(this.route.snapshot.paramMap.get('id'))]);
+    
+    
   }
   confirm() {
   this.showDialog = false;

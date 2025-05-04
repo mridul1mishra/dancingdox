@@ -22,6 +22,8 @@ import { CollaboratorComponent } from './Projects/3publicproject/collaborator.co
 import { OAuthCallbackComponent } from './oauth-callback/oauth-callback.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { AddCollaboratorComponent } from './Projects/add-collaborator/add-collaborator.component';
+import { AssigndoctocollabComponent } from './Projects/assigndoctocollab/assigndoctocollab.component';
 
 
 export const routes: Routes = [
@@ -38,14 +40,17 @@ export const routes: Routes = [
     { path: 'createproject', component: CreateProjectsComponent },
     { path: 'Settings', component: SettingsComponent },
     { path: 'projects/joinproject', component: JoinprojectComponent },
-    { path: 'project/createindependentproject/project-start', component: DocumentInputComponent },
+    { path: 'project/createindependentproject/project-start/:id', component: DocumentInputComponent },
     { path: 'projects/projectdetail', component: ProjectdetailsComponent },
     { path: 'projects/:id', component: DynamicprojectdetailsComponent },
     { path: 'projectlist', component: ProjectlistComponent },
     { path: 'Settings/profile', component: PersonalinfoComponent },
-    { path: 'project/createindependentproject/project-start/collaborator', component: CollaboratorComponent },
+    { path: 'project/createindependentproject/project-start/collaborator/:id', component: CollaboratorComponent },
     { path: 'project/createindependentproject', component: GetProjectDetailsComponent },
     { path: 'project/createprivateproject', component: GetProjectDetailsComponent },
+    { path: 'project/createprivateproject/project-start/collaborator/assignment/:id', component: AssigndoctocollabComponent },
+    { path: 'project/createprivateproject/add-collaborator/:id', component: AddCollaboratorComponent },
+    { path: 'project/createprivateproject/project-start/:id', component: DocumentInputComponent },
     { path: 'pricingplan', component: PricingplanComponent },
     { path: '**', redirectTo: '' } // Wildcard route for 404
 ];

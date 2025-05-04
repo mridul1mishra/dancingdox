@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Project } from './project.interface.service';
+import { DocumentCollab, Project } from './project.interface.service';
 import { tap } from 'rxjs/operators'; // make sure tap is imported
 
 @Injectable({
@@ -80,5 +80,15 @@ private smartSplit(line: string): string[] {
         const foundProject = projects.filter(p => p.id === id);
         return foundProject;
     }));
+  }
+  getProjectByIdNew(id: number): Observable<Project | undefined> {
+    return this.getAllProjects().pipe(
+      map((projects) => {
+        const foundProject = projects.find(p => p.id === id);
+        return foundProject;
+    }));
+  }
+  updateProjectAssignedCollab(id: number, data: { docassigned: DocumentCollab[] }) {
+    return this.http.patch(`http://localhost:3000/assigned-collaborators/${id}`, data);
   }
 }

@@ -1,0 +1,45 @@
+<div class="container">
+    <h2>Assign Documents</h2>
+  
+    <form >
+      <div *ngFor="let doc of documents" class="document-section" >
+        <h4>{{ doc.name }}</h4>
+        <label>Assign Collaborator</label>
+        <div class="collaborator-input">
+          <ng-container *ngFor="let user of getAssignedUsers(doc.name)">
+            <span class="collaborator-chip">
+              <img src="https://i.pravatar.cc/4" alt="avatar" />
+              {{ user.name }}
+              <button type="button" (click)="removeCollaborator(doc, user)">×</button>
+            </span>
+          </ng-container>
+          <input  type="text"  (input)="onSearchInput($event)"  placeholder="Search collaborator..." />
+          <div class="dropdown" *ngIf="filteredUsers.length">
+            <div *ngFor="let user of filteredUsers" (click)="addCollaborator(doc.name, user)" class="dropdown-item">
+              <img src="https://i.pravatar.cc/4" alt="avatar" />
+              <div>
+                <div>{{ user.name }}</div>
+                <small>{{ user.email }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="actions">
+        <button type="button" (click)="onCancel()">Cancel</button>
+        <button type="submit" (click)="Create()">Create</button>
+      </div>
+    </form>
+  </div>
+  <app-project-modal [showModal]="showModal" (close)="showModal = false"></app-project-modal>
+<!-- Confirmation Dialog -->
+<div *ngIf="showDialog" class="dialog-backdrop">
+    <div class="dialog-box">
+      <p>Are you sure you want to create a project?</p>
+    <div class="confirm">
+        <button class="confirm-btn" (click)="confirm()">Yes</button>
+        <button class="cancel" (click)="cancel()">No</button>
+    </div>
+    </div>
+  </div>

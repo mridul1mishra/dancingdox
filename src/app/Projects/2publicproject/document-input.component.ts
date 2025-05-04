@@ -7,7 +7,7 @@ import {DocumentMetadata, Project} from '../../service/project.interface.service
 import { DataService } from '../../service/data.service';
 import { Observable, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 export class DocumentInputComponent {  
   projects: Project[] = [];
   lastProject!: Project;
-  constructor(private projectService: ProjectService,private dataService: DataService, private http: HttpClient,private router: Router) {}
+  constructor(private projectService: ProjectService,private dataService: DataService, private http: HttpClient,private router: Router,private route: ActivatedRoute) {}
   docCount: number = 1;
   documents: any[] = [];
   
@@ -102,7 +102,12 @@ export class DocumentInputComponent {
         next: () => {
           console.log('Files uploaded successfully');
           this.updateProjectCSV(this.allFilenames); // Continue to CSV update
-          this.router.navigate(['project/createindependentproject/project-start/collaborator']);
+          if (this.router.url.includes('createindependentproject')) {
+          this.router.navigate([`project/createindependentproject/project-start/collaborator/${Number(this.route.snapshot.paramMap.get('id'))}`]);
+          }
+          else {
+            this.router.navigate([`project/createprivateproject/project-start/collaborator/${Number(this.route.snapshot.paramMap.get('id'))}`]);
+          }
         },
         error: err => {
           console.error('Upload failed:', err);
@@ -110,7 +115,12 @@ export class DocumentInputComponent {
           
         }
       });
-      this.router.navigate(['project/createindependentproject/project-start/collaborator']);
+      if (this.router.url.includes('createindependentproject')) {
+        this.router.navigate([`project/createindependentproject/project-start/collaborator/${Number(this.route.snapshot.paramMap.get('id'))}`]);
+        }
+        else {
+          this.router.navigate([`project/createprivateproject/project-start/collaborator/assignment/${Number(this.route.snapshot.paramMap.get('id'))}`]);
+        }
     }
     
 

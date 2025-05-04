@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    padding: 2rem;
+  }
+
+  .container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 600px;
+    margin: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .input-group {
+    display: flex;
+    gap: 1rem;
+  }
+
+  input[type="email"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a1aabb;
+    color: white;
+    cursor: pointer;
+  }
+
+  .title {
+    margin-top: 2rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  .badge {
+    background-color: #e6e0ff;
+    color: #6b4eff;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin-left: 10px;
+  }
+
+  .collaborator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+
+  .info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #eee;
+  }
+
+  .email-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name {
+    color: #3a3aff;
+    font-weight: bold;
+    font-size: 0.95rem;
+  }
+
+  .email {
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  .remove {
+    color: #888;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .footer button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+  }
+
+  .back-btn {
+    background: white;
+    border: 1px solid #ccc;
+  }
+
+  .proceed-btn {
+    background-color: #5a4bff;
+    color: white;
+  }
