@@ -15,22 +15,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let member of projects$ | async">
+        <tr *ngFor="let member of collaborators">
           <td>
             <img [src]="collaboratorImage" alt="avatar" class="avatar" />
-            <span>{{ collaboratorName }}</span>
+            <span>{{member.name}}</span>
           </td>
-          <td>{{ member.Host }}</td>
-          <td>{{ member.docCount }} Out of {{ member.docCounttotal }}</td>
-          <td>{{ member.documentNamesString }}</td>
+          <td>{{ member.email }}</td>
+          <td> {{ getUserDocumentStats(member.email).complete }} Out of {{ getUserDocumentStats(member.email).total }}</td>
+          <td>{{ getUserDocumentStats(member.email).filenames }}</td>
          
           <td class="actions">
             <button title="Download"><span class="material-symbols-outlined" style="font-size:18px;">download</span></button>
             <button title="View"><span class="material-symbols-outlined" style="font-size:22px;">visibility</span></button>
             <button [ngClass]="{
-              'success': member.scope === 'success',
-              'error': member.scope === 'error',
-              'pending': member.scope === 'pending'
+              'success': project?.scope === 'success',
+              'error': project?.scope === 'error',
+              'pending': project?.scope === 'pending'
             }" (click)="Modalbox(member)">
               <span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>
             </button>

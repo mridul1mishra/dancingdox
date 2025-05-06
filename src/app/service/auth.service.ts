@@ -14,7 +14,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
   register(user: { email: string; password: string; name: string }): Observable<any> {
-    console.log(user);
+    
     return this.http.post(`${this.apiUrl}/register`, user); // adjust API URL as needed
   }
   logout(): Observable<any> {
@@ -58,7 +58,7 @@ export class AuthService {
     if (!token) {
       return null;
     }
-    console.log(this.decodeToken(token));
+    
     return this.decodeToken(token);
   }
 }

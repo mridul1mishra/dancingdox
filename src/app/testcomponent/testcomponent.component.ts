@@ -30,7 +30,6 @@ metadocument: DocumentMetadata[] | undefined;
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     const user = this.authService.getUserDetails();
-    console.log('user details',user);
     if (user?.email) {
       this.authService.getUserName(user.email).subscribe(data => {
         this.collaboratorName = data.name;

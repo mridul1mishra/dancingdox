@@ -73,7 +73,7 @@ export class AssigndoctocollabComponent {
       );
       if (!alreadyAssigned) {
         // Assign the user to the document
-        docCollab.assignedcollabs.push({ assignedcollabemail: user.email });
+        docCollab.assignedcollabs.push({ assignedcollabemail: user.email, uploadstatus: 'pending', filename: "NoName" });
         console.log(`Assigned ${user.email} to ${doc}`);
       } else {
         console.log(`${user.email} is already assigned to ${doc}`);

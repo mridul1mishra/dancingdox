@@ -74,10 +74,10 @@ private smartSplit(line: string): string[] {
 
   return result;
 }
-  getProjectById(id: number): Observable<Project[] | undefined> {
+  getProjectById(id: number): Observable<Project | undefined> {
     return this.getAllProjects().pipe(
       map((projects) => {
-        const foundProject = projects.filter(p => p.id === id);
+        const foundProject = projects.find(p => p.id === id);
         return foundProject;
     }));
   }

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { colloboratorService } from '../../service/colloborator.service';
-import { DocumentMetadata, Project, ProjectWithDocuments } from '../../service/project.interface.service';
+import { Collaborator, DocumentMetadata, Project } from '../../service/project.interface.service';
 import { NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
@@ -17,30 +17,95 @@ import { TestcomponentComponent } from "../../testcomponent/testcomponent.compon
 })
 export class ColloboratorDocComponent {
   showModal = false;
-  
+  project: Project | undefined;
+    documents: DocumentMetadata[] | undefined;
+    collaborators: Collaborator[] = [];
   collaboratorName: string | undefined;
   collaboratorImage: string | undefined;
   projects$: Observable<Project[]> = of([]);
   selectedMember: any;
     constructor(private collabService: colloboratorService,private route: ActivatedRoute,private authService: AuthService,private dataService: DataService) {}
     ngOnInit(): void {
+      
       const id = Number(this.route.snapshot.paramMap.get('id'));
       const user = this.authService.getUserDetails();
-      console.log('user details',user);
       if (user?.email) {
         this.authService.getUserName(user.email).subscribe(data => {
           this.collaboratorName = data.name;
+
           this.collaboratorImage = data.image;
         });
       }
-      this.getProjectById(id);     
+      this.getProjectById(id);
+      
     }
+    getUserDocumentStats(email: string): { total: number, complete: number, pending: number, filenames: string } {
+      let total = 0;
+      let complete = 0;
+      let pending = 0;
+      const filenamesArray: string[] = [];
+      if (!this.project?.docassigned) return { total, complete, pending, filenames: '' };
     
+      this.project.docassigned.forEach(doc => {
+        doc.assignedcollabs.forEach(collab => {
+          if (collab.assignedcollabemail === email) {
+            total++;
+            if (collab.uploadstatus === 'complete') complete++;
+            if (collab.uploadstatus === 'pending') pending++;
+            if (collab.filename) {
+              filenamesArray.push(collab.filename);
+            }
+          }
+        });
+      });
+      const filenames = filenamesArray.join('; ');
+      return { total, complete, pending, filenames };
+    }
+    getProjectById(id: number): void {
+      this.dataService.getProjectById(id).subscribe({
+        next: (data) => {
+          if (data) {
+            this.project = data;
+            this.documents = this.project.documents;
+    
+            // Parse and clean Collaborator field
+            const raw = Array.isArray(this.project.Collaborator)
+              ? this.project.Collaborator
+              : JSON.parse(this.project.Collaborator || '[]');
+    
+            this.collaborators = raw.map((item: any) => {
+              const cleaned: any = {};
+              for (const key in item) {
+                const cleanedKey = key.replace(/'/g, '').trim();
+                const cleanedValue = item[key].replace(/'/g, '').trim();
+                cleaned[cleanedKey] = cleanedValue;
+              }
+              return cleaned;
+            });
+    
+            // Parse docassigned if it's a string
+            if (typeof this.project.docassigned === 'string') {
+              try {
+                this.project.docassigned = JSON.parse(this.project.docassigned);
+              } catch (e) {
+                console.error('Failed to parse docassigned:', e);
+                this.project.docassigned = [];
+              }
+            }
+          } else {
+            console.warn('No project found with the given ID');
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching projects:', error);
+        }
+      });
+    }
     Modalbox(member: any) 
     {
       const colors = ['blue', 'green', 'orange'];
       console.log('Opening modal for:', member); // For debugging
-      const enrichedDocs = member.documents.map((doc: any, index: number) => ({
+      const enrichedDocs = this.project?.documents.map((doc: any, index: number) => ({
         ...doc,
         color: colors[index % colors.length] as 'blue' | 'green' | 'orange',
         actions: 'Accept',
@@ -57,24 +122,5 @@ export class ColloboratorDocComponent {
     closeModal() {
       this.showModal = false;
     }
-    getProjectById(id: number): void {
-      this.dataService.getProjectById(id).subscribe((projects: Project[] | undefined) => {
-        if (projects && projects.length > 0) {
-          const currentUsername = this.authService.getUserDetails()?.email;
-          const matchingProjects = projects.filter(project =>
-            project.Host.trim().toLowerCase() === currentUsername?.trim().toLowerCase()
-          );
-          const transformedProjects: ProjectWithDocuments[] = matchingProjects.map( project => {
-            const documentNames = project.documents.map(doc => doc.filename).join(', ');
-            return {
-              ...project,
-              documentNamesString: documentNames, // add a new property
-            };
-          });
-          this.projects$ = of(transformedProjects);
-        } else {
-          console.warn('No projects found with this ID');
-        }
-      });
-    }
+    
 }

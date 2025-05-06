@@ -43,6 +43,8 @@ export interface Project {
   }
   export interface AssignedCollaborator {
     assignedcollabemail: string;
+    uploadstatus: string;
+    filename: string;
   }
   export interface DocumentCollab {
     docname: string;
