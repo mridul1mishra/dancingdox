@@ -10,7 +10,7 @@ import { authConfig } from './auth.config';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TopNavigationComponent, SideNavigationComponent, RightNavigationComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

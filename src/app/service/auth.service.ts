@@ -7,7 +7,7 @@ import { map, Observable } from 'rxjs';
 })
 export class AuthService {
   private isAuthenticated = false;
-  private apiUrl = 'http://157.245.87.25:3000/api'; // your Node.js backend URL
+  private apiUrl = 'http://localhost:3000/api'; // your Node.js backend URL
   constructor(private http: HttpClient) {}
 
   login(credentials: { email: string; password: string }): Observable<any> {
@@ -21,7 +21,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/logout`, {});
   }
   getUserName(email:string):  Observable<{ name: string, image: string, email:string }>{
-    return this.http.get<{ name: string, image: string, email: string }>(`http://157.245.87.25:3000/api/get?email=${email}`);
+    return this.http.get<{ name: string, image: string, email: string }>(`http://localhost:3000/api/get?email=${email}`);
   }
   isLoggedIn(): boolean {
     return this.isAuthenticated;

@@ -98,7 +98,7 @@ export class DocumentInputComponent {
       });
       
       // 2. Upload files to server
-      this.http.post('http://157.245.87.25:3000/upload-multiple', formData).subscribe({
+      this.http.post('http://localhost:3000/upload-multiple', formData).subscribe({
         next: () => {
           console.log('Files uploaded successfully');
           this.updateProjectCSV(this.allFilenames); // Continue to CSV update
@@ -133,7 +133,7 @@ export class DocumentInputComponent {
         this.lastProject.docCount = this.docCount;
         this.lastProject.documents = allFilenames;
         console.log("doccount:", this.lastProject.documents )
-        this.http.post('http://157.245.87.25:3000/update-projects', this.projects).subscribe({
+        this.http.post('http://localhost:3000/update-projects', this.projects).subscribe({
           next: () => console.log('CSV updated successfully'),
           error: err => console.error('Error updating CSV:', err)
         });

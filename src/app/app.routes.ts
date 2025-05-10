@@ -24,15 +24,20 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AddCollaboratorComponent } from './Projects/add-collaborator/add-collaborator.component';
 import { AssigndoctocollabComponent } from './Projects/assigndoctocollab/assigndoctocollab.component';
+import { AppComponent } from './app.component';
+import { BlankLayoutComponent } from './blank-layout/blank-layout.component';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 
 export const routes: Routes = [
-    
+    {
+    path: '',
+    component: MainLayoutComponent,
+    children:[
+      { path: 'callback', component: OAuthCallbackComponent },
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    { path: 'dashboard', component: DashboardComponent },
     { path: 'teams', component: TeamsComponent },
-    { path: 'callback', component: OAuthCallbackComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },    
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'teams/team-details', component: TeamDetailsComponent },
     { path: 'teams/create-teams', component: CreateteamsComponent },
     { path: 'teams/teaminformation', component: CreateteaminformationComponent },
@@ -51,6 +56,18 @@ export const routes: Routes = [
     { path: 'project/createprivateproject/project-start/assignment/:id', component: AssigndoctocollabComponent },
     { path: 'project/createprivateproject/add-collaborator/:id', component: AddCollaboratorComponent },
     { path: 'project/createprivateproject/project-start/:id', component: DocumentInputComponent },
-    { path: 'pricingplan', component: PricingplanComponent },
-    { path: '**', redirectTo: '' } // Wildcard route for 404
+    { path: 'pricingplan', component: PricingplanComponent }
+    ]
+    },
+    {
+    path: '',
+    component: BlankLayoutComponent,
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      // routes without header/footer
+    ]
+  },
+    { path: '**', redirectTo: 'dashboard' }
+    
 ];

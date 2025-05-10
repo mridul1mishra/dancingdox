@@ -36,7 +36,7 @@ export class CollaboratorComponent {
         this.lastProject = data[data.length - 1];  // Get the last project
         this.lastProject.collabCount = this.collabCount;
         console.log('Last Project:', this.lastProject.collabCount);
-        this.http.post('http://157.245.87.25:3000/update-projects', this.projects)
+        this.http.post('http://localhost:3000/update-projects', this.projects)
         .subscribe({
           next: () => console.log('Projects updated successfully in CSV'),
           error: (err) => console.error('Error updating CSV:', err)
