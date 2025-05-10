@@ -69,7 +69,7 @@ export class AddCollaboratorComponent {
           this.projects = data;
           this.lastProject = data[data.length - 1];
           this.lastProject.Collaborator = this.collaborators;
-          this.http.post('http://localhost:3000/update-projects', this.projects).subscribe({
+          this.http.post('http://157.245.87.25:3000/update-projects', this.projects).subscribe({
             next: () => console.log('CSV updated successfully'),
             error: err => console.error('Error updating CSV:', err)
           });
