@@ -111,6 +111,7 @@ export class ColloboratorDocComponent {
         actions: 'Accept',
         remarks: 'Well Written document. thanks',
       }));
+      
     
       // Store the enhanced data in selectedMember or a new property
       this.selectedMember = {
