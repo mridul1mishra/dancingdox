@@ -24,7 +24,7 @@ export class AuthService {
     return this.http.get<{ name: string, image: string, email: string }>(`http://localhost:3000/api/get?email=${email}`);
   }
   isLoggedIn(): boolean {
-    return this.isAuthenticated;
+    return localStorage.getItem('isLoggedIn') === 'true';
   }
   getToken(): string | null {
     return localStorage.getItem('authToken');

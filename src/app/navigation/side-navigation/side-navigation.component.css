@@ -11,7 +11,12 @@ body {
   a {
     text-decoration: none;
   }
-  
+ .logout{ 
+    height: 24px;
+    width: 24px;
+    margin: 148px;
+    margin-top: -30px;
+}
   .layout {
     display: flex;
     flex-direction: column;

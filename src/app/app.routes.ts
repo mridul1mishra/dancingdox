@@ -27,36 +27,37 @@ import { AssigndoctocollabComponent } from './Projects/assigndoctocollab/assignd
 import { AppComponent } from './app.component';
 import { BlankLayoutComponent } from './blank-layout/blank-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { AuthGuard } from './interceptors/auth.guard';
 
 
 export const routes: Routes = [
     {
     path: '',
     component: MainLayoutComponent,
+    canActivateChild: [AuthGuard], // ✅ Applied here
     children:[
-      { path: 'callback', component: OAuthCallbackComponent },
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    { path: '', component: DashboardComponent},
     { path: 'dashboard', component: DashboardComponent },
-    { path: 'teams', component: TeamsComponent },
+    { path: 'teams', component: TeamsComponent},
     { path: 'teams/team-details', component: TeamDetailsComponent },
     { path: 'teams/create-teams', component: CreateteamsComponent },
     { path: 'teams/teaminformation', component: CreateteaminformationComponent },
     { path: 'Notification', component: NotificationComponent },
     { path: 'createproject', component: CreateProjectsComponent },
-    { path: 'Settings', component: SettingsComponent },
+    { path: 'Settings', component: SettingsComponent},
     { path: 'projects/joinproject', component: JoinprojectComponent },
     { path: 'project/createindependentproject/project-start/:id', component: DocumentInputComponent },
     { path: 'projects/projectdetail', component: ProjectdetailsComponent },
-    { path: 'projects/:id', component: DynamicprojectdetailsComponent },
-    { path: 'projectlist', component: ProjectlistComponent },
+    { path: 'projects/:id', component: DynamicprojectdetailsComponent},
+    { path: 'projectlist', component: ProjectlistComponent},
     { path: 'Settings/profile', component: PersonalinfoComponent },
-    { path: 'project/createindependentproject/project-start/collaborator/:id', component: CollaboratorComponent },
+    { path: 'project/createindependentproject/project-start/collaborator/:id', component: CollaboratorComponent},
     { path: 'project/createindependentproject', component: GetProjectDetailsComponent },
     { path: 'project/createprivateproject', component: GetProjectDetailsComponent },
     { path: 'project/createprivateproject/project-start/assignment/:id', component: AssigndoctocollabComponent },
     { path: 'project/createprivateproject/add-collaborator/:id', component: AddCollaboratorComponent },
     { path: 'project/createprivateproject/project-start/:id', component: DocumentInputComponent },
-    { path: 'pricingplan', component: PricingplanComponent }
+    { path: 'pricingplan', component: PricingplanComponent}
     ]
     },
     {
@@ -68,6 +69,6 @@ export const routes: Routes = [
       // routes without header/footer
     ]
   },
-    { path: '**', redirectTo: 'dashboard' }
+  { path: '**', redirectTo: 'login' }
     
 ];

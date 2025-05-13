@@ -1,7 +1,54 @@
-<form (ngSubmit)="onRegister()">    
-    <input type="name" [(ngModel)]="name" name="name" placeholder="Name" required />
-    <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required />
-    <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required />
-    <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required />
-    <button type="submit">Register</button>
-  </form>
+<div class="container">
+  <div class="form-box">
+    <img src="logodancing.png" alt="DashingDox Logo" class="logo" />
+    <h2>Join <strong>DashingDox</strong></h2>
+    <p class="subtext">
+      Already Have an Account? <a href="/login">Sign In</a>
+    </p>
+
+    <form *ngIf="currentStep === 1" (ngSubmit)="completeStep1()">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="firstName"><strong>First Name</strong></label>
+          <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="e.g. John" />
+        </div>
+        <div class="form-field">
+          <label for="lastName"><strong>Last Name</strong></label>
+          <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="e.g. Lonado" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="designation"><strong>Designation</strong></label>
+          <select [(ngModel)]="designation" id="designation" name="designation">
+            <option disabled selected>Select Designation</option>
+            <option>Student</option>
+            <option>Professor</option>
+            <option>Researcher</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="organization"><strong>Organization</strong></label>
+          <input type="text" id="organization" placeholder="e.g. Xyz University" />
+        </div>
+      </div>
+
+      <div class="form-field full-width">
+        <label for="email"><strong>Email Address</strong></label>
+        <input type="email" id="email" placeholder="e.g. John@youremail.com" />
+      </div>
+
+      <button type="submit" class="submit-button">Next</button>
+    </form>
+    <form *ngIf="currentStep === 2" (ngSubmit)="completeStep2()">
+      <div class="form-field full-width">
+        <label for="email"><strong>Enter OTP sent to your email</strong></label>
+        <input type="email" id="email" placeholder="e.g. 6 digits OTP" />
+        <label for="text">Didn't you receive the OTP? Resend OTP</label>
+      </div>
+
+      <button type="submit" class="submit-button">Next</button>
+    </form>
+  </div>
+</div>

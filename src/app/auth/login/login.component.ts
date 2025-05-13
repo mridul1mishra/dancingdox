@@ -13,13 +13,12 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  isLoggedIn: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
   ngOnInit(): void {
     // Optionally, check if a token exists in localStorage
     if (localStorage.getItem('authToken')) {
-      this.isLoggedIn = true;
+      localStorage.setItem('isLoggedIn', 'true');
     }
   }
   onLogin() {
@@ -28,11 +27,12 @@ export class LoginComponent {
     this.authService.login(credentials).subscribe({
       next: (response) => {
         // Save token in localStorage (or sessionStorage)
+        console.log(response);
         localStorage.setItem('authToken', response.token);
   
         // Set logged-in state
-        this.isLoggedIn = true;
-  
+        localStorage.setItem('isLoggedIn', 'true');
+        console.log('authservice tested redirect');
         // Navigate to another page (e.g., dashboard)
         this.router.navigate(['/dashboard']);
       },
@@ -46,11 +46,11 @@ export class LoginComponent {
   onLogout() {
     // Remove token from localStorage (or sessionStorage)
     localStorage.removeItem('authToken');
-    this.isLoggedIn = false;
+    localStorage.setItem('isLoggedIn', 'false');
     this.router.navigate(['/login']);
   }
 
   goToRegister() {
-    this.router.navigate(['/register']);
+    window.location.href = 'http://localhost:4200/register';
   }
 }
