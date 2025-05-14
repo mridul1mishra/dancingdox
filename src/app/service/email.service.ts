@@ -7,6 +7,6 @@ export class EmailService {
   constructor(private http: HttpClient) {}
 
   sendEmail(to: string, subject: string, body: string) {
-    return this.http.post('http://localhost:3000/send-email', { to, subject, body });
+    return this.http.post('http://localhost:3000/api/send-email', { to, subject, body });
   }
 }

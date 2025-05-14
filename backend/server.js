@@ -16,16 +16,17 @@ app.use('/public', express.static('public')); // if needed to serve files
 app.get('/', (req, res) => {
   res.send('🚀 Welcome to my Node API!');
 });
-app.use((req, res) => {
-  res.status(404).json({ message: `Route ${req.originalUrl} not found` });
-});
+
 // Route registration
 app.use('/', uploadRoute);
 app.use('/', projectRoutes);
 app.use('/docs', docRoutes);
 app.use('/collab', collabRoutes);
 app.use('/api', authRoutes);
-
+app.use((req, res) => {
+  console.warn(`404 Not Found: ${req.method} ${req.originalUrl}`);
+  res.status(404).json({ message: `Route ${req.originalUrl} not found` });
+});
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
