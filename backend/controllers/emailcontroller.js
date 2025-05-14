@@ -1,8 +1,11 @@
-const AWS = require('aws-sdk');
-AWS.config.update({ region: 'us-east-1' });
+const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 
-const ses = new AWS.SES();
-
+const sesClient = new SESClient({
+  region: 'us-east-2',
+  credentials: {
+    
+  }
+});
 exports.sendEmail = async (req, res) => {
   const { to, subject, body } = req.body;
 
@@ -16,7 +19,8 @@ exports.sendEmail = async (req, res) => {
   };
 
   try {
-    await ses.sendEmail(params).promise();
+    const command = new SendEmailCommand(params);
+    await sesClient.send(command);
     res.status(200).send('Email sent successfully!');
   } catch (err) {
     console.error('SES Error:', err);
