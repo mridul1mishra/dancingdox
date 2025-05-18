@@ -7,7 +7,6 @@ import { EmailService } from '../../service/email.service';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
@@ -53,11 +52,18 @@ export class RegisterComponent {
   }
   completeStep1() {
     if (this.firstName && this.lastName) {
+      localStorage.setItem('userData', JSON.stringify({
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email
+    }));
       localStorage.setItem('step1Completed', 'true');
       this.currentStep = 2;
-      this.emailservice.sendEmail('mridul1mishra@yahoo.com', 'Test Subject', 'Hello!')
+      this.emailservice.sendEmail(this.email, 'Test Subject', 'Hello!')
       .subscribe({
-       next: () => alert('Email sent!'),
+       next: () => {
+        alert('Email sent!');
+       },
         error: err => alert('Failed: ' + err.message)
       });
     } else {
@@ -66,10 +72,35 @@ export class RegisterComponent {
   }
   completeStep2() {
     if (this.otp) {
-      localStorage.removeItem('step1Completed');
-      alert('Registration complete!');
+      const stored = JSON.parse(localStorage.getItem('userData') || '{}');
+      localStorage.setItem('step2Completed', 'true');
+      this.currentStep = 3;
+      this.emailservice.sendOtp(stored.email, this.otp).subscribe({
+        next: () => {
+          alert('otp verified');
+        },
+        error: err => alert('Failed: ' + err.message)
+      });
+      
     } else {
       alert('Please enter the OTP.');
     }
+  }
+  completeStep3() {
+    const stored = JSON.parse(localStorage.getItem('userData') || '{}');
+    console.log(this.email);
+    const payload = {
+      name: stored.firstName + ' ' + stored.lastName,
+    email: stored.email,
+    password: this.password
+    };
+    this.authService.register(payload).subscribe({
+      next: (res) => {
+        alert(res.message || 'Registration successful!');
+      },
+      error: (err) => {
+        alert(err.error?.message || 'Registration failed.');
+      },
+    });
   }
 }

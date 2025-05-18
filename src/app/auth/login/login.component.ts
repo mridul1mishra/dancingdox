@@ -51,6 +51,6 @@ export class LoginComponent {
   }
 
   goToRegister() {
-    window.location.href = 'http://localhost:4200/register';
+    window.location.href = 'http://157.245.87.25:4200/register';
   }
 }

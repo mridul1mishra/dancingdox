@@ -7,7 +7,7 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DocumentService {
-  private apiUrl = 'http://localhost:3000/docs/csv-to-json';
+  private apiUrl = 'http://157.245.87.25:3000/docs/csv-to-json';
 
   constructor(private http: HttpClient) {}
 

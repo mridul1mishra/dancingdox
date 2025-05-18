@@ -10,11 +10,11 @@
       <div class="form-row">
         <div class="form-field">
           <label for="firstName"><strong>First Name</strong></label>
-          <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="e.g. John" />
+          <input type="text" [(ngModel)]="firstName" name="firstName" placeholder="e.g. John" [ngModelOptions]="{standalone: true}"/>
         </div>
         <div class="form-field">
           <label for="lastName"><strong>Last Name</strong></label>
-          <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="e.g. Lonado" />
+          <input type="text" [(ngModel)]="lastName" name="lastName" placeholder="e.g. Lonado" [ngModelOptions]="{standalone: true}"/>
         </div>
       </div>
 
@@ -36,7 +36,7 @@
 
       <div class="form-field full-width">
         <label for="email"><strong>Email Address</strong></label>
-        <input type="email" id="email" placeholder="e.g. John@youremail.com" />
+        <input type="email" [(ngModel)]="email" name="email" id="email" placeholder="e.g. John@youremail.com" />
       </div>
 
       <button type="submit" class="submit-button">Next</button>
@@ -44,11 +44,37 @@
     <form *ngIf="currentStep === 2" (ngSubmit)="completeStep2()">
       <div class="form-field full-width">
         <label for="email"><strong>Enter OTP sent to your email</strong></label>
-        <input type="email" id="email" placeholder="e.g. 6 digits OTP" />
+        <input type="text" id="otp" [(ngModel)]="otp" placeholder="e.g. 6 digits OTP" [ngModelOptions]="{standalone: true}"/>
         <label for="text">Didn't you receive the OTP? Resend OTP</label>
       </div>
 
       <button type="submit" class="submit-button">Next</button>
+    </form>
+    <form *ngIf="currentStep === 3"  (ngSubmit)="completeStep3()" #signupForm="ngForm">
+      <label for="password">Set New Password</label>
+      <input type="password" [(ngModel)]="password" name="password" id="password" placeholder="e.g. 11 Digits" />
+
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" id="confirmPassword" placeholder="e.g. 11 Digits" />
+
+      <div class="checkbox">
+        <input type="checkbox" id="terms" checked />
+        <label for="terms">
+          I accept the <a href="#">Terms & Conditions</a>
+        </label>
+      </div>
+
+      <button type="submit" class="sign-up">Sign Up</button>
+
+      <div class="password-rules">
+        <p><strong>Password Requirements:</strong></p>
+        <ol>
+          <li>Must be at least 11 characters long.</li>
+          <li>Include one uppercase and one lowercase letter.</li>
+          <li>Must contain at least one number.</li>
+          <li>Include at least one special character .</li>
+        </ol>
+      </div>
     </form>
   </div>
 </div>

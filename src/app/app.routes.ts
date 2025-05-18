@@ -28,6 +28,7 @@ import { AppComponent } from './app.component';
 import { BlankLayoutComponent } from './blank-layout/blank-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AuthGuard } from './interceptors/auth.guard';
+import { RegisterStep2Component } from './auth/register-step2/register-step2.component';
 
 
 export const routes: Routes = [
@@ -66,6 +67,7 @@ export const routes: Routes = [
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
+      { path: 'confirm-password', component: RegisterStep2Component },
       // routes without header/footer
     ]
   },

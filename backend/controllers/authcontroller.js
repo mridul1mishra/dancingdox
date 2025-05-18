@@ -59,7 +59,7 @@ exports.login = (req, res) => {
 
 exports.register = (req, res) => {
   const { email, password, name } = req.body;
-
+  console.log(email, password, name);
   if (!email || !password || !name) {
     return res.status(400).json({ message: 'Email and password are required' });
   }

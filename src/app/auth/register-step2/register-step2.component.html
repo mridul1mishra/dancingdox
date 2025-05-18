@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="form-box">
+    <div class="header">
+      <img src="logodancing.png" alt="DashingDox Logo" class="logo" />
+      <h2>Join <span class="highlight">DashingDox</span></h2>
+      <p>
+        Already Have an Account?
+        <a class="sign-in" href="#">Sign In</a>
+      </p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+      <label for="password">Set New Password</label>
+      <input type="password" [(ngModel)]="formData.password" name="password" id="password" placeholder="e.g. 11 Digits" />
+
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" [(ngModel)]="formData.confirmPassword" name="confirmPassword" id="confirmPassword" placeholder="e.g. 11 Digits" />
+
+      <div class="checkbox">
+        <input type="checkbox" id="terms" checked />
+        <label for="terms">
+          I accept the <a href="#">Terms & Conditions</a>
+        </label>
+      </div>
+
+      <button type="submit" class="sign-up">Sign Up</button>
+
+      <div class="password-rules">
+        <p><strong>Password Requirements:</strong></p>
+        <ol>
+          <li>Must be at least 11 characters long.</li>
+          <li>Include one uppercase and one lowercase letter.</li>
+          <li>Must contain at least one number.</li>
+          <li>Include at least one special character .</li>
+        </ol>
+      </div>
+    </form>
+  </div>
+
+  <div class="footer-links">
+    <a href="#">Customer Support</a>
+    <a href="#">Terms of Service</a>
+  </div>
+</div>
