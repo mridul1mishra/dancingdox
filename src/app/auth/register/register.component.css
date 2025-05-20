@@ -3,14 +3,29 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to right, #e0f7fa, #f3e5f5);
 }
-
+:host {
+  display: block;
+  font-family: 'Inter', sans-serif;
+}
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
-
+.left-panel {
+  background: linear-gradient(180deg, #5f34f5, #3b1ecf);
+  color: white;
+  flex: 1;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.logo {
+  width: 160px;
+  margin-bottom: 2rem;
+}
 .form-box {
   background: white;
   padding: 40px;
@@ -25,13 +40,78 @@ body {
   margin: 0 auto 10px;
   width: 160px;
 }
+.branding h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
 
+.features {
+  margin-top: 3rem;
+}
+
+.feature-box {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(5px);
+}
+
+.feature-box h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.feature-box p {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.right-panel {
+  flex: 1;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+}
+
+.login-box {
+  max-width: 400px;
+  margin: auto;
+}
+
+.login-box h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.login-box p {
+  margin-bottom: 2rem;
+}
+
+.login-box a {
+  color: #5f34f5;
+  text-decoration: none;
+  font-weight: 500;
+}
 h2 {
   text-align: center;
   font-size: 24px;
   margin: 10px 0;
 }
-
+.error {
+  color: red;
+  font-size: 0.80rem;
+  margin-top: 4px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
 .subtext {
   text-align: center;
   color: #666;

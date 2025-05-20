@@ -18,7 +18,7 @@ canActivateChild(
     const isLoggedIn = this.authService.isLoggedIn();
     console.log(isLoggedIn);
     if (!isLoggedIn) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/sign-in']);
       return false;
     }
 

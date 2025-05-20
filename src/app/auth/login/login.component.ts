@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   email: string = '';
   password: string = '';
-
+loginError: string = ''; 
   constructor(private authService: AuthService, private router: Router) {}
   ngOnInit(): void {
     // Optionally, check if a token exists in localStorage
@@ -21,7 +21,7 @@ export class LoginComponent {
       localStorage.setItem('isLoggedIn', 'true');
     }
   }
-  onLogin() {
+  onLogin(form: NgForm) {
     const credentials = { email: this.email, password: this.password };
     console.log('Sending credentials:', credentials);
     this.authService.login(credentials).subscribe({
@@ -38,6 +38,7 @@ export class LoginComponent {
       },
       error: (error) => {
         console.error('Login failed', error);
+        this.loginError = error.error?.message
         // Handle error (e.g., show error message)
       }
     });

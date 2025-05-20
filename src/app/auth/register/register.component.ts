@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../service/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EmailService } from '../../service/email.service';
 
@@ -16,7 +16,8 @@ export class RegisterComponent {
   password: string = '';
   firstName: string = '';
   lastName: string = '';
-  designation: string = ''; 
+  designation: string = '';
+  organization: string =''; 
   otp: string = '';
   currentStep = 1;
   confirmPassword: string = '';
@@ -50,8 +51,8 @@ export class RegisterComponent {
       }
     });
   }
-  completeStep1() {
-    if (this.firstName && this.lastName) {
+  completeStep1(form: NgForm) {
+    if (form.valid) {
       localStorage.setItem('userData', JSON.stringify({
       firstName: this.firstName,
       lastName: this.lastName,
@@ -62,12 +63,12 @@ export class RegisterComponent {
       this.emailservice.sendEmail(this.email, 'Test Subject', 'Hello!')
       .subscribe({
        next: () => {
-        alert('Email sent!');
+        console.log('Email sent!');
        },
-        error: err => alert('Failed: ' + err.message)
+        error: err => console.log('Failed: ' + err.message)
       });
     } else {
-      alert('Please fill in both first and last name.');
+      Object.values(form.controls).forEach(control => control.markAsTouched());
     }
   }
   completeStep2() {

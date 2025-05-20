@@ -1,31 +1,39 @@
 <div class="container">
   <div class="left-panel">
     <div class="branding">
-      <img src="logo.png" alt="Dashingdox Logo" class="logo" />
-      <h1>Create, collaborate, <br />and manage projects</h1>
+      <img src="logo.png" alt="Dashdoxs Logo" class="logo" />
+      <h1>Collect Documents, Beat Deadlines, <br />Win Grants.</h1>
     </div>
     <div class="features">
       <div class="feature-box">
-        <h3>Smart Collaboration</h3>
-        <p>Manage teams, assign projects, and streamline workflows.</p>
+        <h3>Collect Documents</h3>
+        <p>From known and unknown collaborators worldwide</p>
       </div>
       <div class="feature-box">
-        <h3>Seamless Documenting</h3>
-        <p>Upload, organize, and track documents with ease.</p>
+        <h3>Seamless Project Management</h3>
+        <p>Track, approve, and download documents on a click.</p>
       </div>
       <div class="feature-box">
-        <h3>Secure Privacy</h3>
-        <p>Control access with public and private project settings.</p>
+        <h3>Works in Teams</h3>
+        <p>Work in teams of two or more for bigger projects.</p>
+      </div>
+      <div class="feature-box">
+        <h3>Free Submissions</h3>
+        <p>Collaborators submit their documents free of any cost.</p>
+      </div>
+      <div class="feature-box">
+        <h3>Security and Privacy</h3>
+        <p>Cloud-based secure application for global access and peace of mind</p>
       </div>
     </div>
   </div>
 
   <div class="right-panel">
     <div class="login-box">
-      <h2>Welcome back</h2>
-      <p>New to Dashingdox? <a href="/register">Sign Up</a></p>
+      <h2>Welcome Back!</h2>
+      <p>New to Dashdox? <a href="/sign-up">Sign Up</a></p>
 
-      <form>
+      <form #form="ngForm" (ngSubmit)="onLogin(form)">
         <label>Email</label>
         <input type="email" [(ngModel)]="email" name="email" placeholder="Enter email" />
 
@@ -34,12 +42,18 @@
 
         <a href="#" class="forgot">Forget password?</a>
 
-        <button type="submit" (click)="onLogin()">Sign In</button>
+        <button type="submit" >Sign In</button>
+        
       </form>
+      <div *ngIf="loginError" class="error-message">
+          {{ loginError }}
+        </div>
     </div>
     <div class="footer-links">
-      <a href="#">Customer Support</a>
-      <a href="#">Terms of Service</a>
+      
+      <a href="#" class="footer-inner">Customer Support</a>
+      <p style="padding-left: 5px;padding-right: 5px;">&nbsp;</p>
+      <a href="#" class="footer-inner">Terms of Service</a>
     </div>
   </div>
 </div>

@@ -29,15 +29,24 @@ import { BlankLayoutComponent } from './blank-layout/blank-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AuthGuard } from './interceptors/auth.guard';
 import { RegisterStep2Component } from './auth/register-step2/register-step2.component';
+import { WeblayoutComponent } from './weblayout/weblayout.component';
+import { HomepageComponent } from './weblayout/homepage/homepage.component';
 
 
 export const routes: Routes = [
     {
     path: '',
+    component: WeblayoutComponent,
+    children: [
+      { path: '', component: HomepageComponent },
+      // routes without header/footer
+    ]
+  },
+  {
+    path: '',
     component: MainLayoutComponent,
     canActivateChild: [AuthGuard], // ✅ Applied here
     children:[
-    { path: '', component: DashboardComponent},
     { path: 'dashboard', component: DashboardComponent },
     { path: 'teams', component: TeamsComponent},
     { path: 'teams/team-details', component: TeamDetailsComponent },
@@ -65,12 +74,13 @@ export const routes: Routes = [
     path: '',
     component: BlankLayoutComponent,
     children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
+      { path: 'sign-in', component: LoginComponent },
+      { path: 'sign-up', component: RegisterComponent },
       { path: 'confirm-password', component: RegisterStep2Component },
       // routes without header/footer
     ]
   },
+  
   { path: '**', redirectTo: 'login' }
     
 ];

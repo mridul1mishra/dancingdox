@@ -17,7 +17,11 @@
   flex-direction: column;
   justify-content: center;
 }
-
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
 .logo {
   width: 160px;
   margin-bottom: 2rem;
@@ -124,8 +128,13 @@ button[type="submit"]:hover {
 
 .footer-links {
   display: flex;
-  justify-content: space-between;
   font-size: 0.85rem;
   color: #999;
-  margin-top: 2rem;
+
+  justify-content: center;
+}
+
+.footer-inner{
+  text-decoration: none;
+  color: #999;
 }
