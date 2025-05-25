@@ -12,6 +12,7 @@ import { EmailService } from '../../service/email.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+  submitted: boolean = false;
   email: string = '';
   password: string = '';
   firstName: string = '';
@@ -23,7 +24,7 @@ export class RegisterComponent {
   confirmPassword: string = '';
   name: string = '';
   step: string | null = null;
-
+  acceptedTerms: boolean = false;
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private emailservice: EmailService) {}
 
   ngOnInit(): void {
@@ -88,6 +89,12 @@ export class RegisterComponent {
     }
   }
   completeStep3() {
+    this.submitted = true;
+    const valid =
+    this.acceptedTerms &&
+    this.password === this.confirmPassword;
+
+  if (!valid) return;
     const stored = JSON.parse(localStorage.getItem('userData') || '{}');
     console.log(this.email);
     const payload = {
@@ -97,7 +104,9 @@ export class RegisterComponent {
     };
     this.authService.register(payload).subscribe({
       next: (res) => {
-        alert(res.message || 'Registration successful!');
+        alert( 'Registration successful!');
+        console.log(res.token);
+        this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         alert(err.error?.message || 'Registration failed.');

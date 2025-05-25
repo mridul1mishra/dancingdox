@@ -8,5 +8,6 @@ router.post('/login', authController.login);
 router.post('/register', authController.register);
 router.get('/get', authController.getCSV);
 router.post('/send-email', emailController.sendEmail);
+router.post('/send-quote', emailController.quoteEmail);
 router.post('/verify-otp', emailController.verifyOtp);
 module.exports = router;

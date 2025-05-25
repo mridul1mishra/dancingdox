@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { TeamsComponent } from './teamslist/teams/teams.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -31,6 +31,7 @@ import { AuthGuard } from './interceptors/auth.guard';
 import { RegisterStep2Component } from './auth/register-step2/register-step2.component';
 import { WeblayoutComponent } from './weblayout/weblayout.component';
 import { HomepageComponent } from './weblayout/homepage/homepage.component';
+import { NgModule } from '@angular/core';
 
 
 export const routes: Routes = [
@@ -84,3 +85,15 @@ export const routes: Routes = [
   { path: '**', redirectTo: 'login' }
     
 ];
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, {
+      anchorScrolling: 'enabled',
+      scrollOffset: [0, 60], // adjust if you have a fixed header
+      scrollPositionRestoration: 'enabled'
+    })
+  ],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}

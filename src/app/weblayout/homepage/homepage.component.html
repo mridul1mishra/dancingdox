@@ -1,19 +1,20 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <div class="homepage-container">
   <!-- Top Navigation -->
   <header class="navbar">
-    <div class="logo">dashing<span>doxs</span></div>
+    <div class="logo">
+        <img src="8cbac377-06cb-4b50-b3ab-c5c763c7a580.png" alt="DashingDoxs Logo" />
+    </div>
     <nav class="nav-links">
       <a href="#">Features</a>
-      <a href="#">How it Works</a>
-      <a href="#">Why Choose Us</a>
-      <a href="#">Pricing Plan</a>
-      <a href="#">Social Impact</a>
-      <a href="#">FAQ</a>
-      <a href="#">Contact</a>
+      <a (click)="scrollToSection('how-it-works')">How it Works</a>
+      <a (click)="scrollToSection('why-choose-us')">Why Choose Us</a>
+      <a (click)="scrollToSection('pricing-plan')">Pricing Plan</a>
+      <a (click)="scrollToSection('Contact-us')">Contact</a>
     </nav>
     <div class="nav-actions">
-      <a href="#" class="login">Log In</a>
-      <a href="#" class="signup">Sign Up →</a>
+      <a href="/sign-in" class="login">Log In</a>
+      <a href="/sign-up" class="signup">Sign Up →</a>
     </div>
   </header>
 
@@ -32,38 +33,8 @@
     <img src="hero-banner.png" alt="App Interface Preview">
   </section>
   
-<section class="key-features">
-    <div class="container">
-    <div class="features-header">
-      <span class="tag">Key Features</span>
-      <h2>Unlock Powerful <br><span class="highlight">Project Management</span></h2>
-      <p class="subtitle">
-        Stay organized and collaborate effortlessly<br>
-        whether working solo or with a team.
-      </p>
-    </div>
 
-  <div class="features-grid">
-    <div class="feature-card">
-      <h3>Effortless Project Management</h3>
-      <ul>
-        <li>Create personal projects or collaborate with a team</li>
-        <li>Assign projects to teams and streamline workflows</li>
-      </ul>
-      <img src="feature1a.png" alt="Effortless Project UI" />
-    </div>
-    <div class="feature-card">
-      <h3>Join Public Projects & Upload Documents</h3>
-      <ul>
-        <li>Instantly join a public project using a unique project ID</li>
-        <li>Upload and share important documents securely</li>
-      </ul>
-      <img src="feature1b.png" alt="Join Project UI" />
-    </div>
-  </div>
-  </div>
-</section>
-<section class="how-it-works">
+<section id="how-it-works" class="how-it-works">
   <div class="container">
     <div class="features-header">
       <span class="tag">How it Works</span>
@@ -115,7 +86,7 @@
     </div>
   </div>
 </section>
-<section class="why-choose-us">
+<section id="why-choose-us" class="why-choose-us">
   <div class="container">
     <span class="tag">Why Choose Us</span>
     <h2>Why Choose <br><span>DashingDoxs?</span></h2>
@@ -124,92 +95,168 @@
       From secure document handling to effortless teamwork, we provide the tools you need to stay productive.
     </p>
 
-    <div class="features-grid">
-      <div class="feature-card">
+    <div class="features-grid1">
+      <div class="feature-card1">
         <img src="group1.svg" alt="User Friendly Icon" />
         <h4>Intuitive & User-Friendly Interface</h4>
         <p>Navigate with ease and stay focused on your work.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card1">
         <img src="Group2.svg" alt="Privacy Icon" />
         <h4>Robust Privacy Controls</h4>
         <p>Choose between public and private projects for enhanced security.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card1">
         <img src="Group3.svg" alt="Team Collaboration Icon" />
         <h4>Seamless Team Collaboration</h4>
         <p>Assign roles, manage teams, and track progress effortlessly.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-card1">
         <img src="group4.svg" alt="Document Management Icon" />
         <h4>Efficient Document Management</h4>
         <p>Define required uploads, set deadlines, and keep everything organized.</p>
       </div>
     </div>
 
-    <div class="cta">
-      <a href="#" class="cta-button">Get Started for Free <span>→</span></a>
+    <div class="cta1">
+      <a href="#" class="cta-button1">Get Started for Free <span>→</span></a>
     </div>
   </div>
 </section>
-<section class="pricing-section">
-  <div class="container">
-    <span class="section-tag">Plans</span>
-    <h2>Flexible Plans for Every Workflow</h2>
-    <p class="section-description">
-      Whether you're an individual, a growing team, or a large enterprise, DashingDoxs offers the perfect plan.
-    </p>
-
+<section id="pricing-plan" class="container1 pricing-section">
+  <div class="features-pricing">
+      <span class="tag">Plans</span>
+      <h2>Flexible Plans for<br><span class="highlight">Every Workflow</span></h2>
+      <p class="subtitle">
+        Whether you are an individual a growing<br>team, or a large enterprise, Dashdoxs offer the perfect plan.
+        
+      </p>
+    </div>
+  <div class="pricing-card">
+    
+    <!-- Billing Toggle -->
     <div class="billing-toggle">
-      <button class="billing-option">Monthly</button>
-      <button class="billing-option active">
-        Yearly <span class="discount-tag">10% OFF</span>
-      </button>
+      <button class="toggle">Monthly</button>
+      <button class="toggle active">Yearly <span class="discount">10% OFF</span></button>
     </div>
 
-    <div class="plans-table">
-      <div class="plan plan-personal">
-        <img src="icon-personal.svg" alt="Personal Icon" />
-        <h3>Personal Plan</h3>
-        <p class="price">$27 <span>/month</span></p>
+    <!-- Plan Headers -->
+    <div class="pricing-header-row">
+      <div class="label-cell"></div>
+      <div class="plan-cell">
+        <img src="Group40463.png" alt="Personal Icon" />
+        <div>
+          <h4>Personal Plan</h4>
+          <p class="price">$27 <span>/month</span></p>
+        </div>
       </div>
-      <div class="plan plan-team">
-        <img src="icon-team.svg" alt="Team Icon" />
-        <h3>Team Plan</h3>
-        <p class="price">$27 <span>/user/month</span></p>
-      </div>
-
-      <div class="features">
-        <div class="feature-row"><span>Collaborators</span><span>200</span><span>250</span></div>
-        <div class="feature-row"><span>Space</span><span>40 GiB</span><span>50 GiB</span></div>
-        <div class="feature-row"><span>Duration</span><span>30 Days</span><span>30 Days</span></div>
-        <div class="feature-row"><span>Team mode</span><span class="cross">✘</span><span class="check">✔</span></div>
-        <div class="feature-row"><span>Team limit</span><span class="cross">✘</span><span>Unlimited</span></div>
-        <div class="feature-row"><span>Team member type</span><span class="cross">✘</span><span>Paid</span></div>
-        <div class="feature-row"><span>Team member size</span><span class="cross">✘</span><span>Unlimited</span></div>
-        <div class="feature-row"><span>Cost per team member</span><span class="cross">✘</span><span>$30/month</span></div>
-      </div>
-
-      <div class="plan-actions">
-        <a href="#" class="trial-button">Start Trial $1</a>
-        <a href="#" class="trial-button">Start Trial $1</a>
+      <div class="plan-cell">
+        <img src="Group40461.svg" alt="Team Icon" />
+        <div>
+          <h4>Team Plan</h4>
+          <p class="price">$27 <span>/user/month</span></p>
+        </div>
       </div>
     </div>
 
-    <div class="executive-plan">
-      <img src="Group_people.svg" alt="Executive Icon" />
+    <!-- Feature Rows -->
+    <div class="pricing-row"><div>Collaborators</div><div>200</div><div>250</div></div>
+    <div class="pricing-row"><div>Space</div><div>40 GiB</div><div>50 GiB</div></div>
+    <div class="pricing-row"><div>Duration</div><div>30 Days</div><div>30 Days</div></div>
+    <div class="pricing-row"><div>Team mode</div><div><span class="icon cross">✖</span></div><div><span class="icon check">✔</span></div></div>
+    <div class="pricing-row"><div>Team limit</div><div><span class="icon cross">✖</span></div><div>Unlimited</div></div>
+    <div class="pricing-row"><div>Team member type</div><div><span class="icon cross">✖</span></div><div>Paid</div></div>
+    <div class="pricing-row"><div>Team member size</div><div><span class="icon cross">✖</span></div><div>Unlimited</div></div>
+    <div class="pricing-row"><div>Cost per team member</div><div><span class="icon cross">✖</span></div><div>$30/month</div></div>
+    
+    <!-- Trial Buttons -->
+    <div class="pricing-row">
+      <div></div>
+      <div><button class="trial-btn">Start Trial $1</button></div>
+      <div><button class="trial-btn">Start Trial $1</button></div>
+    </div>
+
+  </div>
+</section>
+
+<section id="Contact-us" class="container1 executive-plan-section">
+  <div class="executive-card">
+    <div class="executive-content">
+      <div class="executive-icon">
+        <img src="Group_people.svg" alt="Executive Plan Icon" />
+      </div>
       <div class="executive-text">
-        <h4>Get the Executive Plan tailored to your specific needs.</h4>
+        <h3>Get the Executive Plan tailored to your specific needs.</h3>
         <p>For the Executive Plan, please provide your contact details, and our agent will reach out to you.</p>
       </div>
-      <form class="executive-form">
-        <input type="email" placeholder="Your Email" required />
-        <input type="text" placeholder="Contact Number" required />
-        <button type="submit">Get a Quote</button>
-      </form>
     </div>
+    <form class="executive-form" #form="ngForm" (ngSubmit)="getquote(form)" >
+      <input type="email" [(ngModel)]="email" name="email" required #emailField="ngModel" placeholder="Your Email" />
+      <div class="error" *ngIf="emailField.invalid && emailField.touched">
+        email is required.
+      </div>
+      <input type="tel" [(ngModel)]="phone" required #phoneField="ngModel" name="phone" placeholder="Contact Number" />
+      <div class="error" *ngIf="phoneField.invalid && phoneField.touched">
+        phone is required.
+      </div>
+      <button type="submit">Get a Quote</button>
+    </form>
   </div>
 </section>
+
+
+<!-- Call to Action Section with Image Background -->
+<section class="cta-footer-image">
+    <img src="Main.jpg" alt="CTA and Footer Image" />
+  </section>
+
+<!-- Footer Section -->
+
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Left: Logo -->
+    <div class="footer-left">
+      <img src="8cbac377-06cb-4b50-b3ab-c5c763c7a580.png" alt="DashDoxs Logo" class="logo" />
+      
+    </div>
+
+    <!-- Right: Navigation Links -->
+    <div class="footer-nav">
+      <a href="#">Features</a>
+      <a href="#">How it works</a>
+      <a href="#">Why Choose Us</a>
+      <a href="#">Pricing Plan</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </div>
+     <div class="footer-social">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+        <img src="1.svg" alt="Facebook" class="social-icon" />
+      </a>
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+        <img src="2.svg" alt="Instagram" class="social-icon" />
+      </a>
+      <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+        <img src="3.svg" alt="Twitter" class="social-icon" />
+      </a>
+      <a href="https://github.com" target="_blank" aria-label="GitHub">
+        <img src="4.svg" alt="GitHub" class="social-icon" />
+      </a>
+    </div>
+    
+  </div>
+</footer>
+
+  <div class="footer-bottom">
+  <span>© Copyright 2022, All Rights Reserved</span>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms & Conditions</a>
+  </div>
+</div>
+
+
+
 
 
 </div>

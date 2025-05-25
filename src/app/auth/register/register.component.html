@@ -90,18 +90,23 @@
 
       <button type="submit" class="submit-button">Next</button>
     </form>
-    <form *ngIf="currentStep === 3"  (ngSubmit)="completeStep3()" #signupForm="ngForm">
+    <form *ngIf="currentStep === 3"  (ngSubmit)="completeStep3()" #signupForm="ngForm" novalidate>
       <label for="password">Set New Password</label>
       <input type="password" [(ngModel)]="password" name="password" id="password" placeholder="e.g. 11 Digits" />
 
       <label for="confirmPassword">Confirm Password</label>
       <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" id="confirmPassword" placeholder="e.g. 11 Digits" />
-
+      <div class="error" *ngIf="submitted && password !== confirmPassword">
+        Passwords do not match.
+      </div>
       <div class="checkbox">
-        <input type="checkbox" id="terms" checked />
+        <input type="checkbox" [(ngModel)]="acceptedTerms"  name="acceptedTerms" id="terms" required />
         <label for="terms">
           I accept the <a href="#">Terms & Conditions</a>
         </label>
+      </div>
+      <div class="error" *ngIf="submitted && !acceptedTerms">
+        You must accept the Terms & Conditions.
       </div>
 
       <button type="submit" class="sign-up">Sign Up</button>
