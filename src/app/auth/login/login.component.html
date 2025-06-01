@@ -1,8 +1,8 @@
 <div class="container">
   <div class="left-panel">
     <div class="branding">
-      <img src="logo.png" alt="Dashdoxs Logo" class="logo" />
-      <h1>Collect Documents, Beat Deadlines, <br />Win Grants.</h1>
+      
+      <h1>More Winning, No Hassles! </h1>
     </div>
     <div class="features">
       <div class="feature-box">
@@ -14,7 +14,7 @@
         <p>Track, approve, and download documents on a click.</p>
       </div>
       <div class="feature-box">
-        <h3>Works in Teams</h3>
+        <h3>Work in Teams</h3>
         <p>Work in teams of two or more for bigger projects.</p>
       </div>
       <div class="feature-box">
@@ -30,9 +30,10 @@
 
   <div class="right-panel">
     <div class="login-box">
+      <a href="/"><img _ngcontent-ng-c2215438375="" src="8cbac377-06cb-4b50-b3ab-c5c763c7a580.png" alt="DashingDox Logo" class="logo1"></a>
       <h2>Welcome Back!</h2>
-      <p>New to Dashdox? <a href="/sign-up">Sign Up</a></p>
-
+      <p>New to DashDoxs? <a href="/sign-up">Sign Up</a></p>
+      <div  *ngIf="!showForgotPassword">
       <form #form="ngForm" (ngSubmit)="onLogin(form)">
         <label>Email</label>
         <input type="email" [(ngModel)]="email" name="email" placeholder="Enter email" />
@@ -40,11 +41,33 @@
         <label>Password</label>
         <input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password" />
 
-        <a href="#" class="forgot">Forget password?</a>
+        <a (click)="showForgotPassword = true" class="forgot" style="cursor: pointer;">Forgot Password?</a>
 
         <button type="submit" >Sign In</button>
         
       </form>
+    </div>
+      <div  *ngIf="showForgotPassword">
+        <ng-container *ngIf="!emailSent; else thankYou">
+      <form #form="ngForm" (ngSubmit)="onForgotPassword(form)">
+        <label>Enter Email</label>
+        <input type="email" [(ngModel)]="email" name="email" required email #emailField="ngModel" placeholder="Enter email" />
+      <div class="error-message" *ngIf="emailField.invalid && emailField.touched">
+        <div *ngIf="emailField.errors?.['required']">Email is required.</div>
+        <div *ngIf="emailField.errors?.['email']">Invalid email format.</div>
+      </div>
+
+        <button type="submit" >Submit</button>
+        
+      </form>
+      </ng-container>
+      <ng-template #thankYou>
+        <h3>Reset Link Sent</h3>
+        <p>A reset link has been sent to <strong>{{ email }}</strong>.</p>
+        <p>Please check your inbox. The link expires in 15 minutes.</p>
+        <a (click)="showForgotPassword = false" style="cursor: pointer;">Back to Sign In</a>
+      </ng-template>
+    </div>
       <div *ngIf="loginError" class="error-message">
           {{ loginError }}
         </div>
@@ -56,4 +79,5 @@
       <a href="#" class="footer-inner">Terms of Service</a>
     </div>
   </div>
+  
 </div>

@@ -28,10 +28,10 @@ import { AppComponent } from './app.component';
 import { BlankLayoutComponent } from './blank-layout/blank-layout.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AuthGuard } from './interceptors/auth.guard';
-import { RegisterStep2Component } from './auth/register-step2/register-step2.component';
 import { WeblayoutComponent } from './weblayout/weblayout.component';
 import { HomepageComponent } from './weblayout/homepage/homepage.component';
 import { NgModule } from '@angular/core';
+import { PasswordresetComponent } from './auth/passwordreset/passwordreset.component';
 
 
 export const routes: Routes = [
@@ -77,7 +77,7 @@ export const routes: Routes = [
     children: [
       { path: 'sign-in', component: LoginComponent },
       { path: 'sign-up', component: RegisterComponent },
-      { path: 'confirm-password', component: RegisterStep2Component },
+      { path: 'reset-password', component: PasswordresetComponent },
       // routes without header/footer
     ]
   },

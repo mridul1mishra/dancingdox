@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { EmailService } from '../../service/email.service';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,11 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   email: string = '';
   password: string = '';
-loginError: string = ''; 
-  constructor(private authService: AuthService, private router: Router) {}
+loginError: string = '';
+showForgotPassword = false;
+message = ''; 
+emailSent: boolean = false;
+  constructor(private authService: AuthService, private router: Router, private emailservice: EmailService) {}
   ngOnInit(): void {
     // Optionally, check if a token exists in localStorage
     if (localStorage.getItem('authToken')) {
@@ -43,7 +47,13 @@ loginError: string = '';
       }
     });
   }
-
+  onForgotPassword(form: NgForm): void {
+    this.emailservice.resetEmail(this.email)
+      .subscribe({
+      next: () => this.emailSent = true,
+      error: () => this.message = 'Something went wrong. Try again.'
+      });
+  }
   onLogout() {
     // Remove token from localStorage (or sessionStorage)
     localStorage.removeItem('authToken');
@@ -52,6 +62,6 @@ loginError: string = '';
   }
 
   goToRegister() {
-    window.location.href = 'http://157.245.87.25:4200/register';
+    window.location.href = 'http://www.dashdoxs.com/register';
   }
 }

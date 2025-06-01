@@ -1,10 +1,8 @@
-
-
 <div class="container">
   <div class="left-panel">
     <div class="branding">
-      <img src="logo.png" alt="Dashdoxs Logo" class="logo" />
-      <h1>Collect Documents, Beat Deadlines, <br />Win Grants.</h1>
+      
+      <h1>More Winning, No Hassles!</h1>
     </div>
     <div class="features">
       <div class="feature-box">
@@ -16,7 +14,7 @@
         <p>Track, approve, and download documents on a click.</p>
       </div>
       <div class="feature-box">
-        <h3>Works in Teams</h3>
+        <h3>Work in Teams</h3>
         <p>Work in teams of two or more for bigger projects.</p>
       </div>
       <div class="feature-box">
@@ -30,7 +28,7 @@
     </div>
   </div>
   <div class="right-panel"><div class="form-box">
-    <img src="logodancing.png" alt="DashingDox Logo" class="logo" />
+    <a href="/"><img _ngcontent-ng-c2215438375="" src="8cbac377-06cb-4b50-b3ab-c5c763c7a580.png" alt="DashingDox Logo" class="logo1"></a>
     <h2>Join <strong>DashDoxs</strong></h2>
     <p class="subtext">
       Already Have an Account? <a href="/sign-in">Sign In</a>
@@ -39,15 +37,15 @@
     <form *ngIf="currentStep === 1" #form="ngForm" (ngSubmit)="completeStep1(form)">
       <div class="form-row">
         <div class="form-field">
-          <label for="firstName"><strong>First Name</strong></label>
-          <input type="text" [(ngModel)]="firstName" name="firstName" required #firstNameField="ngModel" placeholder="e.g. John" [ngModelOptions]="{standalone: true}" />
+          <label for="firstName">First Name</label>
+          <input type="text" [(ngModel)]="firstName" name="firstName" required #firstNameField="ngModel" placeholder="e.g. John"  />
         <div class="error" *ngIf="firstNameField.invalid && firstNameField.touched">
         First name is required.
         </div>
         </div>
         <div class="form-field">
-          <label for="lastName"><strong>Last Name</strong></label>
-          <input type="text" [(ngModel)]="lastName" name="lastName" required #lastNameField="ngModel" placeholder="e.g. Lonado" [ngModelOptions]="{standalone: true}"/>
+          <label for="lastName">Last Name</label>
+          <input type="text" [(ngModel)]="lastName" name="lastName" required #lastNameField="ngModel" placeholder="e.g. Lonado" />
         <div class="error" *ngIf="lastNameField.invalid && lastNameField.touched">
         Last name is required.
         </div></div>
@@ -55,15 +53,15 @@
 
       <div class="form-row">
         <div class="form-field">
-          <label for="designation"><strong>Designation</strong></label>
-          <input [(ngModel)]="designation" id="designation" name="designation" required #designationField="ngModel" />
+          <label for="designation">Designation</label>
+          <input [(ngModel)]="designation" id="designation" name="designation" required #designationField="ngModel" placeholder="e.g. Professor"/>
           
           <div class="error" *ngIf="designationField.invalid && designationField.touched">
             Designation is required.
           </div>
         </div>
         <div class="form-field">
-          <label for="organization"><strong>Organization</strong></label>
+          <label for="organization">Organization</label>
           <input type="text" id="organization" placeholder="e.g. Clemnson University" [(ngModel)]="organization" name="organization" required #organizationField="ngModel" />
         <div class="error" *ngIf="organizationField.invalid && organizationField.touched">
             Organization is required.
@@ -72,18 +70,19 @@
       </div>
 
       <div class="form-field full-width">
-        <label for="email"><strong>Email Address</strong></label>
-        <input type="email" [(ngModel)]="email" name="email" id="email" placeholder="e.g. John@youremail.com" required #emailField="ngModel" />
-        <div class="error" *ngIf="emailField.invalid && emailField.touched">
-            Email is required.
-        </div>
+        <label for="email">Email Address</label>
+        <input type="email" [(ngModel)]="email" name="email" required email #emailField="ngModel" placeholder="e.g. John@youremail.com" />
+      <div class="error" *ngIf="emailField.invalid && emailField.touched">
+        <div *ngIf="emailField.errors?.['required']">Email is required.</div>
+        <div *ngIf="emailField.errors?.['email']">Invalid email format.</div>
+      </div>
       </div>
 
       <button type="submit" class="submit-button">Next</button>
     </form>
     <form *ngIf="currentStep === 2" (ngSubmit)="completeStep2()">
       <div class="form-field full-width">
-        <label for="email"><strong>Enter OTP sent to your email</strong></label>
+        <label for="email">Enter OTP sent to your email</label>
         <input type="text" id="otp" [(ngModel)]="otp" placeholder="e.g. 6 digits OTP" [ngModelOptions]="{standalone: true}"/>
         <label for="text">Didn't you receive the OTP? Resend OTP</label>
       </div>

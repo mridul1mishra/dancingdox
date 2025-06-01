@@ -63,7 +63,7 @@ export class GetProjectDetailsComponent {
    ? this.projectForm.value.members.split(',').map((member: string) => member.trim())  // Split members into an array
    : []
    };
-   this.http.post('http://157.245.87.25:3000/add-project', projectData).subscribe({
+   this.http.post('https://www.dashdoxs.com/add-project', projectData).subscribe({
      next: () => {
        console.log('Project added to CSV!');        
      },

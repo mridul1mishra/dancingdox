@@ -10,4 +10,8 @@ router.get('/get', authController.getCSV);
 router.post('/send-email', emailController.sendEmail);
 router.post('/send-quote', emailController.quoteEmail);
 router.post('/verify-otp', emailController.verifyOtp);
+router.post('/reset-link', emailController.sendResetLinkEmail);
+router.post('/reset-password', authController.passReset);
+router.post('/verify-reset-token', emailController.validateResetToken);
+
 module.exports = router;

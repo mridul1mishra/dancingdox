@@ -118,3 +118,49 @@ exports.getCSV = (req, res) => {
       res.status(500).json({ error: 'Server error while reading CSV' });
     });
 };
+
+exports.passReset = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+
+  fs.readFile(csvFilePath, 'utf8', async (err, data) => {
+    if (err) {
+      console.error('Error reading CSV file:', err);
+      return res.status(500).json({ message: 'Server error while reading user file' });
+    }
+
+    const lines = data.trim().split('\n');
+    const headers = lines[0];
+    const users = lines.slice(1);
+
+    let found = false;
+
+    const updatedUsers = await Promise.all(users.map(async (line) => {
+      const [userEmail, _password, ...rest] = line.split(',');
+      if (userEmail.trim() === email) {
+        found = true;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        return [userEmail, hashedPassword, ...rest].join(',');
+      }
+      return line;
+    }));
+
+    if (!found) {
+      return res.status(404).json({ message: 'Email not found in system' });
+    }
+
+    const updatedCsv = [headers, ...updatedUsers].join('\n');
+
+    fs.writeFile(csvFilePath, updatedCsv, (err) => {
+      if (err) {
+        console.error('Error writing to CSV:', err);
+        return res.status(500).json({ message: 'Failed to update password' });
+      }
+
+      return res.status(200).json({ message: 'Password updated successfully' });
+    });
+  });
+};

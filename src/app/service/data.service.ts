@@ -11,7 +11,7 @@ export class DataService {
   projects: Project[] = [];
   constructor(private http: HttpClient) { }
   getAllProjects(): Observable<Project[]> {
-    return this.http.get('http://157.245.87.25:3000/csv-to-json', {
+    return this.http.get('https://www.dashdoxs.com/csv-to-json', {
       responseType: 'text' as const
     }).pipe(
       map(csv => this.parseCsvToProjects(csv)),  // Parse CSV to Project array
@@ -89,6 +89,6 @@ private smartSplit(line: string): string[] {
     }));
   }
   updateProjectAssignedCollab(id: number, data: { docassigned: DocumentCollab[] }) {
-    return this.http.patch(`http://157.245.87.25:3000/assigned-collaborators/${id}`, data);
+    return this.http.patch(`https://www.dashdoxs.com/assigned-collaborators/${id}`, data);
   }
 }

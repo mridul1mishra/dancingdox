@@ -3,29 +3,28 @@
   <!-- Top Navigation -->
   <header class="navbar">
     <div class="logo">
-        <img src="8cbac377-06cb-4b50-b3ab-c5c763c7a580.png" alt="DashingDoxs Logo" />
+        <img src="8cbac377-06cb-4b50-b3ab-c5c763c7a580.png" alt="DashDoxs Logo" />
     </div>
     <nav class="nav-links">
       <a href="#">Features</a>
-      <a (click)="scrollToSection('how-it-works')">How it Works</a>
-      <a (click)="scrollToSection('why-choose-us')">Why Choose Us</a>
-      <a (click)="scrollToSection('pricing-plan')">Pricing Plan</a>
-      <a (click)="scrollToSection('Contact-us')">Contact</a>
+      <a (click)="scrollToSection('how-it-works')" style="cursor: pointer;">How it Works</a>
+      <a (click)="scrollToSection('why-choose-us')" style="cursor: pointer;">Why Choose Us</a>
+      <a (click)="scrollToSection('pricing-plan')" style="cursor: pointer;">Pricing Plan</a>
+      <a (click)="scrollToSection('Contact-us')" style="cursor: pointer;">Contact</a>
     </nav>
     <div class="nav-actions">
-      <a href="/sign-in" class="login">Log In</a>
+      <a href="/sign-in" class="login">Sign In</a>
       <a href="/sign-up" class="signup">Sign Up →</a>
     </div>
   </header>
 
   <!-- Hero Section -->
   <section class="hero">
-    <h1>Streamline Your Projects,<br>Elevate Your Teamwork</h1>
+    <h1>More Winning, No Hassles!</h1>
     <p>
-      Create, collaborate, and manage projects seamlessly—whether solo or with a team.<br>
-      Experience ultimate flexibility with public and private projects.
+      Create, collaborate, and manage solo or team projects,<br> seamlessly collecting documents from known and unknown collaborators.
     </p>
-    <button class="cta-button">Get Started for Free →</button>
+    <button class="cta-button" [routerLink]="['/sign-up']">Start trial for only $1 →</button>
   </section>
 
   <!-- Screenshot Preview -->
@@ -37,11 +36,10 @@
 <section id="how-it-works" class="how-it-works">
   <div class="container">
     <div class="features-header">
-      <span class="tag">How it Works</span>
+      <span (click)="scrollToTop()" class="tag" style="cursor: pointer;">How it Works</span>
       <h2>Get Started in Just<br><span class="highlight">a Few Steps</span></h2>
       <p class="subtitle">
-        Creating and managing projects<br> has never been easier.
-        
+        Creating and managing projects<br> for collecting documents has never been easier.        
       </p>
     </div>
     <div class="how-it-works-content">
@@ -56,29 +54,36 @@
           <div class="step">
             <span class="step-icon">I</span>
             <div class="step-text">
-              <h4>Create a Team or Personal Project</h4>
+              <h4>Create a Team or Solo Project</h4>
               <p>Start by setting up a project that suits your workflow.</p>
             </div>
           </div>
           <div class="step">
             <span class="step-icon">II</span>
             <div class="step-text">
-              <h4>Choose Privacy: Public or Private</h4>
-              <p>Control who can access your project with flexible privacy settings.</p>
+              <h4>Choose a Project Mode: Public or Private</h4>
+              <p>Control who can access your project with flexible settings.</p>
             </div>
           </div>
           <div class="step">
             <span class="step-icon">III</span>
             <div class="step-text">
-              <h4>Choose Collaborators</h4>
-              <p>Invite team members by email or share the project ID for public access.</p>
+              <h4>Invite Collaborators at Zero Cost to them</h4>
+              <p>Use emails to invite collaborators (private mode) or a public ID (public mode).</p>
             </div>
           </div>
           <div class="step">
             <span class="step-icon">IV</span>
             <div class="step-text">
-              <h4>Define Documents & Set a Deadline</h4>
-              <p>Specify required document uploads and establish a clear timeline.</p>
+              <h4>Manage Projects with a Click</h4>
+              <p>Live status, automatic reminders, approve/disapprove submitted documents.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-icon">V</span>
+            <div class="step-text">
+              <h4>After the Deadline</h4>
+              <p>Download the submitted and approved documents for submitting the grant proposal.</p>
             </div>
           </div>
         </div>
@@ -88,10 +93,10 @@
 </section>
 <section id="why-choose-us" class="why-choose-us">
   <div class="container">
-    <span class="tag">Why Choose Us</span>
-    <h2>Why Choose <br><span>DashingDoxs?</span></h2>
+    <a class="tag" (click)="scrollToTop()" style="cursor: pointer;">Why Choose Us</a>
+    <h2>Why Choose <br><span>DashDoxs?</span></h2>
     <p class="description">
-      Designed for efficiency, flexibility, and seamless collaboration, DashingDoxs empowers individuals and teams to manage projects with ease.
+      Designed for efficiency, flexibility, and seamless collaboration, DashDoxs empowers individuals and teams to manage projects with ease.
       From secure document handling to effortless teamwork, we provide the tools you need to stay productive.
     </p>
 
@@ -104,7 +109,7 @@
       <div class="feature-card1">
         <img src="Group2.svg" alt="Privacy Icon" />
         <h4>Robust Privacy Controls</h4>
-        <p>Choose between public and private projects for enhanced security.</p>
+        <p>Choose between public and private modes for enhanced security.</p>
       </div>
       <div class="feature-card1">
         <img src="Group3.svg" alt="Team Collaboration Icon" />
@@ -119,16 +124,16 @@
     </div>
 
     <div class="cta1">
-      <a href="#" class="cta-button1">Get Started for Free <span>→</span></a>
+      <a href="/sign-up" class="cta-button1">Start trial for only $1 <span>→</span></a>
     </div>
   </div>
 </section>
-<section id="pricing-plan" class="container1 pricing-section">
-  <div class="features-pricing">
-      <span class="tag">Plans</span>
-      <h2>Flexible Plans for<br><span class="highlight">Every Workflow</span></h2>
+<section id="pricing-plan" class="why-choose-us">
+  <div class="container">
+      <span class="tag" (click)="scrollToTop()" style="cursor: pointer;">Plans</span>
+      <h2>Flexible Plans For <span class="highlight">Every Workflow</span></h2>
       <p class="subtitle">
-        Whether you are an individual a growing<br>team, or a large enterprise, Dashdoxs offer the perfect plan.
+        Whether you are an individual a growing team, or a large enterprise, DashDoxs offer the perfect plan.
         
       </p>
     </div>
@@ -136,71 +141,98 @@
     
     <!-- Billing Toggle -->
     <div class="billing-toggle">
-      <button class="toggle">Monthly</button>
-      <button class="toggle active">Yearly <span class="discount">10% OFF</span></button>
+      <button class="toggle" [ngClass]="{ 'active': selectedPlan === 'personal' }" (click)="selectPlan('personal')">Individual Plan</button>
+      <button class="toggle" [ngClass]="{ 'active': selectedPlan === 'team' }"     (click)="selectPlan('team')">Team Plan(10% OFF)</button>
     </div>
 
     <!-- Plan Headers -->
-    <div class="pricing-header-row">
+    <div class="pricing-header-row" *ngIf="selectedPlan === 'team'">
       <div class="label-cell"></div>
       <div class="plan-cell">
-        <img src="Group40463.png" alt="Personal Icon" />
+        <img src="Group40461.svg" alt="Team Icon" />
         <div>
-          <h4>Personal Plan</h4>
-          <p class="price">$27 <span>/month</span></p>
+          <h4>Monthly/Team Member/Team</h4>
+          <p class="price">$27 <span>(+tax)</span></p>
         </div>
       </div>
       <div class="plan-cell">
         <img src="Group40461.svg" alt="Team Icon" />
         <div>
-          <h4>Team Plan</h4>
-          <p class="price">$27 <span>/user/month</span></p>
+          <h4>Annual/Team Member/Team</h4>
+          <p class="price">$324 <span>(+tax)</span></p>
         </div>
+      </div>
+    </div>
+    <div class="pricing-header-row" *ngIf="selectedPlan === 'personal'">
+      <div class="label-cell"></div>
+      <div class="plan-cell">
+        <img src="Group2.png" alt="Personal Icon" />
+        <div>
+          <h4>Monthly</h4>
+          <p class="price">$30 <span>(+tax)</span></p>
+        </div>
+      </div>
+      <div class="plan-cell">
+        <img src="Group2.png" alt="Personal Icon" />
+        <div>
+          <h4>Annual</h4>
+          <p class="price">$360 <span>(+tax)</span></p>
+        </div>
+        
       </div>
     </div>
 
     <!-- Feature Rows -->
-    <div class="pricing-row"><div>Collaborators</div><div>200</div><div>250</div></div>
-    <div class="pricing-row"><div>Space</div><div>40 GiB</div><div>50 GiB</div></div>
-    <div class="pricing-row"><div>Duration</div><div>30 Days</div><div>30 Days</div></div>
-    <div class="pricing-row"><div>Team mode</div><div><span class="icon cross">✖</span></div><div><span class="icon check">✔</span></div></div>
-    <div class="pricing-row"><div>Team limit</div><div><span class="icon cross">✖</span></div><div>Unlimited</div></div>
-    <div class="pricing-row"><div>Team member type</div><div><span class="icon cross">✖</span></div><div>Paid</div></div>
-    <div class="pricing-row"><div>Team member size</div><div><span class="icon cross">✖</span></div><div>Unlimited</div></div>
-    <div class="pricing-row"><div>Cost per team member</div><div><span class="icon cross">✖</span></div><div>$30/month</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'personal'"><div>Collaborators (active)</div><div>250</div><div>300 (20% more)</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'personal'"><div>Space</div><div>40 GiB</div><div>50 GiB (25% more)</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'personal'"><div>Duration</div><div>30 Days</div><div>365 Days</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'personal'"><div>Support Member</div><div>1</div><div>1</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Collaborators (active)</div><div>250</div><div>300 (20% more)</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Space</div><div>40 GiB</div><div>300 GiB  (25% more)</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Duration</div><div>30 Days</div><div>365 Days</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Support Member</div><div>1</div><div>1</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Minimum Team Members</div><div>2</div><div>2</div></div>
+    
     
     <!-- Trial Buttons -->
     <div class="pricing-row">
       <div></div>
-      <div><button class="trial-btn">Start Trial $1</button></div>
-      <div><button class="trial-btn">Start Trial $1</button></div>
+      <div><a href="sign-up" class="trial-btn">Start Trial $1</a></div>
+      <div><a href="sign-up" class="trial-btn">Start Trial $1</a></div>
     </div>
 
   </div>
 </section>
 
-<section id="Contact-us" class="container1 executive-plan-section">
-  <div class="executive-card">
-    <div class="executive-content">
+<section id="Contact-us" class="why-choose-us">
+  <div class="container">
+    <div class="features-header">
+      <span (click)="scrollToTop()" class="tag" style="cursor: pointer;">Contact Us</span>
+      <h2>We are looking forward to your inputs. </h2>
       <div class="executive-icon">
         <img src="Group_people.svg" alt="Executive Plan Icon" />
-      </div>
-      <div class="executive-text">
-        <h3>Get the Executive Plan tailored to your specific needs.</h3>
-        <p>For the Executive Plan, please provide your contact details, and our agent will reach out to you.</p>
+        <span class="executive-subtext">Please fill out the form, and we will get back to you soon.</span>
       </div>
     </div>
+    <div *ngIf="!submitted">
     <form class="executive-form" #form="ngForm" (ngSubmit)="getquote(form)" >
-      <input type="email" [(ngModel)]="email" name="email" required #emailField="ngModel" placeholder="Your Email" />
+      <div class="row">
+        <input type="email" [(ngModel)]="email" name="email" required email #emailField="ngModel" placeholder="Your Email" />      
+        <input type="tel" [(ngModel)]="phone"  #phoneField="ngModel" name="phone" placeholder="Contact Number" />
+      </div>
+      <textarea [(ngModel)]="message" name="message" #messageField="ngModel" placeholder="Type your message..." class="message-box"></textarea>
+      <button type="submit">Submit</button>
       <div class="error" *ngIf="emailField.invalid && emailField.touched">
-        email is required.
+        <div class="error-message" *ngIf="emailField.errors?.['required']">Email is required.</div>
+        <div class="error-message" *ngIf="emailField.errors?.['email']">Invalid email format.</div>
       </div>
-      <input type="tel" [(ngModel)]="phone" required #phoneField="ngModel" name="phone" placeholder="Contact Number" />
-      <div class="error" *ngIf="phoneField.invalid && phoneField.touched">
-        phone is required.
-      </div>
-      <button type="submit">Get a Quote</button>
     </form>
+    </div>
+    
+    <!-- Thank you message with countdown -->
+<div *ngIf="submitted" class="thank-you">
+  <p>Thank you for contacting us! Redirecting in {{ countdown }} seconds...</p>
+</div>
   </div>
 </section>
 
@@ -223,32 +255,31 @@
     <!-- Right: Navigation Links -->
     <div class="footer-nav">
       <a href="#">Features</a>
-      <a href="#">How it works</a>
-      <a href="#">Why Choose Us</a>
-      <a href="#">Pricing Plan</a>
-      <a href="#">FAQ</a>
-      <a href="#">Contact</a>
+      <a (click)="scrollToSection('how-it-works')" style="cursor: pointer;">How it Works</a>
+      <a (click)="scrollToSection('why-choose-us')" style="cursor: pointer;">Why Choose Us</a>
+      <a (click)="scrollToSection('pricing-plan')" style="cursor: pointer;">Pricing Plan</a>
+      <a (click)="scrollToSection('Contact-us')" style="cursor: pointer;">Contact</a>
     </div>
      <div class="footer-social">
-      <a href="https://facebook.com" target="_blank" aria-label="Facebook">
-        <img src="1.svg" alt="Facebook" class="social-icon" />
-      </a>
-      <a href="https://instagram.com" target="_blank" aria-label="Instagram">
-        <img src="2.svg" alt="Instagram" class="social-icon" />
-      </a>
-      <a href="https://twitter.com" target="_blank" aria-label="Twitter">
-        <img src="3.svg" alt="Twitter" class="social-icon" />
-      </a>
-      <a href="https://github.com" target="_blank" aria-label="GitHub">
-        <img src="4.svg" alt="GitHub" class="social-icon" />
-      </a>
+      <p>
+        &nbsp;
+      </p>
+      <p>
+        &nbsp;
+      </p>
+      <p>
+        &nbsp;
+      </p>
+      <p>
+        &nbsp;
+      </p>
     </div>
     
   </div>
 </footer>
 
   <div class="footer-bottom">
-  <span>© Copyright 2022, All Rights Reserved</span>
+  <span>© Copyright 2025, All Rights Reserved by LongLeapDotOne, LLC.</span>
   <div class="footer-links">
     <a href="#">Privacy Policy</a>
     <a href="#">Terms & Conditions</a>

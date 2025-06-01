@@ -66,18 +66,30 @@
 }
 
 .login-box {
-  max-width: 400px;
-  margin: auto;
-}
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px #0000001a;
+    width: 500px;
+    text-align: left;
 
+}
+.logo1 {
+  display: block;
+  margin: 0 auto 10px;
+  width: 160px;
+}
 .login-box h2 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .login-box p {
   margin-bottom: 2rem;
+   text-align: center;
 }
 
 .login-box a {
@@ -130,8 +142,8 @@ button[type="submit"]:hover {
   display: flex;
   font-size: 0.85rem;
   color: #999;
-
-  justify-content: center;
+  padding: 10px 0 0 180px;
+  
 }
 
 .footer-inner{

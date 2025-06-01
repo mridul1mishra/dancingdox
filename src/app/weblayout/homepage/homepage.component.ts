@@ -13,26 +13,58 @@ import { ExtraOptions, RouterModule } from '@angular/router';
 
 
 export class HomepageComponent {
+  selectedPlan: 'personal' | 'team' = 'team'; // or 'personal' as default
   email: string = '';
   phone: string = '';
+  message: string = '';
+  submitted = false;
+  countdown: number = 10;
+  countdownInterval: any;
+  
   constructor(private emailservice: EmailService){}
-getquote(form: NgForm){
-if (form.valid) {
-  this.emailservice.quoteEmail(this.email, 'Get Quote', 'Thankyou for contacting ')
-      .subscribe({
-       next: () => {
-        console.log('Email sent!');
-       },
-        error: err => console.log('Failed: ' + err.message)
-      });
-}else {
+ getquote(form: NgForm) {
+    if (form.valid) {
+      this.emailservice.quoteEmail(this.email, 'Get Quote', 'Thank you for contacting')
+        .subscribe({
+          next: () => {
+            this.submitted = true;
+            this.countdown = 10;
+
+            this.countdownInterval = setInterval(() => {
+              this.countdown--;
+              if (this.countdown === 0) {
+                clearInterval(this.countdownInterval);
+                this.resetForm(form);
+              }
+            }, 1000);
+          },
+          error: err => {
+            console.log('Failed: ' + err.message);
+          }
+        });
+    } else {
       Object.values(form.controls).forEach(control => control.markAsTouched());
     }
-}
+  }
+
+  resetForm(form: NgForm) {
+    this.submitted = false;
+    this.email = '';
+    this.phone = '';
+    this.message = '';
+    form.resetForm();
+  }
 scrollToSection(sectionId: string) {
   const element = document.getElementById(sectionId);
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
+scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+selectPlan(plan: 'personal' | 'team') {
+  this.selectedPlan = plan;
+}
+
 }

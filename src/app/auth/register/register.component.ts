@@ -75,13 +75,14 @@ export class RegisterComponent {
   completeStep2() {
     if (this.otp) {
       const stored = JSON.parse(localStorage.getItem('userData') || '{}');
-      localStorage.setItem('step2Completed', 'true');
-      this.currentStep = 3;
       this.emailservice.sendOtp(stored.email, this.otp).subscribe({
         next: () => {
           alert('otp verified');
+          localStorage.setItem('step2Completed', 'true');
+          this.currentStep = 3;
         },
-        error: err => alert('Failed: ' + err.message)
+        error: err => {console.log('Failed:', err.message);alert('invalid otp'); }
+        
       });
       
     } else {

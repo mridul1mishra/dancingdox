@@ -152,7 +152,7 @@ export class AssigndoctocollabComponent {
         this.projects = data;
         this.lastProject = data[data.length - 1];
         this.lastProject.docassigned = this.project?.docassigned!;
-        this.http.post('http://157.245.87.25:3000/update-projects', this.projects).subscribe({
+        this.http.post('https://www.dashdoxs.com/update-projects', this.projects).subscribe({
           next: () => console.log('CSV updated successfully'),
           error: err => console.error('Error updating CSV:', err)
         });
