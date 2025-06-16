@@ -28,7 +28,12 @@ export class CollaboratorComponent {
   closeModal() {
     this.showModal = false;
   }
+
+  confirm(){
+    this.showDialog = true; // Show modal when Add is clicked
+  }
   addDocuments() {
+    this.showDialog = false;
     this.dataService.getAllProjects().subscribe({
       next: (data) => {
         console.log('Received Projects:', data);
@@ -36,9 +41,13 @@ export class CollaboratorComponent {
         this.lastProject = data[data.length - 1];  // Get the last project
         this.lastProject.collabCount = this.collabCount;
         console.log('Last Project:', this.lastProject.collabCount);
-        this.http.post('https://www.dashdoxs.com/update-projects', this.projects)
+        this.http.post('https://www.dashdoxs.com/api/update-projects', this.projects)
         .subscribe({
-          next: () => console.log('Projects updated successfully in CSV'),
+          next: () => {
+          console.log('Projects updated successfully in CSV');
+          const projectId = this.lastProject.id; // Replace with correct property if different
+          this.router.navigate(['/projects', projectId]);
+        },
           error: (err) => console.error('Error updating CSV:', err)
         });
       },
@@ -50,12 +59,7 @@ export class CollaboratorComponent {
     
     
   }
-  confirm() {
-  this.showDialog = false;
-  this.showModal = true;
-  console.log('Project created!');
-  // You can call your createProject() method here
-}
+  
 cancel() {
   this.showDialog = false;
 }

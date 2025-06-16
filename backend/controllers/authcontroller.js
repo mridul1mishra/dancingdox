@@ -16,7 +16,7 @@ if (!fs.existsSync(csvFilePath)) {
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  console.log('Login attempt with', email);
+  console.log('Login attempt with', password);
 
   fs.readFile(csvFilePath, 'utf8', (err, data) => {
     if (err) {
@@ -57,31 +57,39 @@ exports.login = (req, res) => {
 };
 
 
+
+
 exports.register = (req, res) => {
   const { email, password, name } = req.body;
   console.log(email, password, name);
+
   if (!email || !password || !name) {
-    return res.status(400).json({ message: 'Email and password are required' });
+    return res.status(400).json({ message: 'Email, password, and name are required' });
   }
 
-  // Step 1: Read CSV and check for existing email
   fs.readFile(csvFilePath, 'utf8', async (err, data) => {
     if (err) {
-      console.error('Error reading CSV file:', err);
+      console.error('Error reading CSV:', err);
       return res.status(500).json({ message: 'Server error while checking users' });
     }
-    const lines = data.split('\n');
+
+    const lines = data.trim().split('\n');  // Remove trailing whitespace
     const emails = lines.slice(1).map(line => line.split(',')[0].trim());
 
     if (emails.includes(email)) {
       return res.status(409).json({ message: 'User with this email already exists' });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    // Step 2: Append new user
-    const newLine = `${email},${hashedPassword},${name}\n`;
-    fs.appendFile(csvFilePath, newLine, (err) => {
+    let newLine = `${email},${hashedPassword},${name}`;
+
+    // Ensure the file ends with a newline
+    const needsNewline = data.length > 0 && !data.endsWith('\n');
+    const lineToAdd = (needsNewline ? '\n' : '') + newLine + '\n';
+
+    fs.appendFile(csvFilePath, lineToAdd, (err) => {
       if (err) {
-        console.error('Error writing to CSV:', err);
+        console.error('Error appending to CSV:', err);
         return res.status(500).json({ message: 'Failed to register user' });
       }
 
@@ -89,6 +97,7 @@ exports.register = (req, res) => {
     });
   });
 };
+
 exports.getCSV = (req, res) => {
   const { email } = req.query;
 
@@ -121,7 +130,7 @@ exports.getCSV = (req, res) => {
 
 exports.passReset = async (req, res) => {
   const { email, password } = req.body;
-
+console.log(email);
   if (!email || !password) {
     return res.status(400).json({ message: 'Email and password are required' });
   }

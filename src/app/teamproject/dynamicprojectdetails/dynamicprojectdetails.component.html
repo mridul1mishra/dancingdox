@@ -3,7 +3,7 @@
 <div class="card" div *ngIf="project">
   <div class="card-header">
     <h2>{{ project.Name }}</h2>
-    <span class="status active">● Active</span>
+    <span class="status active">● {{project.status}}</span>
   </div>
   <hr class="divider" />
   <div class="card-meta">
@@ -28,7 +28,11 @@
     <button class="support-btn"><i class="fa-solid fa-folder-open"></i> Support Documents</button>
   </div>
 </div>
-<app-colloborator-doc></app-colloborator-doc>
+<div *ngIf="project && user">
+  <div *ngIf="project.Host === user.name">
+    <app-colloborator-doc></app-colloborator-doc>
+  </div>
+</div>
 <app-required-doc [docData]="project"></app-required-doc>
 
       

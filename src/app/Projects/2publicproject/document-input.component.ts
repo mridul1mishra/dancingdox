@@ -79,7 +79,8 @@ export class DocumentInputComponent {
               type: doc.type,
               maxSize: doc.maxSize,
               sizeUnit: doc.sizeUnit,
-              filename: doc.uploadedFile.name
+              filename: doc.uploadedFile.name,
+              date: doc.date
             };
             this.allFilenames.push(metadata2);
           } else {
@@ -98,7 +99,7 @@ export class DocumentInputComponent {
       });
       
       // 2. Upload files to server
-      this.http.post('https://www.dashdoxs.com/upload-multiple', formData).subscribe({
+      this.http.post('http://localhost:3000/api/upload-multiple', formData).subscribe({
         next: () => {
           console.log('Files uploaded successfully');
           this.updateProjectCSV(this.allFilenames); // Continue to CSV update
@@ -133,7 +134,7 @@ export class DocumentInputComponent {
         this.lastProject.docCount = this.docCount;
         this.lastProject.documents = allFilenames;
         console.log("doccount:", this.lastProject.documents )
-        this.http.post('https://www.dashdoxs.com/update-projects', this.projects).subscribe({
+        this.http.post('https://www.dashdoxs.com/api/update-projects', this.projects).subscribe({
           next: () => console.log('CSV updated successfully'),
           error: err => console.error('Error updating CSV:', err)
         });

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { UserProfile } from './document.interface.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class AuthService {
     console.log(user.email);
     return this.http.post(`${this.apiUrl}/register`, user); // adjust API URL as needed
   }
+
   updatePassword(user: { email: string; password: string }): Observable<any> {
     console.log(user.email);
     return this.http.post(`${this.apiUrl}/reset-password`, user); // adjust API URL as needed
@@ -25,13 +27,13 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/logout`, {});
   }
   getUserName(email:string):  Observable<{ name: string, image: string, email:string }>{
-    return this.http.get<{ name: string, image: string, email: string }>(`https://www.dashdoxs.com/api/get?email=${email}`);
+    return this.http.get<{ name: string, image: string, email: string }>(`${this.apiUrl}/get?email=${email}`);
   }
   isLoggedIn(): boolean {
     return localStorage.getItem('isLoggedIn') === 'true';
   }
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('authData');
   }
 
   // Decode the token

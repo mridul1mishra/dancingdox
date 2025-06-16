@@ -13,16 +13,38 @@ exports.addProject = (req, res) => {
     return res.status(400).send('No data received');
   }
 
-  
   const docCounttotal = 10;
   const comments = 10;
   const collabCount = 1;
   const role = 'Owner';
 
-  const newRow = `${project.id},${project.projectName},${project.docCount},${docCounttotal},${comments},${project.startDate},${project.endDate},${project.projectScope},${project.supportStaff},${collabCount},${project.Host},${role},${project.projectDetails}\n`;
+  // Sanitize commas and newlines in string fields
+  const escape = (value) => {
+    if (typeof value === 'string') {
+      return `"${value.replace(/"/g, '""')}"`;  // CSV escaping
+    }
+    return value;
+  };
+
+  const newRow = [
+    project.id,
+    escape(project.projectName),
+    project.docCount,
+    docCounttotal,
+    comments,
+    project.startDate,
+    project.endDate,
+    escape(project.projectScope),
+    escape(project.supportStaff),
+    collabCount,
+    escape(project.Host),
+    role,
+    escape(project.projectDetails)
+  ].join(',') + '\n';
+
   console.log('Received Project Data:', newRow);
 
-  fs.appendFile(csvPath, newRow, (err) => {
+  fs.appendFile(csvPath, newRow, 'utf8', (err) => {
     if (err) {
       console.error('Error writing to CSV:', err);
       return res.status(500).send('Failed to add project');
@@ -49,35 +71,7 @@ exports.updateProjects = (req, res) => {
     return res.status(400).send('Invalid format');
   }
 
-  const headers = Object.keys(projects[0]);
-  const csvRows = projects.map(project => {
-    return headers.map(h => {
-      let val = project[h];
-
-      if (Array.isArray(val)) {
-        // Handle array of objects (like documents)
-        if (val.length > 0 && typeof val[0] === 'object') {
-          // Convert each document object to just the filename or other desired fields
-          const jsonString = JSON.stringify(val).replace(/"/g, '""');
-          return `"${jsonString}"`;
-        }
-        // Handle array of strings
-        return val.join(';');
-      }
-
-      return val !== undefined && val !== null ? val : '';
-    }).join(',');
-  });
-
-  const csv = [headers.join(','), ...csvRows].join('\n');
-
-  fs.writeFile(csvPath, csv, 'utf8', (err) => {
-    if (err) {
-      console.error('Error writing CSV:', err);
-      return res.status(500).send('Error saving file');
-    }
-    res.json({ message: 'CSV updated' });
-  });
+  
 };
 exports.updateProjectDocuments = (req, res) => {
   const { role: requestRole, host: requestHost, projects: incomingProjects } = req.body;
@@ -233,4 +227,25 @@ function writeCSV(projects) {
     }
   });
 }
-
+exports.updateSingleProject = (req, res) => {
+  console.log('Update Single Project');
+  const updatedProject = req.body;
+  const input = fs.readFileSync(csvPath);
+  const records = parse(input, {
+      columns: true,
+      skip_empty_lines: true
+    });
+  const updatedRecords = records.map(project => {
+      if (project.id === updatedProject.id.toString()) {
+        return {
+          ...project,
+          ...updatedProject,
+          Collaborator: JSON.stringify(updatedProject.Collaborator || [])
+        };
+      }
+      return project;
+    });
+  const updatedCsv = stringify(updatedRecords, { header: true });
+  fs.writeFileSync(csvPath, updatedCsv, 'utf8');
+  return res.json({ message: 'Project updated successfully' });
+};

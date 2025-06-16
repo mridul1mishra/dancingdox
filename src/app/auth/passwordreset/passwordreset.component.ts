@@ -16,6 +16,7 @@ submitted: boolean = false;
 acceptedTerms: boolean = false;
 password: string = '';
 token: string = '';
+otpdata: string='';
 tokenValid: boolean = false;
 confirmPassword: string = '';
 email: string = '';
@@ -28,19 +29,19 @@ constructor(
   ) {}
 ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      this.email = params['email'];
       this.token = params['token'];
 
-      if (this.email && this.token) {
-        this.validateToken(this.email, this.token);
+      if (this.token) {
+        this.validateToken(this.token);
       } else {
         console.log(this.email, this.token);
         
       }
     });
   }
-  validateToken(email: string, token: string){
-    this.http.post('https://www.dashdoxs.com/api/verify-reset-token', { email, token }).subscribe({
+  validateToken(token: string){
+    console.log('validate token');
+    this.http.post('https://www.dashdoxs.com/api/verify-reset-token', { token }).subscribe({
       next: () => this.tokenValid = true,
       error: () => this.router.navigate(['/sign-in'])
     });
@@ -50,6 +51,10 @@ passwordReset() {
     const valid =
     this.acceptedTerms &&
     this.password === this.confirmPassword;
+    const otpDataString = localStorage.getItem('otpData');
+    if (otpDataString !== null) {
+      this.email = JSON.parse(otpDataString).email;
+    }
     if (!valid) return;
     const payload = {
     email: this.email,

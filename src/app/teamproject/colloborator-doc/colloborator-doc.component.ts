@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { colloboratorService } from '../../service/colloborator.service';
-import { Collaborator, DocumentMetadata, Project } from '../../service/project.interface.service';
+import { Collaborator, DocumentCollab, DocumentMetadata, Project } from '../../service/project.interface.service';
 import { NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
@@ -20,6 +20,7 @@ export class ColloboratorDocComponent {
   project: Project | undefined;
     documents: DocumentMetadata[] | undefined;
     collaborators: Collaborator[] = [];
+    docassigned: DocumentCollab[] = [];
   collaboratorName: string | undefined;
   collaboratorImage: string | undefined;
   projects$: Observable<Project[]> = of([]);
@@ -66,32 +67,41 @@ export class ColloboratorDocComponent {
         next: (data) => {
           if (data) {
             this.project = data;
-            this.documents = this.project.documents;
-    
-            // Parse and clean Collaborator field
-            const raw = Array.isArray(this.project.Collaborator)
-              ? this.project.Collaborator
-              : JSON.parse(this.project.Collaborator || '[]');
-    
-            this.collaborators = raw.map((item: any) => {
-              const cleaned: any = {};
-              for (const key in item) {
-                const cleanedKey = key.replace(/'/g, '').trim();
-                const cleanedValue = item[key].replace(/'/g, '').trim();
-                cleaned[cleanedKey] = cleanedValue;
-              }
-              return cleaned;
-            });
-    
-            // Parse docassigned if it's a string
-            if (typeof this.project.docassigned === 'string') {
+            if (typeof this.project.documents === 'string') {
+            try {
+              this.project.documents = JSON.parse(this.project.documents);
+            } catch {
+              this.project.documents = [];
+            }
+          }
+          // Parse Collaborator if it's a string
+          if (typeof this.project.Collaborator === 'string') {
+            try {
+              this.project.Collaborator = JSON.parse(this.project.Collaborator);
+            } catch {
+              console.warn('Invalid Collaborator format:', this.project.Collaborator);
+              this.project.Collaborator = [];
+            }
+          }
+          
+          if (typeof this.project.docassigned === 'string') {
+            const assigned = this.project.docassigned as string;
+            if (assigned.trim() === '') {
+              this.project.docassigned = [];
+            } 
+            else {
               try {
                 this.project.docassigned = JSON.parse(this.project.docassigned);
-              } catch (e) {
-                console.error('Failed to parse docassigned:', e);
+              } catch {
+                console.warn('Invalid Collaborator format:', this.project.docassigned);
                 this.project.docassigned = [];
               }
             }
+          }
+            this.documents = this.project.documents;
+            this.collaborators = this.project.Collaborator;
+            this.docassigned = this.project.docassigned;
+            // Parse docassigned if it's a string
           } else {
             console.warn('No project found with the given ID');
           }

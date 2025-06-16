@@ -56,12 +56,19 @@ export class HomepageComponent {
   }
 scrollToSection(sectionId: string) {
   const element = document.getElementById(sectionId);
+  console.log(sectionId);
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const container = document.getElementById('pricing-plan');
+  if (container) {
+    console.log('Scrolling container');
+    container.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 selectPlan(plan: 'personal' | 'team') {
   this.selectedPlan = plan;

@@ -1,9 +1,9 @@
 <aside class="sidebar">
     <div class="profile">
-      <img src="profile-pic.png" alt="Profile Picture" class="profile-pic" />
-      <div class="profile-info">
-        <h4 class="profile-info-name">Khinkal Atomadze</h4>
-        <p class="profile-info-type">Platinum Account</p>
+      
+      <div class="profile-info" *ngIf="profile$ | async as profile">
+        <h4 class="profile-info-name">{{profile.name}}</h4>
+        <p class="profile-info-type"></p>
         <img src="logout.png" class="logout" (click)="onLogout()" />
       </div>
     </div>
@@ -13,20 +13,17 @@
         <ul>
           <li><span class="material-symbols-outlined custom-icon">
             home
-            </span><span class="teams"><a [routerLink]="['/']">Dashboard</a></span></li>
+            </span><span class="teams"><a [routerLink]="['/dashboard']">Dashboard</a></span></li>
+          
           <li><span class="material-symbols-outlined custom-icon">group</span>
-            <a [routerLink]="['/teams']">Team Projects</a>
-            
-          </li>
-          <li><span class="material-symbols-outlined custom-icon">group</span>
-            <a [routerLink]="['projectlist']">Individual Projects</a>
+            <a [routerLink]="['projectlist']">Solo Projects</a>
             
           </li>
           <li>
             <span class="material-symbols-outlined custom-icon">analytics</span>
-            <span class="teams">Join Projects</span></li>
+            <span class="teams"><a [routerLink]="['project/joinproject']">Join External Projects</a></span></li>
           <li><span class="material-symbols-outlined custom-icon">notifications_none</span>
-            <span class="teams"><a [routerLink]="['Notification']">Notification</a></span></li>
+            <span class="teams"><a [routerLink]="['Notification']">Notifications</a></span></li>
           <li class="active">
             <span class="material-symbols-outlined custom-icon">settings</span>
             <span class="teams"><a [routerLink]="['Settings']">Settings</a></span></li>
@@ -38,10 +35,6 @@
           <li>
             <span class="material-symbols-outlined custom-icon">sell</span>
             <a [routerLink]="['pricingplan']"><span class="teams">Pricing Plan</span></a>
-          </li>
-          <li>
-            <span class="material-symbols-outlined custom-icon">wallet</span>
-            <span class="teams">Payments</span>
           </li>
           <li><span class="material-symbols-outlined custom-icon">
             receipt_long
@@ -56,10 +49,10 @@
         <span class="teams">Cloud Storage</span>
       </div>
       <div class="storage-bar">
-        <div class="storage-used" style="width: 80%;"></div>
+        <div class="storage-used" style="width: 0%;"></div>
       </div>
       <div class="storage-details">
-        <span>12.3 GB of 15 GB used</span>
+        <span>0 GB of 15 GB used</span>
         <a href="#" class="upgrade-link">Upgrade</a>
       </div>
     </div>

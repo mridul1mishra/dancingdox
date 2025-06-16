@@ -7,7 +7,7 @@ import { CreateteamsComponent } from './teamslist/createteams/createteams.compon
 import { CreateProjectsComponent } from './Projects/create-projects/create-projects.component';
 import { GetProjectDetailsComponent } from './Projects/1publicproject/get-project-details.component';
 import { ProjectlistComponent } from './teamproject/projectlist/projectlist.component';
-import { JoinprojectComponent } from './teamproject/joinproject/joinproject.component';
+
 import { SettingsComponent } from './settings/settings.component';
 import { PersonalinfoComponent } from './settings/personalinfo/personalinfo.component';
 import { PricingplanComponent } from './pricingplan/pricingplan.component';
@@ -32,6 +32,7 @@ import { WeblayoutComponent } from './weblayout/weblayout.component';
 import { HomepageComponent } from './weblayout/homepage/homepage.component';
 import { NgModule } from '@angular/core';
 import { PasswordresetComponent } from './auth/passwordreset/passwordreset.component';
+import { JoinprojectComponent } from './Projects/joinproject/joinproject.component';
 
 
 export const routes: Routes = [
@@ -68,6 +69,7 @@ export const routes: Routes = [
     { path: 'project/createprivateproject/project-start/assignment/:id', component: AssigndoctocollabComponent },
     { path: 'project/createprivateproject/add-collaborator/:id', component: AddCollaboratorComponent },
     { path: 'project/createprivateproject/project-start/:id', component: DocumentInputComponent },
+    { path: 'project/joinproject', component: JoinprojectComponent },
     { path: 'pricingplan', component: PricingplanComponent}
     ]
     },

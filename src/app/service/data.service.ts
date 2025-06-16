@@ -10,8 +10,9 @@ import { tap } from 'rxjs/operators'; // make sure tap is imported
 export class DataService {
   projects: Project[] = [];
   constructor(private http: HttpClient) { }
+  private apiUrl = 'http://localhost:3000/api';
   getAllProjects(): Observable<Project[]> {
-    return this.http.get('https://www.dashdoxs.com/csv-to-json', {
+    return this.http.get('http://localhost:3000/api/csv-to-json', {
       responseType: 'text' as const
     }).pipe(
       map(csv => this.parseCsvToProjects(csv)),  // Parse CSV to Project array
@@ -77,7 +78,10 @@ private smartSplit(line: string): string[] {
   getProjectById(id: number): Observable<Project | undefined> {
     return this.getAllProjects().pipe(
       map((projects) => {
-        const foundProject = projects.find(p => p.id === id);
+        const numericId = Number(id);
+        const foundProject = projects.find(p => {
+  return p.id === numericId;
+});
         return foundProject;
     }));
   }
@@ -90,5 +94,8 @@ private smartSplit(line: string): string[] {
   }
   updateProjectAssignedCollab(id: number, data: { docassigned: DocumentCollab[] }) {
     return this.http.patch(`https://www.dashdoxs.com/assigned-collaborators/${id}`, data);
+  }
+  updateProject(project: Project){
+    return this.http.post(`${this.apiUrl}/update-project`, project);
   }
 }

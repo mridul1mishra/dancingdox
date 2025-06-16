@@ -16,21 +16,27 @@ import { AuthService } from '../../service/auth.service';
 export class DynamicprojectdetailsComponent {
 constructor(private route: ActivatedRoute,private authService: AuthService,private dataService: DataService) {}
 project?: Project;
-
+user: any;
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.getProjectById(id);
+    this.user = this.authService.getUserDetails();
+    if (this.user && this.user.email) {
+      this.authService.getUserName(this.user.email).subscribe(
+        data => {
+          this.user.name = data.name;
+          this.getProjectById(id);
+          console.log('Updated user:', this.user);
+        },
+        error => {
+          console.error('Failed to fetch user name', error);
+        }
+      );
+    }
   }
   getProjectById(id: number) {
     this.dataService.getProjectById(id).subscribe((matchingProject: Project | undefined) => {
       if (matchingProject) {
-        const currentUsername = this.authService.getUserDetails()?.email;
-        
-        if (matchingProject) {
-          this.project = matchingProject;
-        } else {
-          console.warn('User is not the host of any matching project');
-        }
+         this.project = matchingProject;
       } else {
         console.warn('No projects found with this ID');
       }

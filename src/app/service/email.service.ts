@@ -10,9 +10,16 @@ export class EmailService {
   sendEmail(to: string, subject: string, body: string) {
     return this.http.post('https://www.dashdoxs.com/api/send-email', { to, subject, body });
   }
-  sendOtp(to: string, otp:string){
-    console.log('sendotp', otp, to);
-    return this.http.post('https://www.dashdoxs.com/api/verify-otp', {to, otp});
+  resendOtpEmail(to: string, subject: string, body: string) {
+    return this.http.post('https://www.dashdoxs.com/api/send-email', { to });
+  }
+  sendOtp(to: string, otp:string, reset?:string){
+    const body: any = { to, otp };
+  if (reset) {
+    body.reset = reset;
+  }
+  console.log(body);
+    return this.http.post('https://www.dashdoxs.com/api/verify-otp', body);
   }
   quoteEmail(to: string, subject1: string, body1: string) {
     return this.http.post('https://www.dashdoxs.com/api/send-quote', { to, subject1, body1 });

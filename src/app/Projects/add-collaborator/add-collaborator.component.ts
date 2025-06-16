@@ -69,7 +69,7 @@ export class AddCollaboratorComponent {
           this.projects = data;
           this.lastProject = data[data.length - 1];
           this.lastProject.Collaborator = this.collaborators;
-          this.http.post('https://www.dashdoxs.com/update-projects', this.projects).subscribe({
+          this.http.post('https://www.dashdoxs.com/api/update-projects', this.projects).subscribe({
             next: () => console.log('CSV updated successfully'),
             error: err => console.error('Error updating CSV:', err)
           });

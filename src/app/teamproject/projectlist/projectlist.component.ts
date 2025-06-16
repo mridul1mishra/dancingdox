@@ -21,6 +21,7 @@ export class ProjectlistComponent implements OnInit {
 
   ngOnInit(): void {
     const currentUsername = this.authService.getUserDetails()?.email;
+    console.log(currentUsername);
     // Fetching all projects from the service
     this.dataService.getAllProjects().subscribe((projects: Project[] | undefined) => {
       if (projects && projects.length > 0) {

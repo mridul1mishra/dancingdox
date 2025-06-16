@@ -22,6 +22,7 @@ export interface Project {
     Role: string;
     Collaborator: Collaborator[];
     docassigned: DocumentCollab[];
+    status: string;
   }
   export interface Collaborator {
     name: string;
@@ -38,8 +39,9 @@ export interface Project {
     actions?: string;
     remarks?: string;
     title?: string;
-  search?: string;
-  colorClass?: string;
+    search?: string;
+    colorClass?: string;
+    date: string;
   }
   export interface AssignedCollaborator {
     assignedcollabemail: string;

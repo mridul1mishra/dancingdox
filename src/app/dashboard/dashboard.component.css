@@ -1,0 +1,97 @@
+.project-card {
+    width: 250px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    
+  }
+  
+  .project-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  p{
+    all:unset;
+  }
+
+
+  .info {
+    display: flex;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    gap: 5px;
+  }
+  
+  .members {
+    display: flex;
+    gap: 5px;
+    margin-top: 40px;
+  }
+  
+  .member-icon {
+    width: 25px;
+    height: 25px;
+    background: #4c51bf;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+  }
+  
+  .visibility {
+  background-color: #EFF6FF;  /* Green background */
+  width: 100px;
+  height: 30px;
+  text-align: center;                            
+  border-radius: 9px;        /* Rounded corners */
+  font-size: 10px;
+  }
+  .projcal{
+    font-size: 10px;
+  }
+  .rating{
+    display: flex;
+    gap: 5px
+  }
+  .menu {
+    position: absolute;
+    margin-top: -10px;
+    padding-left: 248px;
+}
+  .card-header {
+    display: flex;
+    align-items: center; /* Aligns items vertically */
+    gap: 10px;
+    padding-bottom:10px;
+    font-size: 14px;
+  }
+  .public {
+    background: #DCFCE7;
+    color: #16A34A;
+    display: grid;
+    place-items: center;
+  }
+   .project-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .private {
+    background: pink;
+    color: #9b2c2c;
+    display: grid;
+    place-items: center;
+  }
+  a{
+    all: unset;
+  }

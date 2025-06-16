@@ -5,6 +5,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EmailService } from '../../service/email.service';
 
+
 @Component({
   selector: 'app-register',
   imports: [FormsModule, CommonModule],
@@ -113,5 +114,15 @@ export class RegisterComponent {
         alert(err.error?.message || 'Registration failed.');
       },
     });
+  }
+  resendOtp() {
+    this.emailservice.resendOtpEmail(this.email, 'subject', 'body').subscribe({
+    next: () => {
+      alert(`OTP has been resent to your email ${this.email}`);
+    },
+    error: () => {
+      console.log('Failed to resend OTP. Please try again.');
+    }
+  });
   }
 }

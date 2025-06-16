@@ -128,10 +128,7 @@
   padding: 0 20px;
 }
 
-/* Header Content */
-.features-header {
-  margin-bottom: 60px;
-}
+
 
 .features-header .tag {
   display: inline-block;
@@ -581,8 +578,19 @@
 
 .executive-form {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  width: 600px; /* Adjust as needed */
+}
+.row {
+  display: flex;
+  gap: 10px; /* Space between email and phone inputs */
+}
+.row input {
+  flex: 1; /* Make both inputs take equal width */
+}
+
+button {
+  margin-top: 10px;
 }
 
 .executive-form input {
@@ -590,7 +598,7 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   flex: 1;
-  min-width: 200px;
+  min-width: 592px;
   font-size: 0.9rem;
 }
 
@@ -724,16 +732,21 @@ textarea {
 }
 .error-message {
   color: red;
-  margin-bottom: 10px;
-  font-weight: 500;
+  font-size: 0.9rem;
+  margin-top: 8px;
 }
 
 .message-box {
-  width: 100%;
+  width: 1242px;
   height: 150px;
   font-size: 16px;
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 6px;
   resize: vertical; /* Allows the user to resize vertically */
+  margin-top: 1rem;
+}
+button {
+  width: 100%;
+  max-width: 236px; /* Button won’t exceed this width */
 }

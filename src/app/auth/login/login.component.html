@@ -1,3 +1,4 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div class="container">
   <div class="left-panel">
     <div class="branding">
@@ -31,25 +32,33 @@
   <div class="right-panel">
     <div class="login-box">
       <a href="/"><img _ngcontent-ng-c2215438375="" src="8cbac377-06cb-4b50-b3ab-c5c763c7a580.png" alt="DashingDox Logo" class="logo1"></a>
+      
+      
+      <div  *ngIf="!showForgotPassword">
       <h2>Welcome Back!</h2>
       <p>New to DashDoxs? <a href="/sign-up">Sign Up</a></p>
-      <div  *ngIf="!showForgotPassword">
       <form #form="ngForm" (ngSubmit)="onLogin(form)">
+        <div class="form-row">
+        <div class="form-field">
         <label>Email</label>
-        <input type="email" [(ngModel)]="email" name="email" placeholder="Enter email" />
-
+        <input type="email" [(ngModel)]="email" required email #emailField="ngModel" name="email" (input)="onInputChange()" placeholder="Enter email" />
+        <div class="error-message" *ngIf="emailField.invalid && emailField.touched">
+          <div *ngIf="emailField.errors?.['required']">Email is required.</div>
+          <div *ngIf="emailField.errors?.['email']">Invalid email format.</div>
+        </div></div></div>
+        <div class="form-row">
+        <div class="form-field">        
         <label>Password</label>
-        <input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password" />
-
+        <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" (input)="onInputChange()" placeholder="Enter your password" />
         <a (click)="showForgotPassword = true" class="forgot" style="cursor: pointer;">Forgot Password?</a>
-
-        <button type="submit" >Sign In</button>
-        
+        <button type="submit" >Sign In</button></div></div>
       </form>
     </div>
       <div  *ngIf="showForgotPassword">
+        <h2>Retrieve Your Password!</h2>
         <ng-container *ngIf="!emailSent; else thankYou">
       <form #form="ngForm" (ngSubmit)="onForgotPassword(form)">
+        
         <label>Enter Email</label>
         <input type="email" [(ngModel)]="email" name="email" required email #emailField="ngModel" placeholder="Enter email" />
       <div class="error-message" *ngIf="emailField.invalid && emailField.touched">
@@ -62,15 +71,21 @@
       </form>
       </ng-container>
       <ng-template #thankYou>
-        <h3>Reset Link Sent</h3>
-        <p>A reset link has been sent to <strong>{{ email }}</strong>.</p>
-        <p>Please check your inbox. The link expires in 15 minutes.</p>
-        <a (click)="showForgotPassword = false" style="cursor: pointer;">Back to Sign In</a>
+      <div class="form-field full-width">
+        <label for="email">Enter OTP sent to your email</label>
+        <input type="text" [(ngModel)]="otp" id="otp" placeholder="e.g. 6 digits OTP" />
+        <p class="resend-text">
+           Didn't receive the OTP?
+          <a style="cursor: pointer; color: #473acb;">Resend OTP</a>
+        </p>
+      </div>
+      <button type="submit" (click)="sendOtp()" class="submit-button">Next</button>
+    
       </ng-template>
     </div>
       <div *ngIf="loginError" class="error-message">
           {{ loginError }}
-        </div>
+      </div>
     </div>
     <div class="footer-links">
       

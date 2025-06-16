@@ -1,0 +1,68 @@
+<div class="join-project-container1" *ngIf="!projectFound">
+    <h2>Join Project</h2>
+    <p class="description">
+      Join any project created by others easily using a 9-digit ID.
+    </p>
+  
+    <div class="search-box">
+      <label for="projectId">Project ID</label>
+      <input 
+        type="text" 
+        id="projectId" 
+        [(ngModel)]="projectId" 
+        placeholder="Enter 9-digit Project ID" 
+        maxlength="9"
+      />
+      <button (click)="searchProject()">Search</button>
+    </div>
+</div>
+
+<div class="join-project-container2" *ngIf="projectFound">
+  <h2 class="heading">Join Project</h2>
+  <p class="subheading">Join any project created by other easily just by 9 Digits ID.</p>
+
+  <div class="project-card">
+    <div class="project-header">
+      <h3 class="project-title">{{project?.Name}}</h3>
+      <span class="status active">● {{project.status}}</span>
+    </div>
+
+    <div class="project-info">
+      <div class="info-item">
+        <p class="label">Project Scope</p>
+        <p class="value">{{project.visibility}}</p>
+      </div>
+      <div class="info-item">
+        <p class="label">Participants</p>
+        <p class="value">{{project.collabCount}}</p>
+      </div>
+      <div class="info-item">
+        <p class="label">Author</p>
+        <p class="value ">{{project.Host}}</p>
+      </div>
+      <div class="info-item">
+        <p class="label">Created on</p>
+        <p class="value">{{project.startDate}}</p>
+      </div>
+      <div class="info-item">
+        <p class="label">Due Date</p>
+        <p class="value">{{project.endDate}}</p>
+      </div>
+      <div class="info-item">
+        <p class="label">Project ID</p>
+        <p class="value">{{project.id}}</p>
+      </div>
+    </div>
+<div class="label"><b>Description</b></div>
+    <div class="project-description">
+      {{project.title}}
+    </div>
+
+    <div class="button-group">
+      <button class="btn cancel">Cancel</button>
+      <button class="btn join" (click)="joinProject()">Join</button>
+    </div>
+  </div>
+</div>
+
+  

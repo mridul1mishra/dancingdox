@@ -1,5 +1,15 @@
 <div class="container"> 
     <div class="form-group"><label for="docCount" class="label">Number of Expected Collaborator</label>
     <div class="input-group"><input type="number" id="docCount" class="input-box" [(ngModel)]="collabCount" min="1" value="2">
-    <button class="add-button" (click)="addDocuments()">Add</button></div></div>
+    <button class="add-button" (click)="confirm()">Add</button></div></div>
 </div>
+<!-- Confirmation Dialog -->
+<div *ngIf="showDialog" class="dialog-backdrop">
+    <div class="dialog-box">
+      <p>Are you sure you want to create a project?</p>
+    <div class="confirm">
+        <button class="confirm-btn" (click)="addDocuments()">Yes</button>
+        <button class="cancel" (click)="cancel()">No</button>
+    </div>
+    </div>
+  </div>

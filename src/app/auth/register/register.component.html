@@ -27,9 +27,9 @@
       </div>
     </div>
   </div>
-  <div class="right-panel"><div class="form-box">
+  <div class="right-panel"><div class="login-box">
     <a href="/"><img _ngcontent-ng-c2215438375="" src="8cbac377-06cb-4b50-b3ab-c5c763c7a580.png" alt="DashingDox Logo" class="logo1"></a>
-    <h2>Join <strong>DashDoxs</strong></h2>
+    <div><h2>Join <strong>DashDoxs</strong></h2>
     <p class="subtext">
       Already Have an Account? <a href="/sign-in">Sign In</a>
     </p>
@@ -79,25 +79,31 @@
       </div>
 
       <button type="submit" class="submit-button">Next</button>
-    </form>
+    </form></div>
     <form *ngIf="currentStep === 2" (ngSubmit)="completeStep2()">
       <div class="form-field full-width">
         <label for="email">Enter OTP sent to your email</label>
         <input type="text" id="otp" [(ngModel)]="otp" placeholder="e.g. 6 digits OTP" [ngModelOptions]="{standalone: true}"/>
-        <label for="text">Didn't you receive the OTP? Resend OTP</label>
+        <p class="resend-text">
+           Didn't receive the OTP?
+          <a (click)="resendOtp()" style="cursor: pointer; color: #473acb;">Resend OTP</a>
+        </p>
       </div>
 
       <button type="submit" class="submit-button">Next</button>
     </form>
     <form *ngIf="currentStep === 3"  (ngSubmit)="completeStep3()" #signupForm="ngForm" novalidate>
       <label for="password">Set New Password</label>
-      <input type="password" [(ngModel)]="password" name="password" id="password" placeholder="e.g. 11 Digits" />
-
+      <input type="password" [(ngModel)]="password" #passwordModel="ngModel" name="password" id="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$" required placeholder="e.g. 8 Character" />
+      <div class="error" *ngIf="submitted && passwordModel.invalid">
+          Password must be at least 11 characters long, contain uppercase, lowercase, number, and special character.
+      </div>
       <label for="confirmPassword">Confirm Password</label>
-      <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" id="confirmPassword" placeholder="e.g. 11 Digits" />
+      <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" #passwordModel="ngModel" id="confirmPassword" placeholder="e.g. 8 Character" />
       <div class="error" *ngIf="submitted && password !== confirmPassword">
         Passwords do not match.
       </div>
+      
       <div class="checkbox">
         <input type="checkbox" [(ngModel)]="acceptedTerms"  name="acceptedTerms" id="terms" required />
         <label for="terms">
@@ -112,12 +118,6 @@
 
       <div class="password-rules">
         <p><strong>Password Requirements:</strong></p>
-        <ol>
-          <li>Must be at least 11 characters long.</li>
-          <li>Include one uppercase and one lowercase letter.</li>
-          <li>Must contain at least one number.</li>
-          <li>Include at least one special character .</li>
-        </ol>
       </div>
     </form>
   </div></div>

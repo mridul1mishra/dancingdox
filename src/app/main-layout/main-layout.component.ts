@@ -6,7 +6,7 @@ import { RightNavigationComponent } from '../navigation/right-navigation/right-n
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, TopNavigationComponent, SideNavigationComponent, RightNavigationComponent],
+  imports: [RouterOutlet, TopNavigationComponent, SideNavigationComponent],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css'
 })
