@@ -14,9 +14,7 @@ canActivateChild(
     return this.canActivate(childRoute, state); // Reuse logic
   }
   canActivate(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log('Helow from canactivate');
     const isLoggedIn = this.authService.isLoggedIn();
-    console.log(isLoggedIn);
     if (!isLoggedIn) {
       this.router.navigate(['/sign-in']);
       return false;

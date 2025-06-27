@@ -1,8 +1,8 @@
 <aside class="sidebar">
     <div class="profile">
       
-      <div class="profile-info" *ngIf="profile$ | async as profile">
-        <h4 class="profile-info-name">{{profile.name}}</h4>
+      <div class="profile-info">
+        <h4 class="profile-info-name">{{userProfile?.name}}</h4>
         <p class="profile-info-type"></p>
         <img src="logout.png" class="logout" (click)="onLogout()" />
       </div>

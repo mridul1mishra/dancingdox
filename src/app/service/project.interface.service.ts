@@ -58,3 +58,11 @@ export interface Project {
   export interface ProjectWithDocuments extends Project {
     documentNamesString: string;
   }
+  export interface CardData {
+  paymentMethodId: string;
+  brand: string;
+  last4: string;
+  expMonth: number;
+  expYear: number;
+  billingName: string;
+}

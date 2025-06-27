@@ -6,6 +6,7 @@ import { RightNavigationComponent } from "./navigation/right-navigation/right-na
 import { ReactiveFormsModule } from '@angular/forms';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from './auth.config';
+import { NgxStripeModule } from 'ngx-stripe';
 
 
 @Component({

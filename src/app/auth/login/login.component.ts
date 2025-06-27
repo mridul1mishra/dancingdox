@@ -67,8 +67,14 @@ emailSent: boolean = false;
   }
   onLogout() {
     // Remove token from localStorage (or sessionStorage)
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('authData');
     localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('otpData');
+    localStorage.removeItem('step1Completed');
+    localStorage.removeItem('step2Completed');
+    localStorage.removeItem('userData');
+    localStorage.removeItem('userID');
+
     this.router.navigate(['/login']);
   }
   sendOtp(){

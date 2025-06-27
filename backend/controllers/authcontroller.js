@@ -16,7 +16,8 @@ if (!fs.existsSync(csvFilePath)) {
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  console.log('Login attempt with', password);
+  
+
 
   fs.readFile(csvFilePath, 'utf8', (err, data) => {
     if (err) {
@@ -61,7 +62,7 @@ exports.login = (req, res) => {
 
 exports.register = (req, res) => {
   const { email, password, name } = req.body;
-  console.log(email, password, name);
+  
 
   if (!email || !password || !name) {
     return res.status(400).json({ message: 'Email, password, and name are required' });
@@ -81,7 +82,8 @@ exports.register = (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    let newLine = `${email},${hashedPassword},${name}`;
+    const isSubscribed = false; // boolean
+    let newLine = `${email},${hashedPassword},${name},${isSubscribed}`;
 
     // Ensure the file ends with a newline
     const needsNewline = data.length > 0 && !data.endsWith('\n');
@@ -106,31 +108,39 @@ exports.getCSV = (req, res) => {
   }
 
   const results = [];
-
+let responseSent = false;
   fs.createReadStream(csvFilePath)
     .pipe(csv())
     .on('data', (row) => {
-      if (row.email?.trim().toLowerCase() === email.trim().toLowerCase()) {
+      const csvEmail = row.email?.trim().toLowerCase();
+      const inputEmail = email.trim().toLowerCase();
+       
+       if (csvEmail === inputEmail) {
         results.push(row);
       }
     })
     .on('end', () => {
+      if (responseSent) return;
       if (results.length > 0) {
-        const { name, image,email } = results[0];
-        res.json({ name, image, email });// Return first matching user
-      } else {
+      const { name, image, email, isSubscribed } = results[0];
+      res.json({ name, image, email, isSubscribed });
+    } else {
         res.status(404).json({ error: 'User not found' });
       }
+       responseSent = true;
     })
     .on('error', (err) => {
+      if (!responseSent) {
       console.error('Error reading CSV:', err);
       res.status(500).json({ error: 'Server error while reading CSV' });
+      responseSent = true;
+    }
     });
 };
 
 exports.passReset = async (req, res) => {
   const { email, password } = req.body;
-console.log(email);
+
   if (!email || !password) {
     return res.status(400).json({ message: 'Email and password are required' });
   }
@@ -141,15 +151,16 @@ console.log(email);
       return res.status(500).json({ message: 'Server error while reading user file' });
     }
 
-    const lines = data.trim().split('\n');
+    const lines = data.trim().split(/\r?\n|\r/); 
     const headers = lines[0];
     const users = lines.slice(1);
 
     let found = false;
-
+    const emailInput = email.trim().toLowerCase();
     const updatedUsers = await Promise.all(users.map(async (line) => {
-      const [userEmail, _password, ...rest] = line.split(',');
-      if (userEmail.trim() === email) {
+      const [userEmail, _password, ...rest] = line.trim().split(',');
+      const csvEmail = userEmail.trim().toLowerCase();
+      if (csvEmail === emailInput) {
         found = true;
         const hashedPassword = await bcrypt.hash(password, 10);
         return [userEmail, hashedPassword, ...rest].join(',');

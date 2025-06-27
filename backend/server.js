@@ -5,7 +5,7 @@ const uploadRoute = require('./routes/uploadfile');
 const docRoutes = require('./routes/docs');
 const collabRoutes = require('./routes/collab');
 const authRoutes = require('./routes/authroutes');
-
+const paymentRoutes = require('./routes/paymentroutes');
 require('dotenv').config();
 
 const app = express();
@@ -24,6 +24,7 @@ app.use('/api', projectRoutes);
 app.use('/api/docs', docRoutes);
 app.use('/api/collab', collabRoutes);
 app.use('/api', authRoutes);
+app.use('/api', paymentRoutes);
 app.use((req, res) => {
   console.warn(`404 Not Found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({ message: `Route ${req.originalUrl} not found` });

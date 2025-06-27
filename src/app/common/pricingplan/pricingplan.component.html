@@ -1,0 +1,95 @@
+<section id="pricing-plan" class="why-choose-us" *ngIf="!startPayment">
+  
+  <div class="pricing-card">
+    
+    <!-- Billing Toggle -->
+    <div class="billing-toggle">
+      <button class="toggle" [ngClass]="{ 'active': selectedPlan === 'personal' }" (click)="selectPlan('personal')">Individual Plan</button>
+      <button class="toggle" [ngClass]="{ 'active': selectedPlan === 'team' }"     (click)="selectPlan('team')">Team Plan(10% OFF)</button>
+    </div>
+
+    <!-- Plan Headers -->
+    <div class="pricing-header-row" *ngIf="selectedPlan === 'team'">
+      <div class="label-cell"></div>
+      <div class="plan-cell">
+        <img src="Group40461.svg" alt="Team Icon" />
+        <div>
+          <h4>Monthly/Team Member/Team</h4>
+          <p class="price">$27 <span>(+tax)</span></p>
+        </div>
+      </div>
+      <div class="plan-cell">
+        <img src="Group40461.svg" alt="Team Icon" />
+        <div>
+          <h4>Annual/Team Member/Team</h4>
+          <p class="price">$324 <span>(+tax)</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="pricing-header-row" *ngIf="selectedPlan === 'personal'">
+      <div class="label-cell"></div>
+      <div class="plan-cell">
+        <img src="Group2.png" alt="Personal Icon" />
+        <div>
+          <h4>Monthly</h4>
+          <p class="price">$30 <span>(+tax)</span></p>
+        </div>
+      </div>
+      <div class="plan-cell">
+        <img src="Group2.png" alt="Personal Icon" />
+        <div>
+          <h4>Annual</h4>
+          <p class="price">$360 <span>(+tax)</span></p>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Feature Rows -->
+    <div class="pricing-row" *ngIf="selectedPlan === 'personal'"><div>Collaborators (active)</div><div>250</div><div>300 (20% more)</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'personal'"><div>Space</div><div>40 GiB</div><div>50 GiB (25% more)</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'personal'"><div>Duration</div><div>30 Days</div><div>365 Days</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'personal'"><div>Support Member</div><div>1</div><div>1</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Collaborators (active)</div><div>250</div><div>300 (20% more)</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Space</div><div>40 GiB</div><div>300 GiB  (25% more)</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Duration</div><div>30 Days</div><div>365 Days</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Support Member</div><div>1</div><div>1</div></div>
+    <div class="pricing-row" *ngIf="selectedPlan === 'team'"><div>Minimum Team Members</div><div>2</div><div>2</div></div>
+    
+    
+    <!-- Trial Buttons -->
+    <div class="pricing-row">
+      <div></div>
+      <div><a (click)="startPlan()" class="trial-btn">Start Trial $1</a></div>
+      <div><a href="sign-up" class="trial-btn">Start Trial $1</a></div>
+    </div>
+
+  </div>
+</section>
+<div class="payment-container" *ngIf="startPayment">
+  <h2 class="section-title">Payment Method</h2>
+  <form (ngSubmit)="makePayment()" autocomplete="off">
+  <label>Name on Card</label>
+  <input type="text" [(ngModel)]="cardHolderName" name="name" required />
+
+  <ngx-stripe-elements [options]="elementsOptions">
+    <label>Card Number</label>
+    <div class="card-number-wrapper">
+    <ngx-stripe-card-number (change)="handleCardChange($event)" ></ngx-stripe-card-number>
+    <img *ngIf="cardBrand" [src]="getCardImage(cardBrand)" class="card-brand-icon" alt="{{ cardBrand }}" />
+  </div>
+    <div class="row">
+      <div class="col">
+        <label>Expiry</label>
+        <ngx-stripe-card-expiry></ngx-stripe-card-expiry>
+      </div>
+      <div class="col">
+        <label>CVC</label>
+        <ngx-stripe-card-cvc></ngx-stripe-card-cvc>
+      </div>
+    </div>
+  </ngx-stripe-elements>
+
+  <button type="submit">Pay</button>
+</form>
+</div>

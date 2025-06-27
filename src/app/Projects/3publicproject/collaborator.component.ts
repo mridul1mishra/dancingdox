@@ -7,21 +7,27 @@ import { Project } from '../../service/project.interface.service';
 import { DataService } from '../../service/data.service';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PricingplanComponent } from "../../common/pricingplan/pricingplan.component";
+import { AuthService } from '../../service/auth.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-collaborator',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PricingplanComponent],
   templateUrl: './collaborator.component.html',
   styleUrl: './collaborator.component.css'
 })
 export class CollaboratorComponent {
   projects: Project[] = [];
+  isSubscribed: string = '';
+  showPricingPlan: boolean = false
   lastProject!: Project;
   collabCount: number = 1;
   documents: any[] = [];
   showModal = false; // Ensure this is initialized
   showDialog = false;
-  constructor(private dataService: DataService,private http: HttpClient,private router: Router,private route: ActivatedRoute) {}
+  constructor(private dataService: DataService,private http: HttpClient,private router: Router,private route: ActivatedRoute,private authService: AuthService) {}
   openModal() {
     this.showModal = true;
   }
@@ -29,9 +35,22 @@ export class CollaboratorComponent {
     this.showModal = false;
   }
 
-  confirm(){
-    this.showDialog = true; // Show modal when Add is clicked
-  }
+  confirm() {
+  console.log("Checking subscription...");
+  const stored = localStorage.getItem('userID') || '';
+
+  this.authService.getUserName(stored).subscribe(data => {
+  setTimeout(() => {
+    this.isSubscribed = data.isSubscribed.toString();;
+    console.log(this.isSubscribed);
+    this.showDialog = true;
+
+    if (!this.isSubscribed) {
+      this.showPricingPlan = true;
+    }
+  });
+});
+}
   addDocuments() {
     this.showDialog = false;
     this.dataService.getAllProjects().subscribe({
@@ -63,4 +82,9 @@ export class CollaboratorComponent {
 cancel() {
   this.showDialog = false;
 }
+goToPricing() {
+  this.showDialog = false;
+  this.showPricingPlan = true;
+}
+
 }

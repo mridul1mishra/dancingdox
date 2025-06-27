@@ -99,7 +99,7 @@ export class DocumentInputComponent {
       });
       
       // 2. Upload files to server
-      this.http.post('http://localhost:3000/api/upload-multiple', formData).subscribe({
+      this.http.post('https://www.dashdoxs.com/api/upload-multiple', formData).subscribe({
         next: () => {
           console.log('Files uploaded successfully');
           this.updateProjectCSV(this.allFilenames); // Continue to CSV update

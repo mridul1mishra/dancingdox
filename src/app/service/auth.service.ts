@@ -8,7 +8,8 @@ import { UserProfile } from './document.interface.service';
 })
 export class AuthService {
   private isAuthenticated = false;
-  private apiUrl = 'https://www.dashdoxs.com/api'; // your Node.js backend URL
+
+  private apiUrl = 'http://localhost:3000/api'; // your Node.js backend URL
   constructor(private http: HttpClient) {}
 
   login(credentials: { email: string; password: string }): Observable<any> {
@@ -26,8 +27,8 @@ export class AuthService {
   logout(): Observable<any> {
     return this.http.post(`${this.apiUrl}/logout`, {});
   }
-  getUserName(email:string):  Observable<{ name: string, image: string, email:string }>{
-    return this.http.get<{ name: string, image: string, email: string }>(`${this.apiUrl}/get?email=${email}`);
+  getUserName(email:string):  Observable<UserProfile>{
+    return this.http.get<UserProfile>(`${this.apiUrl}/get?email=${email}`);
   }
   isLoggedIn(): boolean {
     return localStorage.getItem('isLoggedIn') === 'true';

@@ -5,7 +5,11 @@
     background: #f9f9f9;
     border-radius: 8px;
   }
-  
+  .error {
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+}
   h2 {
     text-align: center;
   }

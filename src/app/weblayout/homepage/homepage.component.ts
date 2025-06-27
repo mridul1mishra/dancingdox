@@ -4,9 +4,10 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { EmailService } from '../../service/email.service';
 import { ExtraOptions, RouterModule } from '@angular/router';
 
+
 @Component({
   selector: 'app-homepage',
-  imports: [FormsModule, CommonModule,RouterModule ],
+  imports: [FormsModule, CommonModule, RouterModule, ],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })

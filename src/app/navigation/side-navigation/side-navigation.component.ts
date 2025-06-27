@@ -12,24 +12,39 @@ import { Observable } from 'rxjs';
   templateUrl: './side-navigation.component.html',
   styleUrl: './side-navigation.component.css'
 })
+
 export class SideNavigationComponent implements OnInit {
-  profile$: Observable<UserProfile | null>;
+  userProfile!: UserProfile | null;
   isSubMenuOpen = false;
-  constructor(private router: Router, private authService: AuthService, private userProfileService: UserProfileService){
-    this.profile$ = this.userProfileService.profile$;
-  }
+  constructor(private router: Router, private authService: AuthService){}
   ngOnInit(){
-    const profile = localStorage.getItem('userID');
-    if(profile)
-    this.authService.getUserName(profile).subscribe(res => {this.userProfileService.setProfile(res)});
-  
+    const profileId = localStorage.getItem('userID');
+    if (profileId) {
+    this.authService.getUserName(profileId).subscribe({
+      next: (res: UserProfile) => {
+      this.userProfile = res;
+      localStorage.setItem('userData', JSON.stringify(res));
+    },error: (err) => {
+    console.error('Failed to fetch user profile', err);
+    this.userProfile = null;
+    }
+  });
+  }
   }
   toggleSubMenu() {
     this.isSubMenuOpen = !this.isSubMenuOpen;
   }
   onLogout() {
-    localStorage.removeItem('authToken');
-    localStorage.setItem('isLoggedIn', 'false');
-    this.router.navigate(['/sign-in']);
+    const keysToRemove = [
+  'authData',
+  'otpData',
+  'step1Completed',
+  'step2Completed',
+  'userData',
+  'userID'
+];
+keysToRemove.forEach(key => localStorage.removeItem(key));
+localStorage.setItem('isLoggedIn', 'false');
+this.router.navigate(['/sign-in']);
   }
 }

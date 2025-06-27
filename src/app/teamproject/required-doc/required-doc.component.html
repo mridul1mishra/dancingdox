@@ -33,17 +33,20 @@
           </td>
           <td>
             <div class="action-btn">
-              <ng-container *ngIf="doc.filename; else attachBtn">
-                <span>{{ doc.filename }}</span>
-                <button class="icon-button" title="Edit">
+              <input #fileInput type="file" accept=".pdf" (change)="onFileSelected($event, i)" hidden />
+              <ng-container *ngIf="fileUploaded; else attachBtn">
+                <span>{{doc.filename}}  {{filesize}}</span>
+                <button class="icon-button" title="Edit" (click)="triggerFileInput(fileInput)">
                   ✎
                 </button>
               </ng-container>
               <ng-template #attachBtn>
-                <button class="attach-btn">
+                <button class="attach-btn" (click)="triggerFileInput(fileInput)">
                   📎 Attach
                 </button>
+                
               </ng-template>
+              
             </div>
           </td>
         </tr>

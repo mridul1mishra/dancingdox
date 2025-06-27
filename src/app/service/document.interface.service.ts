@@ -12,5 +12,6 @@ export interface Document {
   name: string;
   email: string;
   image: string;
+  isSubscribed: boolean;
   // add more fields if needed
 }

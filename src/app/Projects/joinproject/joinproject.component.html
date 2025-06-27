@@ -14,7 +14,9 @@
         maxlength="9"
       />
       <button (click)="searchProject()">Search</button>
+      
     </div>
+    <p class="message" *ngIf="collabMessage">{{ collabMessage }}</p>
 </div>
 
 <div class="join-project-container2" *ngIf="projectFound">

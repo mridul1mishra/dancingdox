@@ -21,6 +21,7 @@ export class GetProjectDetailsComponent {
   showModal = false; // Ensure this is initialized
   documents: any[] = [];
   lastProject!: Project;
+  statusMessage: string = '';
   openModal() {
     this.showModal = true;
   }
@@ -53,37 +54,34 @@ export class GetProjectDetailsComponent {
     this.projectForm.patchValue({ projectScope: scope });
   }
   async onNavigateprojectstart(){
-    const lastProjectId = await firstValueFrom(this.getLastProject());   
+    console.log('onNavigateProjectStart');
     const projectData = {
       // Manually setting the new id
      ...this.projectForm.value, // Spread form values
-     id: lastProjectId !== null ? lastProjectId + 1 : 1,
-     Host: this.authService.getUserDetails()?.email,
+     id: Math.floor(Date.now() / 1000),
+     Host: localStorage.getItem('userID'),
      members: this.projectForm.value.members
    ? this.projectForm.value.members.split(',').map((member: string) => member.trim())  // Split members into an array
    : []
    };
-   this.http.post('http://localhost:3000/api/add-project', projectData).subscribe({
-     next: () => {
-       console.log('Project added to CSV!');        
-     },
-     error: (err) => console.error('Failed to add project:', err),
-   });
-   if (this.router.url.includes('createindependentproject')) {
-    console.log('createindependentproject000');
+   this.dataService.addProject(projectData).subscribe({
+    next: (res) => {
+    console.log(' Project added successfully:', res);
+    // You can also show a success message or redirect
+    this.statusMessage = 'Project created!';
+    if (this.router.url.includes('createindependentproject') && this.statusMessage.includes('Project created')) {
     this.router.navigate([`project/createindependentproject/project-start/${projectData.id}`]);
     }
-    else{
-      console.log('createprivateproject000:',projectData.id);
+    else if(this.router.url.includes('createprivateproject') && this.statusMessage.includes('Project created')){
+      console.log('createprivateproject',projectData.id);
       this.router.navigate([`project/createprivateproject/add-collaborator/${projectData.id}`]);
     }
+  },
+  error: (err) => {
+    console.error(' Failed to add project:', err);
+    this.statusMessage = 'Failed to create project. Please try again.';
   }
-  getLastProject() {
-    return this.dataService.getAllProjects().pipe(
-      map((projects: Project[]) => {
-        return projects[projects.length - 1].id; // Get the last project
-      })
-    );
+   });   
   }
   
   onSubmit() {
@@ -102,8 +100,5 @@ export class GetProjectDetailsComponent {
     this.uploadedFile = null;
   }
 
-}
-function getlastproject() {
-  throw new Error('Function not implemented.');
 }
 

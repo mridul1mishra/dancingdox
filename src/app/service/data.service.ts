@@ -12,7 +12,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
   private apiUrl = 'http://localhost:3000/api';
   getAllProjects(): Observable<Project[]> {
-    return this.http.get('http://localhost:3000/api/csv-to-json', {
+    return this.http.get(`${this.apiUrl}/csv-to-json`, {
       responseType: 'text' as const
     }).pipe(
       map(csv => this.parseCsvToProjects(csv)),  // Parse CSV to Project array
@@ -20,8 +20,7 @@ export class DataService {
   }
   parseCsvToProjects(csv: string): Project[] {
     const lines = csv.trim().split('\n');
-    const headers = this.smartSplit(lines[0]);
-  
+    const headers = this.smartSplit(lines[0]);  
     return lines.slice(1).map(line => {
       const values = this.smartSplit(line);
       const row: any = {};
@@ -93,9 +92,12 @@ private smartSplit(line: string): string[] {
     }));
   }
   updateProjectAssignedCollab(id: number, data: { docassigned: DocumentCollab[] }) {
-    return this.http.patch(`https://www.dashdoxs.com/assigned-collaborators/${id}`, data);
+    return this.http.patch(`${this.apiUrl}/assigned-collaborators/${id}`, data);
   }
   updateProject(project: Project){
     return this.http.post(`${this.apiUrl}/update-project`, project);
+  }
+  addProject(projectData: Project){
+    return this.http.post(`${this.apiUrl}/add-project`, projectData);
   }
 }
