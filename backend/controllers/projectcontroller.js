@@ -2,55 +2,68 @@ const fs = require('fs');
 const path = require('path');
 const { parse } = require('csv-parse/sync');
 const { stringify } = require('csv-stringify/sync');
-
+const os = require('os');
+const { saveUploadedFile } = require('../utils/fileUploader');
+const pool = require('../utils/sql');
 
 const csvPath = path.join(__dirname, '../public/projects.csv');
 
-exports.addProject = (req, res) => {
-  const project = req.body;
-
+exports.addProject = async (req, res) => {
+  try{  
+  const file = req.file;
+  const project = JSON.parse(req.body.project);
   if (!project) {
     return res.status(400).send('No data received');
   }
+  let filePath = null;
 
-  const docCounttotal = 10;
-  const comments = 10;
-  const collabCount = 1;
-  const role = 'Owner';
-
-  // Sanitize commas and newlines in string fields
-  const escape = (value) => {
-    if (typeof value === 'string') {
-      return `"${value.replace(/"/g, '""')}"`;  // CSV escaping
-    }
-    return value;
+  if (file) {
+      filePath = await saveUploadedFile(file);
+      project.uploadedFilePath = filePath;
+  }
+  project.samplefile = {
+      filename: file.filename,
+      originalname: file.originalname,
+      fieldName: "supportingfile",
+      filePath: project.uploadedFilePath
   };
+  function sanitizeParams(params) {
+  return params.map(value => value === undefined ? null : value);
+}
+  // Sanitize commas and newlines in string fields
+ const escape = (value) => {
+  if (typeof value === 'string') {
+    return `"${value.replace(/"/g, '""').replace(/\r?\n|\r/g, ' ')}"`;  // also remove newlines
+  }
+  return value;
+  };
+console.log('project name',escape(project.supportStaff));
+ const params = [
+  project.id,
+  escape(project.projectName),
+  project.startDate,
+  project.endDate,
+  escape(project.projectScope),
+  escape(project.projectDetails),
+  escape(project.supportStaff),
+  escape(project.Host),
+  escape(project.status),
+  project.reminder,
+  escape(JSON.stringify(project.samplefile)),
+];
 
-  const newRow = [
-    project.id,
-    escape(project.projectName),
-    project.docCount,
-    docCounttotal,
-    comments,
-    project.startDate,
-    project.endDate,
-    escape(project.projectScope),
-    escape(project.supportStaff),
-    collabCount,
-    escape(project.Host),
-    role,
-    escape(project.projectDetails)
-  ].join(',') + '\n';
+const sanitizedParams = sanitizeParams(params);
 
-  console.log('Received Project Data:', newRow);
+const [result] = await pool.execute(
+  'INSERT INTO projects (ID, ProjectName, startDate, endDate, visibility, projectdetails, members, host, status, reminder, samplefile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+  sanitizedParams
+);
+  res.status(201).json({ message: 'Project created successfully', insertId: result.insertId });
+} catch (error) {
+    console.error('Error inserting project:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 
-  fs.appendFile(csvPath, newRow, 'utf8', (err) => {
-    if (err) {
-      console.error('Error writing to CSV:', err);
-      return res.status(500).send('Failed to add project');
-    }
-    res.json({ message: 'Project added to CSV' });
-  });
 };
 
 exports.getCSV = (req, res) => {
@@ -63,7 +76,6 @@ exports.getCSV = (req, res) => {
   });
 };
 
-
 exports.updateProjects = (req, res) => {
   const projects = req.body;
 
@@ -74,18 +86,11 @@ exports.updateProjects = (req, res) => {
   
 };
 exports.updateProjectDocuments = (req, res) => {
-  const { role: requestRole, host: requestHost, projects: incomingProjects } = req.body;
-  console.log('Incoming request body:', req.body);  // Log the entire request body
+  const incomingProjects  = req.body.projects;
+   // Better for nested structures // Log the entire request body
   // Validate that incomingProjects is an array and that each project contains the expected fields
   if (!Array.isArray(incomingProjects)) {
     return res.status(400).send('Invalid format: projects should be an array');
-  }
-
-  // Validate each project
-  for (let project of incomingProjects) {
-    if (!project.id || !project.Role || !project.Host) {
-      return res.status(400).send('Invalid project format: missing id, Role, or Host');
-    }
   }
 
   let existingData;
@@ -104,37 +109,20 @@ exports.updateProjectDocuments = (req, res) => {
   // Update existing data based on incoming project data
   const updatedData = existingData.map(row => {
     const match = incomingProjects.find(
-      p => Number(p.id) === Number(row.id) &&
-           p.Role === requestRole &&
-           p.Host === requestHost &&
-           row.Role === p.Role &&
-           row.Host === p.Host
+      p => Number(p.id) === Number(row.id) 
     );
-
+    console.log(match);
     if (match) {
-      console.log(`Updating for role: ${requestRole} | Host: ${requestHost} | ID: ${match.id}`);
+      console.log(`Updating for ID: ${match.id}`);
       console.log('Matched project data:', match);
 
       // Ensure that documents is properly handled
       const documents = Array.isArray(match.documents)
         ? JSON.stringify(match.documents).replace(/"/g, '""') // Escape for CSV
         : ''; // Empty string if no documents
-
+      console.log(documents);
       return {
         ...row,
-        id: match.id,
-        Name: match.Name,
-        docCount: match.docCount,
-        docCounttotal: match.docCounttotal,
-        comments: match.comments,
-        startDate: match.startDate,
-        endDate: match.endDate,
-        visibility: match.visibility,
-        members: Array.isArray(match.members) ? match.members.join(';') : '',  // Join array for CSV
-        collabCount: match.collabCount,
-        Host: match.Host,
-        Role: match.Role,
-        title: match.title,
         documents: documents
       };
     }
@@ -228,24 +216,88 @@ function writeCSV(projects) {
   });
 }
 exports.updateSingleProject = (req, res) => {
-  console.log('Update Single Project');
-  const updatedProject = req.body;
-  const input = fs.readFileSync(csvPath);
-  const records = parse(input, {
+  try {
+    const updatedProject = req.body;
+    const collab = req.body.Collaborator;
+    const {projectId, collabCount, status} = req.body;
+    if (!updatedProject || !updatedProject.id) {
+      return res.status(400).json({ error: 'Invalid project data' });
+    }
+
+    const input = fs.readFileSync(csvPath, 'utf8');
+
+    const records = parse(input, {
       columns: true,
-      skip_empty_lines: true
+      skip_empty_lines: true,
+      relax_column_count: true,
+      trim: true
     });
-  const updatedRecords = records.map(project => {
-      if (project.id === updatedProject.id.toString()) {
+
+    const updatedRecords = records.map(project => {
+      if (project.id === String(updatedProject.id)) {
+         console.log('✅ Matched project:', project);
+         console.log('Updated Collaborator:', updatedProject.Collaborator);
+         let collabData = updatedProject.Collaborator;
+          if (typeof collabData === 'string') {
+            try {
+              collabData = JSON.parse(collabData);
+            } catch {
+              collabData = []; // fallback
+            }
+          }
         return {
           ...project,
           ...updatedProject,
-          Collaborator: JSON.stringify(updatedProject.Collaborator || [])
+          Collaborator: JSON.stringify(collabData)
         };
       }
       return project;
     });
-  const updatedCsv = stringify(updatedRecords, { header: true });
-  fs.writeFileSync(csvPath, updatedCsv, 'utf8');
-  return res.json({ message: 'Project updated successfully' });
+
+    const updatedCsv = stringify(updatedRecords, { header: true });
+    fs.writeFileSync(csvPath, updatedCsv, 'utf8');
+
+    console.log(`Project ${updatedProject.id} updated successfully.`);
+    return res.json({ message: 'Project updated successfully' });
+
+  } catch (error) {
+    console.error('Failed to update project:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.getProjectById = (req, res) => {
+  const id = req.params.id;
+  try {
+    // Read and parse the CSV
+    const fileContent = fs.readFileSync(csvPath, 'utf8');
+    const records = parse(fileContent, {
+  columns: true,
+  skip_empty_lines: true,
+  trim: true,
+  relax_quotes: true,       // ← allows improperly closed quotes
+  quote: '"',
+  escape: '"'
+});
+    // Find the project by ID (note: all CSV values are strings)
+    const project = records.find(p => p.id.trim() === id.toString().trim());
+if (project) {
+  // Parse the documents field after finding the project
+  try {
+    project.documents = JSON.parse(project.documents.replace(/""/g, '"'));
+  } catch (error) {
+    console.error('Error parsing documents:', error);
+    project.documents = [];  // or set to null depending on your requirement
+  }
+} else {
+  console.log('Project not found');
+}
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+    res.json(project);
+  } catch (err) {
+    console.error('Error reading project:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };

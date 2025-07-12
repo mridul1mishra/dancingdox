@@ -25,7 +25,6 @@ user: any;
         data => {
           this.user.name = data.name;
           this.getProjectById(id);
-          console.log('Updated user:', this.user);
         },
         error => {
           console.error('Failed to fetch user name', error);
@@ -37,11 +36,29 @@ user: any;
     this.dataService.getProjectById(id).subscribe((matchingProject: Project | undefined) => {
       if (matchingProject) {
          this.project = matchingProject;
+         console.log("Matching project",matchingProject)
       } else {
         console.warn('No projects found with this ID');
       }
     });
   }
+  getSupportingFilePath(): string | null {
+  if (!this.project?.samplefile) return null;
+
+  const supportingFile = this.project.samplefile.find(file => file.fieldName === 'supportingfile');
+  if (!supportingFile) return null;
+
+  // Return the first available file path property (adjust if you use other names)
+  return supportingFile.filePath || null;
+}
+openSupportingFile() {
+  const path = this.getSupportingFilePath();
+  if (path) {
+    window.open(path, '_blank');
+  } else {
+    alert('No supporting file found');
+  }
+}
   getDaysLeft(endDateStr: string): number {
     const endDate = new Date(endDateStr);
     const today = new Date();

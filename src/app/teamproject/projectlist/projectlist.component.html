@@ -9,12 +9,12 @@
       </div>
     </div>
     <ul class="tabs">
-      <li class="active">Active Projects</li>
-      <li>Drafts</li>
-      <li>Past Projects</li>
-      <li>Bin</li>
+      <li [class.active]="(selectedStatus$ | async) === 'active'" (click)="selectStatus('active')">Active Projects</li>
+      <li [class.active]="(selectedStatus$ | async) === 'draft'" (click)="selectStatus('draft')">Drafts</li>
+      <li [class.active]="(selectedStatus$ | async) === 'past'" (click)="selectStatus('past')">Past Projects</li>
+      <li [class.active]="(selectedStatus$ | async) === 'bin'" (click)="selectStatus('bin')">Bin</li>
     </ul>
-  <div class="project-list" *ngIf="projects$ | async as projects; else loading">
+  <div class="project-list" *ngIf="filteredProjects$ | async as projects; else loading">
       
       <app-projectcard
         *ngFor="let project of projects"

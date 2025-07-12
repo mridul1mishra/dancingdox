@@ -22,7 +22,8 @@ export class DocumentInputComponent {
   lastProject!: Project;
   constructor(private projectService: ProjectService,private dataService: DataService, private http: HttpClient,private router: Router,private route: ActivatedRoute) {}
   docCount: number = 1;
-  documents: any[] = [];
+  uploadedFile: File | null = null;
+  documents: DocumentMetadata[] = [];
   
   allFilenames: DocumentMetadata[] = []; 
   
@@ -53,56 +54,46 @@ export class DocumentInputComponent {
   }
   addDocuments() {
     this.documents = Array.from({ length: this.docCount }, () => ({
-      name: '',
+      fieldName: '',
       type: '.pdf',
       maxSize: 100,
       sizeUnit: 'Mb',
-      uploadedFile: null
+      uploadedFile: null,
+      filename: '',
+      userId: '',
+      filesize:'', 
+      date: new Date().toISOString() 
     }));
   }
   removeFile(index: number) {
+    if (this.documents[index]) {
     this.documents[index].uploadedFile = null;
+    this.documents[index].filename = ''; // Optional: clear displayed filename
+  }
   }
   
-    projectCreate() {
-      const formData = new FormData();
-      
-      
-   
-      // 1. Prepare files and metadata for upload
-      this.documents.forEach((doc, index) => {
-        if (doc.uploadedFile) {
-          formData.append('files', doc.uploadedFile);
-          if (doc.uploadedFile && doc.uploadedFile.name) {
-            const metadata2 = {
-              name: doc.name,
-              type: doc.type,
-              maxSize: doc.maxSize,
-              sizeUnit: doc.sizeUnit,
-              filename: doc.uploadedFile.name,
-              date: doc.date
-            };
-            this.allFilenames.push(metadata2);
-          } else {
-            console.warn('uploadedFile or uploadedFile.name is missing:', doc.uploadedFile);
-          }
-        }
+  projectCreate() {
+    const formData = new FormData();
+    this.documents.forEach((doc, index) => {
+    if (doc.uploadedFile) {
+      formData.append(`file${index}`, doc.uploadedFile);
+    }
+    });
+    const metadata = this.documents.map(doc => ({
+      fieldName: doc.fieldName,
+      type: doc.type,
+      maxSize: doc.maxSize,
+      sizeUnit: doc.sizeUnit,
+      filename: doc.uploadedFile ? doc.uploadedFile.name : null,
+    }));
+    formData.append('documents', JSON.stringify(metadata));
+    const projectid = Number(this.route.snapshot.paramMap.get('id'));
+    formData.append('projectId', projectid.toString());
+    formData.append('docCount', this.docCount.toString());
     
-        const metadata = {
-          name: doc.name,
-          type: doc.type,
-          maxSize: doc.maxSize,
-          sizeUnit: doc.sizeUnit
-        };
-        formData.append(`docMeta[${index}]`, JSON.stringify(metadata));
-       
-      });
-      
-      // 2. Upload files to server
-      this.http.post('https://www.dashdoxs.com/api/upload-multiple', formData).subscribe({
+      this.dataService.uploadDocsWithMetadata(formData).subscribe({
         next: () => {
           console.log('Files uploaded successfully');
-          this.updateProjectCSV(this.allFilenames); // Continue to CSV update
           if (this.router.url.includes('createindependentproject')) {
           this.router.navigate([`project/createindependentproject/project-start/collaborator/${Number(this.route.snapshot.paramMap.get('id'))}`]);
           }
@@ -111,30 +102,25 @@ export class DocumentInputComponent {
           }
         },
         error: err => {
-          console.error('Upload failed:', err);
-          this.updateProjectCSV(this.allFilenames); // Continue to CSV update
-          
+          console.error('Upload failed:', err);          
         }
       });
-      if (this.router.url.includes('createindependentproject')) {
-        this.router.navigate([`project/createindependentproject/project-start/collaborator/${Number(this.route.snapshot.paramMap.get('id'))}`]);
-        }
-        else {
-          this.router.navigate([`project/createprivateproject/project-start/collaborator/assignment/${Number(this.route.snapshot.paramMap.get('id'))}`]);
-        }
     }
     
 
-  private updateProjectCSV(allFilenames: DocumentMetadata[]): void {
-    this.dataService.getAllProjects().subscribe({
+  private updateProjectCSV(allFilenames: DocumentMetadata[], projectId: number): void {
+    this.dataService.getProjectById(projectId).subscribe({
       next: (data) => {
-        this.projects = data;
-        this.lastProject = data[data.length - 1];
+        if (!data) {
+        console.warn('Project not found for id:', projectId);
+        return;
+      }
+        this.lastProject = data;
         // Update last project
         this.lastProject.docCount = this.docCount;
         this.lastProject.documents = allFilenames;
         console.log("doccount:", this.lastProject.documents )
-        this.http.post('https://www.dashdoxs.com/api/update-projects', this.projects).subscribe({
+        this.dataService.updateProject(this.lastProject).subscribe({
           next: () => console.log('CSV updated successfully'),
           error: err => console.error('Error updating CSV:', err)
         });

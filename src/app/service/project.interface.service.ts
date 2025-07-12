@@ -5,24 +5,41 @@ export interface Project {
     documentNamesString: any;    
     id: number;
     Name: string;
+    Details: string;
     scope: string;
     title: string;
     participants: number;
-    host: string;
     docCount: number;
     docCounttotal: number;
     comments: number;
     startDate: string;
     endDate: string;
-    visibility: 'Public' | 'Private';
+    visibility: 'public' | 'private';
     members: string[];
     collabCount: number;
     documents: DocumentMetadata[];
     Host: string;
-    Role: string;
+    reminder: string;
+    samplefile: samplefile[];
     Collaborator: Collaborator[];
     docassigned: DocumentCollab[];
     status: string;
+  }
+  export interface samplefile{
+    type: string,
+    originalname: string,
+    fieldName: string,
+    maxSize: number,
+    uploadTime: string,
+    uploadedFilePath: string,
+    filePath: string,
+    status: string,
+    sizeUnit: string
+    uploadedFile?: File;
+  fileNamePart?: string;
+  filesize?: string;
+  filename: string;
+  size?: number;
   }
   export interface Collaborator {
     name: string;
@@ -30,27 +47,26 @@ export interface Project {
     avatar?: string;
   }
   export interface DocumentMetadata {
-    name: string;
-    type: string;
-    maxSize: number;
-    sizeUnit: string;
+    userId: string;
+    fieldName: string;
     filename: string;
+    type?: string;
+    maxSize?: number;
+    sizeUnit?: string;
+    filesize?: string;
+    [key: string]: any;
     color?: string;
     actions?: string;
     remarks?: string;
-    title?: string;
-    search?: string;
-    colorClass?: string;
-    date: string;
+    uploadedFile?:File | null;
   }
-  export interface AssignedCollaborator {
-    assignedcollabemail: string;
-    uploadstatus: string;
-    filename: string;
-  }
+  
   export interface DocumentCollab {
-    docname: string;
-    assignedcollabs: AssignedCollaborator[];
+    collabemail: string;
+    fieldName: string;
+    collabName: string;
+    uploadstatus?: string;
+    filename?: string;
   }
   export interface ProjectWithDocuments extends Project {
     documentNamesString: string;

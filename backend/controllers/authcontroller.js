@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const users = require('../user');
 const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
@@ -139,6 +138,7 @@ let responseSent = false;
 };
 
 exports.passReset = async (req, res) => {
+  console.log('console log from passReset')
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -156,11 +156,15 @@ exports.passReset = async (req, res) => {
     const users = lines.slice(1);
 
     let found = false;
-    const emailInput = email.trim().toLowerCase();
+    const emailInput = email.trim().toLowerCase().replace(/[\r\n"]/g, '');
+    
+    
     const updatedUsers = await Promise.all(users.map(async (line) => {
       const [userEmail, _password, ...rest] = line.trim().split(',');
-      const csvEmail = userEmail.trim().toLowerCase();
-      if (csvEmail === emailInput) {
+      const csvEmail = userEmail.trim().toLowerCase().replace(/[\r\n"]/g, '');
+      const csvEmailFirst = csvEmail.trim().toLowerCase().replace(/^\uFEFF/, '');
+      console.log('Comparing:', csvEmail, '===', emailInput); // Debug log
+      if (csvEmailFirst === emailInput) {
         found = true;
         const hashedPassword = await bcrypt.hash(password, 10);
         return [userEmail, hashedPassword, ...rest].join(',');
@@ -169,7 +173,7 @@ exports.passReset = async (req, res) => {
     }));
 
     if (!found) {
-      return res.status(404).json({ message: 'Email not found in system' });
+      return res.status(404).json({ message: 'Email not found in system Pass Reset' });
     }
 
     const updatedCsv = [headers, ...updatedUsers].join('\n');

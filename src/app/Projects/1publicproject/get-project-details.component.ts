@@ -53,36 +53,41 @@ export class GetProjectDetailsComponent {
     const scope = url.includes('createprivateproject') ? 'private' : 'public';
     this.projectForm.patchValue({ projectScope: scope });
   }
-  async onNavigateprojectstart(){
-    console.log('onNavigateProjectStart');
-    const projectData = {
-      // Manually setting the new id
-     ...this.projectForm.value, // Spread form values
-     id: Math.floor(Date.now() / 1000),
-     Host: localStorage.getItem('userID'),
-     members: this.projectForm.value.members
-   ? this.projectForm.value.members.split(',').map((member: string) => member.trim())  // Split members into an array
-   : []
-   };
-   this.dataService.addProject(projectData).subscribe({
+  async onNavigateprojectstart() {
+  console.log('onNavigateProjectStart');
+  if (!this.uploadedFile) {
+  console.log('Please upload a file before continuing.');
+  return;
+}
+  const projectData = {
+    ...this.projectForm.value,
+    id: Math.floor(Date.now() / 1000),
+    Host: localStorage.getItem('userID'),
+    status: 'Draft',
+    members: this.projectForm.value.members
+      ? this.projectForm.value.members.split(',').map((m: string) => m.trim())
+      : [],
+  };
+
+  // Step 4: Submit via existing service
+  this.dataService.addProject(projectData, this.uploadedFile).subscribe({
     next: (res) => {
-    console.log(' Project added successfully:', res);
-    // You can also show a success message or redirect
-    this.statusMessage = 'Project created!';
-    if (this.router.url.includes('createindependentproject') && this.statusMessage.includes('Project created')) {
-    this.router.navigate([`project/createindependentproject/project-start/${projectData.id}`]);
+      console.log('Project added successfully:', res);
+      this.statusMessage = 'Project created!';
+      if (this.router.url.includes('createindependentproject') && this.statusMessage.includes('Project created')) {
+        this.router.navigate([`project/createindependentproject/project-start/${projectData.id}`]);
+      } else if (this.router.url.includes('createprivateproject') && this.statusMessage.includes('Project created')) {
+        console.log('createprivateproject', projectData.id);
+        this.router.navigate([`project/createprivateproject/add-collaborator/${projectData.id}`]);
+      }
+    },
+    error: (err) => {
+      console.error('Failed to add project:', err);
+      this.statusMessage = 'Failed to create project. Please try again.';
     }
-    else if(this.router.url.includes('createprivateproject') && this.statusMessage.includes('Project created')){
-      console.log('createprivateproject',projectData.id);
-      this.router.navigate([`project/createprivateproject/add-collaborator/${projectData.id}`]);
-    }
-  },
-  error: (err) => {
-    console.error(' Failed to add project:', err);
-    this.statusMessage = 'Failed to create project. Please try again.';
-  }
-   });   
-  }
+  });
+}
+
   
   onSubmit() {
     if (this.projectForm.valid) {

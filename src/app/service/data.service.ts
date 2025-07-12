@@ -4,6 +4,11 @@ import { map, Observable } from 'rxjs';
 import { DocumentCollab, Project } from './project.interface.service';
 import { tap } from 'rxjs/operators'; // make sure tap is imported
 
+
+interface CollabUploadResponse {
+  message: string;
+  filePath: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +23,7 @@ export class DataService {
       map(csv => this.parseCsvToProjects(csv)),  // Parse CSV to Project array
     );
   }
-  parseCsvToProjects(csv: string): Project[] {
+parseCsvToProjects(csv: string): Project[] {
     const lines = csv.trim().split('\n');
     const headers = this.smartSplit(lines[0]);  
     return lines.slice(1).map(line => {
@@ -31,12 +36,11 @@ export class DataService {
   
         if (key === 'documents') {
           try {
-            const fixedJson = value.replace(/""/g, '"'); 
-            row[key] = value ? JSON.parse(fixedJson) : [];
-          } catch (e) {
-            console.error('Error parsing documents:', value);
-            row[key] = [];
-          }
+              row[key] = value ? tryToFixMalformedDocumentJson(value) : [];
+            } catch (e) {
+              console.error('Error parsing documents:', value);
+              row[key] = [];
+            }
         } else if (key === 'members') {
           row[key] = value ? value.split(';').map(m => m.trim()) : [];
         } else if (['id', 'docCount', 'docCounttotal', 'comments'].includes(key)) {
@@ -48,6 +52,7 @@ export class DataService {
       return row as Project;
     });
   }
+
   // Smart CSV Splitter that respects quotes
 private smartSplit(line: string): string[] {
   const result: string[] = [];
@@ -74,30 +79,51 @@ private smartSplit(line: string): string[] {
 
   return result;
 }
-  getProjectById(id: number): Observable<Project | undefined> {
-    return this.getAllProjects().pipe(
-      map((projects) => {
-        const numericId = Number(id);
-        const foundProject = projects.find(p => {
-  return p.id === numericId;
-});
-        return foundProject;
-    }));
-  }
-  getProjectByIdNew(id: number): Observable<Project | undefined> {
-    return this.getAllProjects().pipe(
-      map((projects) => {
-        const foundProject = projects.find(p => p.id === id);
-        return foundProject;
-    }));
-  }
+getProjectById(id: number): Observable<Project> {
+  return this.http.get<Project>(`${this.apiUrl}/project/${id}`);
+}
+  
   updateProjectAssignedCollab(id: number, data: { docassigned: DocumentCollab[] }) {
     return this.http.patch(`${this.apiUrl}/assigned-collaborators/${id}`, data);
   }
-  updateProject(project: Project){
+  updateProject(project: any){
     return this.http.post(`${this.apiUrl}/update-project`, project);
   }
-  addProject(projectData: Project){
-    return this.http.post(`${this.apiUrl}/add-project`, projectData);
+  addProject(projectData: Project, file: File){
+    const formData = new FormData();
+    formData.append('file', file); // file key for multer or your backend
+    formData.append('project', JSON.stringify(projectData)); // send project as a JSON string
+    return this.http.post(`${this.apiUrl}/add-project`, formData);
+  }
+  uploadDocsWithMetadata(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/upload-multiple`, formData); // Adjust URL to match your backend route
+  }
+  CollabDocument(formData: FormData): Observable<CollabUploadResponse> {
+  return this.http.post<CollabUploadResponse>(`${this.apiUrl}/upload-supporting-file`, formData);
+  }
+}
+function tryToFixMalformedDocumentJson(value: string): any[] {
+  try {
+    // Remove surrounding brackets if needed
+    const raw = value.trim().replace(/^\[|\]$/g, '');
+
+    // Extract key-value pairs using a more controlled regex
+    const pairs = raw.match(/([a-zA-Z0-9_]+):"?(.*?)"?(?=[a-zA-Z0-9_]+:|$)/g);
+
+    if (!pairs) throw new Error('Cannot extract key-value pairs');
+
+    const obj: any = {};
+
+    pairs.forEach(pair => {
+      const [key, ...rest] = pair.split(':');
+      const value = rest.join(':').replace(/^"|"$/g, ''); // strip outer quotes
+      const numericValue = Number(value);
+      obj[key] = isNaN(numericValue) ? value : numericValue;
+    });
+
+    return [obj]; // return as array
+  } catch (err) {
+    console.error('Failed to fix malformed document JSON:', value);
+    return [];
   }
 }

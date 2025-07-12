@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 
 const fs = require('fs');
 const path = require('path');
-
 const csvPath = path.join(__dirname, '../public/data/users.csv');
 
 if (!fs.existsSync(csvPath)) {
@@ -23,30 +22,32 @@ exports.storeData = async (req, res) => {
       expYear,
       billingName
     } = req.body;
+    console.log(paymentMethodId, brand, last4, expMonth, expYear, billingName);
     const raw = fs.readFileSync(csvPath, 'utf-8');
     const lines = raw.trim().split('\n');
 
     // Parse headers and data
-    const headers = lines[0].split(',');
+    const headers = lines[0].split(',').map(h => h.trim());
     const records = lines.slice(1).map(line => line.split(','));
-
-    // Add new headers if not already present
-    const cardFields = ['paymentMethodId', 'brand', 'last4', 'expMonth', 'expYear', 'billingName'];
-    cardFields.forEach(field => {
-      if (!headers.includes(field)) headers.push(field);
-    });
-
+    console.log('Headers:', headers);
     const updatedLines = [headers.join(',')];
     records.forEach(row => {
+       if (!row || row.length === 0 || row.every(cell => cell.trim() === '')) return;
+      
+      while (row.length < headers.length) {
+        row.push('');
+      }
       const record = Object.fromEntries(headers.map((h, i) => [h, row[i] || '']));
-
       if (record.email === email) {
+        console.log('Before update:', record);
+        record.isSubscribed = true;
         record.paymentMethodId = paymentMethodId;
         record.brand = brand;
         record.last4 = last4;
         record.expMonth = expMonth;
         record.expYear = expYear;
         record.billingName = billingName;
+        console.log('After update:', record);        
       }
 
       // Rebuild row from headers
@@ -59,7 +60,7 @@ exports.storeData = async (req, res) => {
       message: 'User record updated in user.csv successfully.'
     });
   } catch (err) {
-    console.error('Error updating user.csv:', err);
+    console.error('Error updating users.csv:', err);
     res.status(500).json({ error: err.message });
   }
 };

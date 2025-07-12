@@ -1,21 +1,27 @@
-<div class="container">
+<div class="container" *ngIf="showContainer">
     <h2>Assign Documents</h2>
   
     <form >
-      <div *ngFor="let doc of documents" class="document-section" >
-        <h4>{{ doc.name }}</h4>
+      <div *ngFor="let doc of normalizedDocuments" class="document-section" >
+        <h4>{{ doc.fieldName }}</h4>
         <label>Assign Collaborator</label>
         <div class="collaborator-input">
-          <ng-container *ngFor="let user of getAssignedUsers(doc.name)">
+          <ng-container *ngFor="let user of getAssignedUsers(doc.fieldName)">
             <span class="collaborator-chip">
               <img src="https://i.pravatar.cc/4" alt="avatar" />
               {{ user.name }}
-              <button type="button" (click)="removeCollaborator(doc, user)">×</button>
+              <button type="button" (click)="removeCollaborator(doc.fieldName, user)">×</button>
             </span>
           </ng-container>
-          <input  type="text"  (input)="onSearchInput($event)"  placeholder="Search collaborator..." />
-          <div class="dropdown" *ngIf="filteredUsers.length">
-            <div *ngFor="let user of filteredUsers" (click)="addCollaborator(doc.name, user)" class="dropdown-item">
+          <input
+  type="text"
+  [(ngModel)]="searchText[doc.fieldName]"
+  (ngModelChange)="onSearchInput($event, doc.fieldName)"
+  [name]="'search_' + doc.fieldName"
+  placeholder="Search collaborator..."
+/>
+          <div class="dropdown" *ngIf="filteredUsers[doc.fieldName]?.length">
+            <div *ngFor="let user of filteredUsers[doc.fieldName]; trackBy: trackByUserId" (click)="addCollaborator(doc.fieldName, user)" class="dropdown-item">
               <img src="https://i.pravatar.cc/4" alt="avatar" />
               <div>
                 <div>{{ user.name }}</div>
@@ -23,6 +29,7 @@
               </div>
             </div>
           </div>
+          
         </div>
       </div>
   
@@ -31,8 +38,9 @@
         <button type="submit" (click)="Create()">Create</button>
       </div>
     </form>
-  </div>
-  <app-project-modal [showModal]="showModal" (close)="showModal = false"></app-project-modal>
+</div>
+  <app-project-modal [showModal]="showModal" [projectId]="this.projectId" (close)="showModal = false"></app-project-modal>
+  <app-pricingplan *ngIf="showPricing" ></app-pricingplan>
 <!-- Confirmation Dialog -->
 <div *ngIf="showDialog" class="dialog-backdrop">
     <div class="dialog-box">
@@ -43,3 +51,12 @@
     </div>
     </div>
   </div>
+ <div *ngIf="showSubscribe" class="dialog-backdrop">
+  <div class="dialog-box">
+    <p>To start a project, please subscribe.</p>
+    <div class="confirm">
+      <button class="confirm-btn" (click)="goToPricing()">Continue</button>
+      <button class="cancel" (click)="cancel()">No</button>
+    </div>
+  </div>
+</div>

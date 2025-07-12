@@ -21,9 +21,10 @@
             <span>{{member.name}}</span>
           </td>
           <td>{{ member.email }}</td>
-          <td> {{ getUserDocumentStats(member.email).complete }} Out of {{ getUserDocumentStats(member.email).total }}</td>
-          <td>{{ getUserDocumentStats(member.email).filenames }}</td>
-         
+          <ng-container *ngIf="getUserDocumentStats(member.email) as stats">
+            <td> {{ stats.complete }} Out of {{ stats.total }}</td>
+            <td>{{ stats.filenames }}</td>
+          </ng-container>
           <td class="actions">
             <button title="Download"><span class="material-symbols-outlined" style="font-size:18px;">download</span></button>
             <button title="View"><span class="material-symbols-outlined" style="font-size:22px;">visibility</span></button>

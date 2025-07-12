@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
 import { DataService } from '../service/data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentMetadata, Project, ProjectWithDocuments } from '../service/project.interface.service';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -23,15 +23,15 @@ export class TestcomponentComponent {
   @Output() close = new EventEmitter<void>();
 useremail: string | undefined;
 metadocument: DocumentMetadata[] | undefined;
-  constructor(private authService: AuthService,private dataService: DataService,private route: ActivatedRoute,private http: HttpClient) {}
+  constructor(private authService: AuthService,private dataService: DataService,private route: ActivatedRoute,private http: HttpClient, private router: Router) {}
   closeModal() {
     this.close.emit();
   }
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    const user = this.authService.getUserDetails();
-    if (user?.email) {
-      this.authService.getUserName(user.email).subscribe(data => {
+    const user = localStorage.getItem('userID');
+    if (user) {
+      this.authService.getUserName(user).subscribe(data => {
         this.collaboratorName = data.name;
         this.useremail = data.email;
       });
@@ -48,21 +48,22 @@ metadocument: DocumentMetadata[] | undefined;
       console.error('Projects data is missing');
       return;  // Exit the function if `this.projects` is undefined
     }
-  
-    console.log('project document', this.projects.documents);  
+    this.projects.id = Number(this.route.snapshot.paramMap.get('id'));
+    console.log('project document', this.projects);  
   if (!Array.isArray(this.projects?.documents)) {
     this.projects.documents = [];// Ensure that documents is always an array
   }
     const payload = {
-      role: this.projects?.Role,     // e.g. 'admin'
-      host: this.useremail, // e.g. 'dropbox'
       projects: [this.projects]
     };
 
-    this.http.post('https://www.dashdoxs.com/updateProjectDocuments', payload)
+    this.http.post('http://localhost:3000api/updateProjectDocuments', payload)
         .subscribe({
-          next: () => console.log('Projects updated successfully in CSV'),
+          next: () => {console.log('Projects updated successfully in CSV')
+            this.router.navigate([`/project/${this.projects?.id}`]);
+          },
           error: (err) => console.error('Error updating CSV:', err)
         });
+        
   }
 }

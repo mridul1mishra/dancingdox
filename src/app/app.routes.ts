@@ -32,6 +32,8 @@ import { HomepageComponent } from './weblayout/homepage/homepage.component';
 import { NgModule } from '@angular/core';
 import { PasswordresetComponent } from './auth/passwordreset/passwordreset.component';
 import { JoinprojectComponent } from './Projects/joinproject/joinproject.component';
+import { ColloboratorDocComponent } from './teamproject/colloborator-doc/colloborator-doc.component';
+import { EditprojectComponent } from './Projects/editproject/editproject.component';
 
 
 export const routes: Routes = [
@@ -65,10 +67,12 @@ export const routes: Routes = [
     { path: 'project/createindependentproject/project-start/collaborator/:id', component: CollaboratorComponent},
     { path: 'project/createindependentproject', component: GetProjectDetailsComponent },
     { path: 'project/createprivateproject', component: GetProjectDetailsComponent },
+    { path: 'editproject/:id', component: EditprojectComponent },
     { path: 'project/createprivateproject/project-start/assignment/:id', component: AssigndoctocollabComponent },
     { path: 'project/createprivateproject/add-collaborator/:id', component: AddCollaboratorComponent },
     { path: 'project/createprivateproject/project-start/:id', component: DocumentInputComponent },
     { path: 'project/joinproject', component: JoinprojectComponent },
+    { path: 'projects/:id/documents', component: ColloboratorDocComponent },
 
     ]
     },

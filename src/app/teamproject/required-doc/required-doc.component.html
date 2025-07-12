@@ -4,6 +4,7 @@
       <div class="upload-summary">
         <span>Total Uploaded Documents</span>
         <strong>3/4</strong>
+        <strong (click)="viewAllDocuments(docData?.id)" style="cursor:pointer;">View All</strong>
       </div>
     </div>
   
@@ -19,38 +20,45 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let doc of docData?.documents; let i = index">
-          <td>{{ ('0' + (i + 1)).slice(-2) }}</td>
-          <td>{{ doc.name }}</td>
-          <td>{{ doc.type }}</td>
-          <td>{{ doc.maxSize }}</td>
-          <td>{{ doc.date }}</td>
-          <td>
-            <span  class="status-pill">
-              {{ doc?.actions || 'No Action' }}
-            </span>
-          </td>
-          <td>
-            <div class="action-btn">
-              <input #fileInput type="file" accept=".pdf" (change)="onFileSelected($event, i)" hidden />
-              <ng-container *ngIf="fileUploaded; else attachBtn">
-                <span>{{doc.filename}}  {{filesize}}</span>
-                <button class="icon-button" title="Edit" (click)="triggerFileInput(fileInput)">
-                  ✎
-                </button>
+      
+      
+        <tbody *ngIf="docData?.samplefile?.length; else noSampleFile">
+          <tr *ngFor="let file of filteredSampleFiles; let idx = index">
+            <td>{{ ('0' + (idx + 1)).slice(-2) }}</td>
+            <td>{{ file.fieldName }}</td>
+            <td>{{ file.type || '—' }}</td>
+            <td>{{ file.sizeUnit ? file.maxSize + ' ' + file.sizeUnit : '—' }}</td>
+            <td>{{ file.uploadTime ? (file.uploadTime | date:'medium') : '—' }}</td>
+            <td>
+              <ng-container *ngIf="docData?.Host === userID">
+                  sample data
               </ng-container>
-              <ng-template #attachBtn>
-                <button class="attach-btn" (click)="triggerFileInput(fileInput)">
-                  📎 Attach
-                </button>
-                
+              <ng-template #pendingBlock let-fileFromContext="file">
+                {{ fileStatuses[fileFromContext.fieldName?.trim()?.toLowerCase()] || '—' }}
               </ng-template>
-              
-            </div>
-          </td>
-        </tr>
-      </tbody>
+              <ng-container *ngIf="docData?.Host !== userID">
+                <ng-container *ngTemplateOutlet="pendingBlock; context: { file: file }"></ng-container>
+              </ng-container>
+            </td>
+            <td>
+                <input type="file" hidden #fileInput (change)="onFileSelected($event, file)" />
+                <button (click)="handleViewClick(file, fileInput)" class="link-button">
+                {{ uploadedFilenames[file.fieldName.trim().toLowerCase()] || '—' }}   📎 View<br/>
+                </button>
+            </td>
+          </tr>
+        </tbody>
+        <ng-template #noSampleFile>
+          <tbody>
+            <tr>
+              <td colspan="7" style="text-align:center; font-style: italic;">
+                No documents or sample files available.
+              </td>
+            </tr>
+          </tbody>
+        </ng-template>
+      
+
     </table>
   </div>
   

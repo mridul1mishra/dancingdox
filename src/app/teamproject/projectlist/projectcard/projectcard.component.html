@@ -1,19 +1,44 @@
-
 <div class="project-card">
-  <a routerLink="/projects/{{ project.id }}" >
-    <div class="menu">⋮</div>
+  <div class="menu" (click)="showModal = true" style="cursor: pointer;">⋮</div>
+  
+  <a [routerLink]="['/projects', project.id]">
     <div class="card-header">{{ project.Name }}</div>
     <div class="info">
-     <div class="rating"><p class="icon"><i class="material-icons" style="color: lightgray;">task</i></p><p>{{ project.docCount }}/{{project.docCounttotal}}</p></div>
-     <div class="rating"><p class="icon"><i class="material-icons" style="color: lightgray;">message</i><p>{{ project.comments }}</p><i class="material-icons" style="color: lightgray;padding-left: 94px;">people</i><p>5</p></div>
+      <div class="rating">
+        <p class="icon"><i class="material-icons" style="color: lightgray;">task</i></p>
+        <p>{{ project.docCount }}/{{ project.docCounttotal }}</p>
+      </div>
+      <div class="rating">
+        <p class="icon"><i class="material-icons" style="color: lightgray;">message</i></p>
+        <p>{{ project.comments }}</p>
+        <i class="material-icons" style="color: lightgray; padding-left: 94px;">people</i>
+        <p>5</p>
+      </div>
     </div>
     <div class="info">
-      <div class="rating"><p><i class="material-icons" style="color: lightgray;">calendar_today</i></p><p class="projcal">{{ project.startDate | date:'MM/dd/yyyy' }} - {{ project.endDate | date:'MM/dd/yyyy' }}</p></div>
+      <div class="rating">
+        <p><i class="material-icons" style="color: lightgray;">calendar_today</i></p>
+        <p class="projcal">{{ project.startDate | date:'MM/dd/yyyy' }} - {{ project.endDate | date:'MM/dd/yyyy' }}</p>
+      </div>
       <div class="rating">
         <p class="visibility" [ngClass]="project.visibility.toLowerCase()">{{ project.visibility }}</p>
-        <p><img _ngcontent-ng-c2842756854="" src="image-owner.png" alt="Boy"></p>
-  </div>
-  </div>
+        <p><img src="image-owner.png" alt="Owner"></p>
+      </div>
+    </div>
   </a>
-  
+</div>
+
+<!-- Modal -->
+<div id="projectModal" class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="menu-item" (click)="editProject()">
+      <span class="icon">&#9776;</span>
+      <span class="text">Project Setting</span>
+    </div>
+    <div class="menu-item delete" (click)="confirmDelete()">
+      <span class="icon"><i class="material-icons" style="font-size: 10px;">delete</i></span>
+      <span class="text">Delete Project</span>
+    </div>
+    <button class="close-btn" (click)="showModal = false">×</button>
   </div>
+</div>

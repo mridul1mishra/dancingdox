@@ -7,7 +7,7 @@
     <div *ngFor="let doc of documents; let i = index" class="container-card">  
         <div class="form-group">
             <label for="docCount" class="label">Document Name</label>
-         <input class="input-box" type="text" [(ngModel)]="doc.name" placeholder="National ID"> 
+         <input class="input-box" type="text" [(ngModel)]="doc.fieldName" placeholder="National ID"> 
         </div>
         <div class="form-group">
             <label for="docCount" class="label">Document Type</label>            
@@ -16,9 +16,7 @@
                 <option>.doc</option>
                 <option>.xlsx</option>
             </select>
-        </div>
-        
-    
+        </div> 
         <div class="form-group">
             <label for="docCount" class="label">Max Size</label>
             <input class="label" type="number" [(ngModel)]="doc.maxSize" placeholder="Max Size">
@@ -40,7 +38,7 @@
             <label>Document Template (Optional)</label>
             <form class="upload-box" >
                 <label class="file-upload">
-                  <input type="file" id="file-upload" name="file" accept="image/*" (change)="handleFileUpload($event, i)">
+                  <input type="file" id="file-upload" name="file" (change)="handleFileUpload($event, i)">
                  <span class="file-upload"></span><p style="padding-left: 10px;">Browse File</p>
                 </label> 
             </form>

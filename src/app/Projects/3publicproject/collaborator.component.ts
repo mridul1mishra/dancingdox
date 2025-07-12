@@ -53,30 +53,15 @@ export class CollaboratorComponent {
 }
   addDocuments() {
     this.showDialog = false;
-    this.dataService.getAllProjects().subscribe({
-      next: (data) => {
-        console.log('Received Projects:', data);
-        this.projects = data;  // Directly assign the received data
-        this.lastProject = data[data.length - 1];  // Get the last project
-        this.lastProject.collabCount = this.collabCount;
-        console.log('Last Project:', this.lastProject.collabCount);
-        this.http.post('https://www.dashdoxs.com/api/update-projects', this.projects)
-        .subscribe({
-          next: () => {
-          console.log('Projects updated successfully in CSV');
-          const projectId = this.lastProject.id; // Replace with correct property if different
-          this.router.navigate(['/projects', projectId]);
-        },
-          error: (err) => console.error('Error updating CSV:', err)
-        });
-      },
-      error: (error) => {
-        console.error('Error loading projects:', error);
-      }
-    });
-    this.router.navigate(['project/createindependentproject/project-start/collaborator/assignment/' + Number(this.route.snapshot.paramMap.get('id'))]);
-    
-    
+    const formData = new FormData();
+    const projectid = Number(this.route.snapshot.paramMap.get('id'));
+    formData.append('projectId', projectid.toString());
+    formData.append('collabCount', this.collabCount.toString());
+    formData.append('Status', 'Active');
+    this.dataService.uploadDocsWithMetadata(formData).subscribe({
+      next: () => { console.log('Projects updated successfully in CSV'); this.router.navigate(['/projects', projectid]); },
+      error: (err) => { console.error('Error updating CSV:', err);}
+    });    
   }
   
 cancel() {

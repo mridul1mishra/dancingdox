@@ -5,14 +5,22 @@
     padding: 20px;
     font-family: Arial, sans-serif;
   }
-  
+  .link-button {
+  all: unset; /* remove all default button styles */
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+}
   .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
   }
-  
+  a{
+    all: unset;
+    cursor: pointer;
+  }
   .card-header h3 {
     margin: 0;
   }

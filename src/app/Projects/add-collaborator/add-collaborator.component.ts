@@ -28,6 +28,10 @@ export class AddCollaboratorComponent {
   collaborators: Collaborator[] = []; // Initially show all
   filteredCollaborators: Collaborator[] = [];
   constructor(private router: Router,private dataService: DataService, private http: HttpClient,private route: ActivatedRoute){}
+  ngOnInit(): void {
+  const id = this.route.snapshot.paramMap.get('id');
+  console.log('Extracted ID:', id);
+}
   addCollaborator() {
     this.isSuggestionSet = true;
     this.isEmailSet = false; 
@@ -62,14 +66,15 @@ export class AddCollaboratorComponent {
   }
 
   onProceed() {
+    
     if (this.email.trim()) {
-      
-      this.dataService.getAllProjects().subscribe({
+      console.log(this.email);
+      this.dataService.getProjectById(Number(this.route.snapshot.paramMap.get('id'))).subscribe({
         next: (data) => {
-          this.projects = data;
-          this.lastProject = data[data.length - 1];
-          this.lastProject.Collaborator = this.collaborators;
-          this.http.post('https://www.dashdoxs.com/api/update-projects', this.projects).subscribe({
+          console.log("project collaborator on proceed",data);
+          data.Collaborator = this.collaborators;
+          console.log("onproceed collaborator",data.Collaborator);
+          this.dataService.updateProject(data).subscribe({
             next: () => console.log('CSV updated successfully'),
             error: err => console.error('Error updating CSV:', err)
           });

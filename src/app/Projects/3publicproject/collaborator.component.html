@@ -8,7 +8,7 @@
 </ng-container>
 <!-- Confirmation Dialog -->
 <div *ngIf="showDialog">
- <div *ngIf="isSubscribed === 'false'; else Subscribed" class="dialog-backdrop">
+ <div *ngIf="!isSubscribed" class="dialog-backdrop">
   <div class="dialog-box">
     <p>To start a project, please subscribe.</p>
     <div class="confirm">
@@ -18,13 +18,13 @@
   </div>
 </div>
 </div>
-<ng-template #Subscribed>
-    <div class="dialog-box">
+
+    <div class="dialog-box" *ngIf="isSubscribed && showDialog">
       <p>Are you sure you want to create a project?</p>
     <div class="confirm">
         <button class="confirm-btn" (click)="addDocuments()">Yes</button>
         <button class="cancel" (click)="cancel()">No</button>
     </div>
     </div>
- </ng-template>
+ 
   

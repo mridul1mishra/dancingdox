@@ -28,7 +28,6 @@ ngOnInit(): void {
       this.authService.getUserName(this.user.email).subscribe(
         data => {
           this.user.name = data.name;
-          console.log('Updated user:', this.user);
         },
         error => {
           console.error('Failed to fetch user name', error);
@@ -38,33 +37,33 @@ ngOnInit(): void {
   }
 
 searchProject(){
-
   if(this.projectId!=null)
   {
     this.dataService.getProjectById(this.projectId).subscribe(project => {
       this.project = project;
-      console.log(this.project.Collaborator);
       this.projectFound = true;
+      if (this.project.Collaborator){
+      console.log("Collaborator data:", this.project.Collaborator);
       if (typeof this.project.Collaborator === 'string') {
-  try {
-    this.project.Collaborator = JSON.parse(this.project.Collaborator);
-  } catch (e) {
-    console.warn('Invalid Collaborator format:', this.project.Collaborator);
-    this.project.Collaborator = [];
-  }
-}
-      const alreadyExists = this.project.Collaborator?.some(
+      try {
+        this.project.Collaborator = JSON.parse(this.project.Collaborator);
+      } catch (e) {
+        console.warn('Invalid Collaborator format:', this.project.Collaborator);
+        this.project.Collaborator = [];
+      }
+      }
+      }
+    const alreadyExists = this.project.Collaborator?.some(
     (collab: any) => collab.email?.trim().toLowerCase() === this.user.email?.trim().toLowerCase()
-  );
-  if (alreadyExists) {
-    this.collabMessage = 'Collaborator already added.';
-    this.projectFound = false;    
-  }
-  else{
-    this.projectFound = true;
-  }
+    );
+    if (alreadyExists) {
+      this.collabMessage = 'Collaborator already added.';
+      this.projectFound = false;    
+    }
+    else{
+      this.projectFound = true;
+    }
     });
-    
   }
 }
 joinProject(){

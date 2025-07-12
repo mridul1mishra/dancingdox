@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const sesClient = new SESClient({
   region: 'us-east-2',
   credentials: {
-   
+    
   }
 
 });
@@ -104,7 +104,7 @@ function generateResetToken(to) {
 exports.sendResetLinkEmail = async (req, res) => {
   const { to } = req.body;
   
-  const resetUrl = `https://www.dashdoxs.com/reset-password?email=${to}&token=${token}`;
+  const resetUrl = `http://localhost:3000/reset-password?email=${to}&token=${token}`;
   const templatePath = path.join(__dirname, 'templates', 'html/reset-password.html');
     // Custom subject and body (override any sent by client)
   const subject = 'Reset your password';

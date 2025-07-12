@@ -18,11 +18,12 @@ import { TestcomponentComponent } from "../../testcomponent/testcomponent.compon
 export class ColloboratorDocComponent {
   showModal = false;
   project: Project | undefined;
-    documents: DocumentMetadata[] | undefined;
-    collaborators: Collaborator[] = [];
-    docassigned: DocumentCollab[] = [];
+  documents: DocumentMetadata[] | undefined;
+  collaborators: Collaborator[] = [];
+  docassigned: DocumentCollab[] = [];
   collaboratorName: string | undefined;
   collaboratorImage: string | undefined;
+  docTotal: string | undefined;
   projects$: Observable<Project[]> = of([]);
   selectedMember: any;
     constructor(private collabService: colloboratorService,private route: ActivatedRoute,private authService: AuthService,private dataService: DataService) {}
@@ -38,28 +39,52 @@ export class ColloboratorDocComponent {
         });
       }
       this.getProjectById(id);
+      console.log("This is my ID",id);
       
     }
     getUserDocumentStats(email: string): { total: number, complete: number, pending: number, filenames: string } {
       let total = 0;
       let complete = 0;
       let pending = 0;
+      total = this.project?.docCounttotal ?? 0;
+      complete = this.project?.docCount ?? 0;
       const filenamesArray: string[] = [];
       if (!this.project?.docassigned) return { total, complete, pending, filenames: '' };
-    
-      this.project.docassigned.forEach(doc => {
-        doc.assignedcollabs.forEach(collab => {
-          if (collab.assignedcollabemail === email) {
+      console.log("Checking docs for email:", email);
+      if(this.project.visibility === "private"){  
+        for (const doc of this.project.docassigned) {
+          if (doc.collabemail === email) {
             total++;
-            if (collab.uploadstatus === 'complete') complete++;
-            if (collab.uploadstatus === 'pending') pending++;
-            if (collab.filename) {
-              filenamesArray.push(collab.filename);
+            if (doc.uploadstatus === 'pending') pending++;
+            if (doc.uploadstatus === 'complete') complete++;
+            if (doc.filename) {
+              filenamesArray.push(doc.filename);
             }
           }
-        });
-      });
+        }
+      }
+      else if(this.project.visibility === "public"){
+        console.log(this.project.documents);
+        const samples = this.project.documents;
+        if (typeof samples === 'string') {
+        try {
+          const parsedSamples = JSON.parse(samples);
+          this.project.documents = Array.isArray(parsedSamples) ? parsedSamples : [];
+        } catch (e) {
+          console.error('Failed to parse sampleFile JSON:', e);
+          this.project.documents = [];
+        }
+        } else if (!Array.isArray(samples)) {
+          this.project.documents = [];
+        }
+        for(const doc of this.project.documents){          
+          if (doc.fieldName) {
+            filenamesArray.push(doc.fieldName);
+          }                   
+        }
+      } 
       const filenames = filenamesArray.join('; ');
+      console.log("Filename:", filenames);
       return { total, complete, pending, filenames };
     }
     getProjectById(id: number): void {
@@ -93,7 +118,7 @@ export class ColloboratorDocComponent {
               try {
                 this.project.docassigned = JSON.parse(this.project.docassigned);
               } catch {
-                console.warn('Invalid Collaborator format:', this.project.docassigned);
+                console.warn('Invalid Doc assigned format:', this.project.docassigned);
                 this.project.docassigned = [];
               }
             }
@@ -121,7 +146,7 @@ export class ColloboratorDocComponent {
         actions: 'Accept',
         remarks: 'Well Written document. thanks',
       }));
-      
+      console.log('Opening document for:', enrichedDocs);
     
       // Store the enhanced data in selectedMember or a new property
       this.selectedMember = {

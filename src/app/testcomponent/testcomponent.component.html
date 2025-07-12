@@ -20,7 +20,7 @@
       <div *ngFor="let doc of selectedMember.documents" [ngClass]="['doc-card', doc.color]">
         <div class="doc-header">
           <span class="material-icons">description</span>
-          <span class="doc-title">{{ doc.name }}</span>
+          <span class="doc-title">{{ doc.fieldName }}</span>
           <span class="material-symbols-sharp">download</span>
         </div>
         <div class="doc-actions">

@@ -8,7 +8,7 @@ import { map, Observable } from 'rxjs';
 })
 
 export class colloboratorService {
-  private apiUrl = 'https://www.dashdoxs.com/collab/csv-to-json';
+  private apiUrl = 'http://localhost:3000collab/csv-to-json';
 
   constructor(private http: HttpClient) {}
 

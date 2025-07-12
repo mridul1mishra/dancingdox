@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxStripeModule, StripeCardComponent, StripeCardCvcComponent, StripeCardExpiryComponent, StripeCardNumberComponent, StripeService } from 'ngx-stripe';
 import { BrowserModule } from '@angular/platform-browser';
@@ -17,6 +17,7 @@ import { Router, RouterModule } from '@angular/router';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PricingplanComponent {
+  @Input() showPricing = false;
   elementsOptions = {
     locale: 'auto',
     appearance: {
