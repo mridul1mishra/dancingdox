@@ -21,7 +21,8 @@ import { ChangeDetectorRef } from '@angular/core';
 export class CollaboratorComponent {
   projects: Project[] = [];
   isSubscribed: string = '';
-  showPricingPlan: boolean = false
+  showPricingPlan: boolean = false;
+  showSubscribe: boolean = false;
   lastProject!: Project;
   collabCount: number = 1;
   documents: any[] = [];
@@ -35,34 +36,32 @@ export class CollaboratorComponent {
     this.showModal = false;
   }
 
-  confirm() {
+confirm() {
   console.log("Checking subscription...");
-  const stored = localStorage.getItem('userID') || '';
-
-  this.authService.getUserName(stored).subscribe(data => {
-  setTimeout(() => {
-    this.isSubscribed = data.isSubscribed.toString();;
-    console.log(this.isSubscribed);
-    this.showDialog = true;
-
-    if (!this.isSubscribed) {
-      this.showPricingPlan = true;
+  const stored = localStorage.getItem('userData') || '';
+    if (stored) {
+  const parsed = JSON.parse(stored); // convert string to object
+    if (parsed.isSubscribed) {
+      this.showDialog = true;
+      this.showSubscribe = true;
     }
-  });
-});
-}
-  addDocuments() {
-    this.showDialog = false;
-    const formData = new FormData();
-    const projectid = Number(this.route.snapshot.paramMap.get('id'));
-    formData.append('projectId', projectid.toString());
-    formData.append('collabCount', this.collabCount.toString());
-    formData.append('Status', 'Active');
-    this.dataService.uploadDocsWithMetadata(formData).subscribe({
-      next: () => { console.log('Projects updated successfully in CSV'); this.router.navigate(['/projects', projectid]); },
-      error: (err) => { console.error('Error updating CSV:', err);}
-    });    
   }
+  else{
+    this.router.navigate(['/']);
+  }
+}
+addDocuments() {
+  this.showDialog = false;
+  const formData = new FormData();
+  const projectid = Number(this.route.snapshot.paramMap.get('id'));
+  formData.append('projectId', projectid.toString());
+  formData.append('collabCount', this.collabCount.toString());
+  formData.append('Status', 'Active');
+  this.dataService.updateProject(formData).subscribe({
+    next: () => { console.log('Projects updated successfully in CSV'); this.router.navigate(['/projects', projectid]); },
+    error: (err) => { console.error('Error updating CSV:', err);}
+  });    
+}
   
 cancel() {
   this.showDialog = false;

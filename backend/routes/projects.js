@@ -15,7 +15,10 @@ router.get('/csv-to-json', projectController.getCSV);
 router.post('/update-projects', projectController.updateProjects);
 router.post('/updateProjectDocuments', projectController.updateProjectDocuments);
 router.patch('/assigned-collaborators/:id', projectController.updateProjectDocumentsCollabs);
-router.post('/update-project', projectController.updateSingleProject);
+router.post('/update-project', upload.none(), projectController.updateSingleProject);
+router.post('/update-project-collab', upload.none(), projectController.updateCollaboraborforProject);
+router.post('/update-project-docAssigned', upload.none(), projectController.updatedocAssignedforProject);
+router.post('/delete-project', projectController.deleteProject);
 router.get('/project/:id', projectController.getProjectById);
 
 

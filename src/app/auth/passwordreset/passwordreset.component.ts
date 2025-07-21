@@ -41,7 +41,7 @@ ngOnInit() {
   }
   validateToken(token: string){
     console.log('validate token');
-    this.http.post('http://localhost:3000api/verify-reset-token', { token }).subscribe({
+    this.http.post('http://localhost:3000/api/verify-reset-token', { token }).subscribe({
       next: () => this.tokenValid = true,
       error: () => this.router.navigate(['/sign-in'])
     });

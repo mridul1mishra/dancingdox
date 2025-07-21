@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class EmailService {
   constructor(private http: HttpClient) {}
-
+  private apiUrl = 'http://localhost:3000/api';
   sendEmail(to: string, subject: string, body: string) {
-    return this.http.post('http://localhost:3000api/send-email', { to, subject, body });
+    return this.http.post(`${this.apiUrl}/send-email`, { to, subject, body });
   }
   resendOtpEmail(to: string, subject: string, body: string) {
-    return this.http.post('http://localhost:3000api/send-email', { to });
+    return this.http.post(`${this.apiUrl}/send-email`, { to });
   }
   sendOtp(to: string, otp:string, reset?:string){
     const body: any = { to, otp };
@@ -19,13 +19,13 @@ export class EmailService {
     body.reset = reset;
   }
   console.log(body);
-    return this.http.post('http://localhost:3000api/verify-otp', body);
+    return this.http.post(`${this.apiUrl}/verify-otp`, body);
   }
   quoteEmail(to: string, subject1: string, body1: string) {
-    return this.http.post('http://localhost:3000api/send-quote', { to, subject1, body1 });
+    return this.http.post(`${this.apiUrl}/send-quote`, { to, subject1, body1 });
   }
   resetEmail(to: string) {
-    return this.http.post('http://localhost:3000api/reset-link', { to });
+    return this.http.post(`${this.apiUrl}/reset-link`, { to });
   }
 
   

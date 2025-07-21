@@ -38,14 +38,14 @@
       <div class="form-row">
         <div class="form-field">
           <label for="firstName">First Name</label>
-          <input type="text" [(ngModel)]="firstName" name="firstName" required #firstNameField="ngModel" placeholder="e.g. John"  />
+          <input type="text" [(ngModel)]="firstname" name="firstName" required #firstNameField="ngModel" placeholder="e.g. John"  />
         <div class="error" *ngIf="firstNameField.invalid && firstNameField.touched">
         First name is required.
         </div>
         </div>
         <div class="form-field">
           <label for="lastName">Last Name</label>
-          <input type="text" [(ngModel)]="lastName" name="lastName" required #lastNameField="ngModel" placeholder="e.g. Lonado" />
+          <input type="text" [(ngModel)]="lastname" name="lastName" required #lastNameField="ngModel" placeholder="e.g. Lonado" />
         <div class="error" *ngIf="lastNameField.invalid && lastNameField.touched">
         Last name is required.
         </div></div>

@@ -9,9 +9,12 @@ export interface Document {
   projectID: string;
   }
   export interface UserProfile {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   image: string;
   isSubscribed: boolean;
+  designation: string;
+  organization: string
   // add more fields if needed
 }

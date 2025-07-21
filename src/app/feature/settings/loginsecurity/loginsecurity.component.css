@@ -1,0 +1,186 @@
+.settings-card {
+  max-width: 1150px;
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+.settings-card h2 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-header h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.edit-link,
+.unblock-link {
+  font-size: 13px;
+  color: #6c63ff;
+  text-decoration: none;
+}
+
+.edit-link:hover,
+.unblock-link:hover {
+  text-decoration: underline;
+}
+
+.input-box {
+  width: 500px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.btn {
+  background-color: transparent; /* No background */
+  color: #333; /* Text color */
+  border: 1px solid #ccc; /* Light gray border */
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+}
+
+.email-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.connected-label {
+  color: green;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.subtext {
+  font-size: 12px;
+  color: #777;
+}
+
+.blocked-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.blocked-user .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.blocked-user .name {
+  font-weight: bold;
+}
+
+.blocked-user .email {
+  font-size: 13px;
+  color: #666;
+}
+
+
+/* custom toggle */
+
+.custom-toggle {
+  display: inline-block;
+  position: relative;
+}
+
+/* Fully hide native checkbox */
+.custom-toggle input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  z-index: -1;
+}
+
+.toggle-track {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background-color: #cfd6e1;
+  border-radius: 999px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+.icon {
+  position: absolute;
+  font-size: 12px;
+  top: 6px;
+  z-index: 2;
+  color: #333;
+  transition: opacity 0.3s;
+}
+
+.icon.off {
+  left: 8px;
+  opacity: 1;
+}
+
+.icon.on {
+  right: 8px;
+  opacity: 0;
+}
+
+/* When checked */
+.custom-toggle input:checked + .toggle-track {
+  background-color: #6c63ff;
+}
+
+.custom-toggle input:checked + .toggle-track .thumb {
+  left: 26px;
+}
+
+.custom-toggle input:checked + .toggle-track .icon.off {
+  opacity: 0;
+}
+
+.custom-toggle input:checked + .toggle-track .icon.on {
+  opacity: 1;
+}

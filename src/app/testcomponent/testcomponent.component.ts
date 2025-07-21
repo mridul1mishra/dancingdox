@@ -32,7 +32,7 @@ metadocument: DocumentMetadata[] | undefined;
     const user = localStorage.getItem('userID');
     if (user) {
       this.authService.getUserName(user).subscribe(data => {
-        this.collaboratorName = data.name;
+        this.collaboratorName = data.firstName;
         this.useremail = data.email;
       });
     }  
@@ -57,7 +57,7 @@ metadocument: DocumentMetadata[] | undefined;
       projects: [this.projects]
     };
 
-    this.http.post('http://localhost:3000api/updateProjectDocuments', payload)
+    this.http.post('http://localhost:3000/api/updateProjectDocuments', payload)
         .subscribe({
           next: () => {console.log('Projects updated successfully in CSV')
             this.router.navigate([`/project/${this.projects?.id}`]);

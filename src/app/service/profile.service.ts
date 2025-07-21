@@ -10,7 +10,7 @@ export class UserProfileService {
   private profileSubject = new BehaviorSubject<UserProfile | null>(null);
   profile$ = this.profileSubject.asObservable();
   constructor(private http: HttpClient) { }
-  private apiUrl = 'http://localhost:3000api';
+  private apiUrl = 'http://localhost:3000/api';
   setProfile(profile: UserProfile) {
     this.profileSubject.next(profile);
   }

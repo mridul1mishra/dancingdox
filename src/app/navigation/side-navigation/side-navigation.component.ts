@@ -18,18 +18,8 @@ export class SideNavigationComponent implements OnInit {
   isSubMenuOpen = false;
   constructor(private router: Router, private authService: AuthService){}
   ngOnInit(){
-    const profileId = localStorage.getItem('userID');
-    if (profileId) {
-    this.authService.getUserName(profileId).subscribe({
-      next: (res: UserProfile) => {
-      this.userProfile = res;
-      localStorage.setItem('userData', JSON.stringify(res));
-    },error: (err) => {
-    console.error('Failed to fetch user profile', err);
-    this.userProfile = null;
-    }
-  });
-  }
+    
+    this.userProfile = this.authService.getUserProfile();
   }
   toggleSubMenu() {
     this.isSubMenuOpen = !this.isSubMenuOpen;
@@ -41,7 +31,9 @@ export class SideNavigationComponent implements OnInit {
   'step1Completed',
   'step2Completed',
   'userData',
-  'userID'
+  'userID',
+  'Storedproject',
+  'project'
 ];
 keysToRemove.forEach(key => localStorage.removeItem(key));
 localStorage.setItem('isLoggedIn', 'false');

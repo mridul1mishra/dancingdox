@@ -2,8 +2,9 @@
     <h2>Assign Documents</h2>
   
     <form >
+      <div *ngIf="normalizedDocuments.length">
       <div *ngFor="let doc of normalizedDocuments" class="document-section" >
-        <h4>{{ doc.fieldName }}</h4>
+        <h4>{{ doc.fieldName }} </h4>
         <label>Assign Collaborator</label>
         <div class="collaborator-input">
           <ng-container *ngFor="let user of getAssignedUsers(doc.fieldName)">
@@ -13,13 +14,7 @@
               <button type="button" (click)="removeCollaborator(doc.fieldName, user)">×</button>
             </span>
           </ng-container>
-          <input
-  type="text"
-  [(ngModel)]="searchText[doc.fieldName]"
-  (ngModelChange)="onSearchInput($event, doc.fieldName)"
-  [name]="'search_' + doc.fieldName"
-  placeholder="Search collaborator..."
-/>
+          <input type="text"  [(ngModel)]="searchText[doc.fieldName]"  (ngModelChange)="onSearchInput($event, doc.fieldName)"  [name]="'search_' + doc.fieldName"  placeholder="Search collaborator..."/>
           <div class="dropdown" *ngIf="filteredUsers[doc.fieldName]?.length">
             <div *ngFor="let user of filteredUsers[doc.fieldName]; trackBy: trackByUserId" (click)="addCollaborator(doc.fieldName, user)" class="dropdown-item">
               <img src="https://i.pravatar.cc/4" alt="avatar" />
@@ -32,6 +27,7 @@
           
         </div>
       </div>
+    </div>
   
       <div class="actions">
         <button type="button" (click)="onCancel()">Cancel</button>

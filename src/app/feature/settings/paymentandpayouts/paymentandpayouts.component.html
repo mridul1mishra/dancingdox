@@ -1,0 +1,107 @@
+<div class="settings-payment-container">
+  <h2>Settings</h2>
+  <p class="subtitle">Manage Your Profile: Update Picture, Personal Details, and Address</p>
+<div class="wrapper">
+<!-- current-plan-summary.component.html -->
+<div class="card">
+  <div class="card-header">
+    <h3>Current Plan Summary</h3>
+    <div class="actions">
+      <button class="btn outline">Cancel Plan</button>
+      <button class="btn solid">Upgrade</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="info-grid">
+    <div class="info">
+      <span class="label">Plan Name</span>
+      <span class="value">{{ planName }}</span>
+    </div>
+
+    <div class="info">
+      <span class="label">Billing Cycle</span>
+      <span class="value">{{ card?.subscriptiontype }}</span>
+    </div>
+
+    <div class="info right">
+      <span class="label">Total Cost</span>
+      <span class="value cost">${{ totalCost }}</span>
+    </div>
+  </div>
+
+  <div class="usage-section">
+    <span class="label">Usage</span>
+    <span class="usage-text">
+      {{ usedGB }} GB of {{ totalGB }} GB used
+    </span>
+
+    <div class="progress-bar">
+      <div
+        class="progress"
+        [style.width.%]="usagePercent">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="payment-container">
+  <div class="payment-header">Payment Method</div>
+  <div class="payment-card">
+    <div class="card-details">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard" class="card-logo">
+      <div class="card-info">
+        <div class="card-title">Master Card</div>
+        <div class="card-number">•••• •••• •••• {{card?.last4}}</div>
+        <div class="card-expiry">Expiry on {{card?.expMonth}}/{{card?.expYear}}</div>
+        <div class="card-email">📧 billing&#64;gmail.com</div>
+      </div>
+    </div>
+    <button class="change-button">Change</button>
+  </div>
+</div>
+</div>
+<div class="billing-history">
+  <h3>Billing History</h3>
+  <p class="subtitle">Effortlessly handle your billing and invoices right here.</p>
+  
+  <table class="billing-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Reference</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>DancingDoc Premium Yearly</td>
+        <td>INV-C-2025-700344344</td>
+        <td>50.06 USD</td>
+        <td>12 JAN 2025</td>
+        <td><span class="status success">Success</span></td>
+        <td><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/60/60740.png" alt="Download" class="download-icon"></a></td>
+      </tr>
+      <tr>
+        <td>DancingDoc Pro Yearly</td>
+        <td>INV-C-2025-660344344</td>
+        <td>40.06 USD</td>
+        <td>11 JAN 2024</td>
+        <td><span class="status success">Success</span></td>
+        <td><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/60/60740.png" alt="Download" class="download-icon"></a></td>
+      </tr>
+      <tr>
+        <td>DancingDoc Premium Yearly</td>
+        <td>INV-C-2025-120344344</td>
+        <td>60.06 USD</td>
+        <td>10 JAN 2023</td>
+        <td><span class="status failed">Failed</span></td>
+        <td><a href="#"><img src="https://cdn-icons-png.flaticon.com/512/60/60740.png" alt="Download" class="download-icon"></a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>

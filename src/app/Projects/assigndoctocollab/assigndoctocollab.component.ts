@@ -42,11 +42,12 @@ export class AssigndoctocollabComponent {
       next: (data) => {
         if(data){
           this.project = data;  // handle success
-          console.log("This is project data", data);
-          this.samplefile = this.project.samplefile;
-          console.log('Type:', typeof this.project.samplefile);
-          this.normalizedDocuments = this.getNormalizedSamplefile(this.samplefile);
-
+          const samplefile = this.project.samplefile
+          if (Array.isArray(samplefile)) {
+            this.normalizedDocuments = this.project.samplefile;
+          } else {
+            this.normalizedDocuments = JSON.parse(samplefile);
+          }
           this.collab = this.getNormalizedCollaborators();
           console.log("This is a collaborator",this.collab);
           if (!this.project.docassigned) {
@@ -64,16 +65,37 @@ export class AssigndoctocollabComponent {
 
   }
   getNormalizedSamplefile(samplefile: any): any[] {
+  if (typeof samplefile !== 'string') return [];
+
   try {
-    const parsed = typeof samplefile === 'string' ? JSON.parse(samplefile) : samplefile;
+    // Check if it's in the broken format: stringified object + array
+    const splitIndex = samplefile.indexOf('}",[');
+    if (splitIndex !== -1) {
+      const part1 = samplefile.slice(0, splitIndex + 1);
+      const part2 = samplefile.slice(splitIndex + 2);
+
+      const fixedPart1 = part1.replace(/""/g, '"').replace(/\\"/g, '"');
+      const cleanedPart1 = fixedPart1.startsWith('"') && fixedPart1.endsWith('"')
+        ? fixedPart1.slice(1, -1)
+        : fixedPart1;
+
+      const obj1 = JSON.parse(cleanedPart1);
+      const obj2 = JSON.parse(part2);
+      console.log(obj1, obj2);
+      return [obj1, ...obj2]; // Combine both into an array
+    }
+
+    // Otherwise, try to parse normally
+    const parsed = JSON.parse(samplefile);
     return Array.isArray(parsed) ? parsed : [parsed];
+
   } catch (err) {
     console.error('Invalid JSON in samplefile:', samplefile);
     return [];
   }
 }
 getNormalizedCollaborators(): any[] {
-  const collaboratorsRaw = this.project?.Collaborator;
+  const collaboratorsRaw = this.project?.collaborator;
 
   if (!collaboratorsRaw) {
     return [];
@@ -179,13 +201,7 @@ addCollaborator(fieldName:string, user: any) {
 
   Create() {
     this.showDialog = true;
-    if(this.project)
-    {
-      this.dataService.updateProject(this.project).subscribe({
-      next: () => console.log('CSV updated successfully'),
-      error: err => console.error('Error updating CSV:', err)
-       });
-    }
+    
   }
   cancel() {
     this.showDialog = false;
@@ -194,9 +210,18 @@ addCollaborator(fieldName:string, user: any) {
     this.showDialog = false;
     const userDataStr = localStorage.getItem('userData');
     const userData = userDataStr ? JSON.parse(userDataStr) : null;
-    
-    if(userData.isSubscribed === 'true')
+    console.log('showModal',this.showModal);
+    if(this.project)
+    {
+      this.dataService.updateProjectDocAssigned(this.project.docassigned, this.projectId.toString()).subscribe({
+      next: () => console.log('CSV updated successfully'),
+      error: err => console.error('Error updating CSV:', err)
+       });
+    }
+    if(userData.isSubscribed === 'true'){
       this.showModal = true;
+    this.showContainer=false;
+}
     else this.showSubscribe = true;
     console.log('Project created!');    
   }
@@ -206,4 +231,34 @@ addCollaborator(fieldName:string, user: any) {
     this.showSubscribe = false;
     this.showPricing = true;
   }
+}
+function parseSamplefileRaw(raw: any): samplefile[] {
+  if (Array.isArray(raw)) {
+    // Already an array, return as is
+    return raw;
+  }
+
+  if (typeof raw !== 'string') {
+    throw new Error('Input is not a string');
+  }
+
+  const delimiter = '}",[';
+  const splitIndex = raw.indexOf(delimiter);
+  if (splitIndex === -1) {
+    throw new Error('Invalid format: cannot find delimiter }",[');
+  }
+
+  const part1 = raw.substring(0, splitIndex + 1);  // e.g. '{"filename":"..."}'
+  const part2 = raw.substring(splitIndex + 2).replace(/^,/, '');     // e.g. '[{...}, {...}]'
+
+  // Remove wrapping quotes and fix doubled quotes inside part1
+  const cleanedPart1 = part1
+    .replace(/^"+|"+$/g, '')  // remove leading/trailing quotes
+    .replace(/""/g, '"');     // replace doubled quotes
+console.log("cleanedPart1:", cleanedPart1);
+console.log("part2:", part2);
+  const obj1 = JSON.parse(cleanedPart1);
+  const arr2 = JSON.parse(part2);
+
+  return [obj1, ...arr2];
 }

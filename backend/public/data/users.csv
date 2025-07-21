@@ -1,4 +1,1 @@
-email,password,name,image,isSubscribed,paymentMethodId,brand,last4,expMonth,expYear,billingName
-mridul1mishra@gmail.com,$2b$10$vxVkr9qGY1A0AJUM93FpueEp4vdNVpRac3P1jd40CGll84CFWjGoC,Mridul Mishra,,FALSE,,,,,,
-mridul1mishra@yahoo.com,$2b$10$1b/5Wc333a5m9.K.yGgRQ.O6oUo3ZCoiwZNQ8Ac0TKxhTCwtIfBSm,Mridul Mishra,,true,pm_1RiSC1KYuZ7BRQhfAsUnTNKG,visa,4242,12,2034,Mridul Mishra
-profdwivedix@gmail.com,$2b$10$l.3RmqiwwB5lVfABffBmgedW3nYHM1oQSGMuf5HYAjKt2YTMbD3MG,Puneet Dwivedi,,FALSE,,,,,,
+email,password

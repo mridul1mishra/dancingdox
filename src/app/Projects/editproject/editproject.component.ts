@@ -45,10 +45,10 @@ constructor(private route: ActivatedRoute, private dataService: DataService, pri
       });
   }
   populateForm(data: Project) {
-    console.log('Data',data.Name);
+    console.log('Data',data.ProjectName);
   this.projectForm.patchValue({
-    Name: data.Name,
-    title: data.Details,
+    Name: data.ProjectName,
+    title: data.projectdetails,
     visibility: data.visibility,
     startDate: convertToInputDate(data.startDate),
     endDate: convertToInputDate(data.endDate),

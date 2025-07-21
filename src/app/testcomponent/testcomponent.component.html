@@ -16,7 +16,7 @@
         </div>
         <div class="upload-status">Uploaded Documents <strong>3/4</strong></div>
       </div>
-      
+      <div *ngIf="selectedMember.documents?.length > 0; else noDocs">
       <div *ngFor="let doc of selectedMember.documents" [ngClass]="['doc-card', doc.color]">
         <div class="doc-header">
           <span class="material-icons">description</span>
@@ -30,6 +30,10 @@
           <input type="text" [(ngModel)]="doc.remarks" placeholder="Remarks" />
         </div>
       </div>
+      </div>
+      <ng-template #noDocs>
+  <p>No documents uploaded.</p>
+</ng-template>
     
   
       <div class="action-buttons">

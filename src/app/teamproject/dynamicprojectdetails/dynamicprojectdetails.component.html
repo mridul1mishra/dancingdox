@@ -2,34 +2,34 @@
 
 <div class="card" div *ngIf="project">
   <div class="card-header">
-    <h2>{{ project.Name }}</h2>
+    <h2>{{ project.ProjectName }}</h2>
     <span class="status active">● {{project.status}}</span>
   </div>
   <hr class="divider" />
   <div class="card-meta">
     <div class="meta-block"><p><strong>Project Scope:</strong></p> <p>{{ project.visibility }}</p></div><div class="divider-vertical"></div>
-    <div class="meta-block"><p><strong>Participants:</strong></p> <p>{{ project.collabCount }} </p></div><div class="divider-vertical"></div>
-    <div class="meta-block"><p><strong>Host:</strong></p> <p><a href="#">{{ project.Host }}</a></p></div><div class="divider-vertical"></div>
-    <div class="meta-block"><p><strong>Created on:</strong></p><p> {{ project.startDate }}</p></div><div class="divider-vertical"></div>
+    <div class="meta-block"><p><strong>Participants:</strong></p> <p>{{ project.collabcount }} </p></div><div class="divider-vertical"></div>
+    <div class="meta-block"><p><strong>Host:</strong></p> <p><a href="#">{{ project.host }}</a></p></div><div class="divider-vertical"></div>
+    <div class="meta-block"><p><strong>Created on:</strong></p><p> {{ project.startDate | date:'MMM d, y'  }}</p></div><div class="divider-vertical"></div>
     <div class="meta-block" >
-      <p><strong>Due Date:</strong></p> <p>{{ project.endDate }}</p>
+      <p><strong>Due Date:</strong></p> <p>{{ project.endDate | date:'MMM d, y' }}</p>
       <p class="due-date"><span class="material-icons" style="font-size: 16px; vertical-align: middle;">schedule</span> {{ getDaysLeft(project.endDate) }} days left</p>
     </div>
   </div>
 
   <div class="card-description">
     <p>
-      {{project.title}}
+      {{project.projectdetails}}
     </p>
   </div>
 
   <div class="card-footer">
     <span class="project-id"><strong>Project ID:</strong> {{project.id}}</span>
-    <button class="support-btn" (click)="openSupportingFile()"><i class="fa-solid fa-folder-open"></i> Support Documents</button>
+    <button class="support-btn" *ngIf="project?.samplefile"  (click)="openSupportingFile()"><i class="fa-solid fa-folder-open"></i> Support Documents</button>
   </div>
 </div>
 <div *ngIf="project && user">
-  <div *ngIf="project.Host === user.name">
+  <div *ngIf="project.host === user.name">
     <app-colloborator-doc></app-colloborator-doc>
   </div>
 </div>

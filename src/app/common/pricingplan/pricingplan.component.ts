@@ -7,6 +7,7 @@ import { StripeCardElementOptions, StripeElementsOptions } from '@stripe/stripe-
 import { PaymentService } from '../../service/payment.service';
 import { CardData } from '../../service/project.interface.service';
 import { Router, RouterModule } from '@angular/router';
+import { json } from 'express';
 
 @Component({
   selector: 'app-pricingplan',
@@ -18,6 +19,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class PricingplanComponent {
   @Input() showPricing = false;
+  subscription: string = '';
   elementsOptions = {
     locale: 'auto',
     appearance: {
@@ -75,8 +77,9 @@ getCardImage(brand: string): string {
 selectPlan(plan: 'personal' | 'team') {
   this.selectedPlan = plan;
 }
-startPlan(): void{
+startPlan(plan: string): void{
   this.startPayment = true;
+  this.subscription = plan;
 }
 makePayment(): void{
   const stored = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -95,10 +98,17 @@ this.stripeService.createPaymentMethod({
     last4: pm.card?.last4 || '',
     expMonth: pm.card?.exp_month || 0,
     expYear: pm.card?.exp_year || 0,
-    billingName: pm.billing_details?.name || ''
+    billingName: pm.billing_details?.name || '',
+    subscriptiontype: this.subscription
     };
 
     this.paymentService.storeCard(cardData, stored.email).subscribe(() => {
+      const storageUser = localStorage.getItem('userData');
+      if (storageUser) {
+        const user = JSON.parse(storageUser);
+        user.isSubscribed = 'true';
+        localStorage.setItem('userData', JSON.stringify(user)); // ✅ Stringify before storing
+      }
       console.log('Card info stored successfully.');
       this.router.navigate(['/projectlist']);
     });

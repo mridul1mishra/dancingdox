@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const sesClient = new SESClient({
   region: 'us-east-2',
   credentials: {
-    
+ 
   }
 
 });

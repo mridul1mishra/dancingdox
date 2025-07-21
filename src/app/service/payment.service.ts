@@ -11,7 +11,10 @@ export class PaymentService {
   constructor(private http: HttpClient) {}
 
   storeCard(cardData: CardData, email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}ch/store-card`, cardData,{headers: {'x-user-email': email }
+    return this.http.post(`${this.apiUrl}/store-card`, cardData,{headers: {'x-user-email': email }
   });
+  }
+  getPayoutDetails(email: string): Observable<CardData>{
+    return this.http.get<CardData>(`${this.apiUrl}/get-store-card/${email}`);
   }
 }

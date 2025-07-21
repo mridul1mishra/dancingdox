@@ -1,0 +1,105 @@
+const fs = require('fs');
+const { parse } = require('csv-parse/sync');
+const { stringify } = require('csv-stringify/sync');
+const pool = require('../utils/sql');
+
+
+async function updateProjectInSQL(projectId, collabCount, Status, res) {
+    try {
+    const [result] = await pool.execute(
+      'UPDATE projects SET collabcount = ?, status = ? WHERE ID = ?',
+      [collabCount, Status, projectId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: `No project found with ID ${projectId}` });
+    }
+
+    return res.json({ success: true, message: `Project ${projectId} updated successfully` });
+  } catch (error) {
+    console.error('SQL update error:', error);
+    return res.status(500).json({ success: false, message: 'Database error', error });
+  }
+
+
+}
+
+async function updateCollabInSQL(collab, res){
+  const { collaborators, projectId } = collab;
+  try {
+    // 1. Get current collab column value (if any)
+    const [rows] = await pool.execute(
+      'SELECT collaborator FROM projects WHERE ID = ?',
+      [projectId]
+    );
+
+    let existingCollabs = [];
+
+    if (rows.length > 0 && rows[0].collab) {
+      try {
+        existingCollabs = JSON.parse(rows[0].collab);
+        if (!Array.isArray(existingCollabs)) {
+          existingCollabs = []; // reset if data is corrupted
+        }
+      } catch (err) {
+        console.warn('Failed to parse existing collab JSON:', err);
+        existingCollabs = [];
+      }
+    }
+
+    // 2. Append new collaborator
+    existingCollabs.push(...collaborators);
+
+    // 3. Update the collab column with new array
+    const newCollabJSON = JSON.stringify(existingCollabs);
+    const collabCount = existingCollabs.length;
+    await pool.execute(
+      'UPDATE projects SET collaborator = ?, collabcount = ?, status = ? WHERE ID = ?',
+      [newCollabJSON, collabCount, 'Active', projectId]
+    );
+    return { success: true, message: `Collaborator added successfully` };
+  } catch (err) {
+    console.error('Error in updateCollabInSQL:', err);
+    throw err;
+  }
+
+}
+
+async function updatedocAssignedInSQL(docassigned, projectID, res){
+try{
+    // 1. Get current collab column value (if any)
+    const [rows] = await pool.execute(
+      'SELECT docassigned FROM projects WHERE ID = ?',
+      [projectID]
+    );
+    let existingdocAssigned = [];
+
+    if (rows.length > 0 && rows[0].collab) {
+      try {
+        existingdocAssigned = JSON.parse(rows[0].docassigned);
+        if (!Array.isArray(existingdocAssigned)) {
+          existingdocAssigned = []; // reset if data is corrupted
+        }
+      }catch (err) {
+        console.warn('Failed to parse existing collab JSON:', err);
+        existingCollabs = [];
+      }
+    }
+        // 2. Append new collaborator
+        existingdocAssigned.push(...docassigned);
+        // 3. Update the collab column with new array
+        const newdocAssignedJSON = JSON.stringify(existingdocAssigned);
+
+        await pool.execute(
+          'UPDATE projects SET docassigned = ? WHERE ID = ?',
+          [newdocAssignedJSON, projectID]
+        );
+        console.log('Collaborator added successfully');
+        return { success: true, message: `Collaborator added successfully` }; 
+  }catch (err) {
+    console.error('Error in updateCollabInSQL:', err);
+    throw err;
+  }
+}
+
+module.exports = { updateProjectInSQL,updateCollabInSQL, updatedocAssignedInSQL };

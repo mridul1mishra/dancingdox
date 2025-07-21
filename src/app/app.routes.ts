@@ -7,8 +7,8 @@ import { CreateteamsComponent } from './teamslist/createteams/createteams.compon
 import { CreateProjectsComponent } from './Projects/create-projects/create-projects.component';
 import { GetProjectDetailsComponent } from './Projects/1publicproject/get-project-details.component';
 import { ProjectlistComponent } from './teamproject/projectlist/projectlist.component';
-import { SettingsComponent } from './settings/settings.component';
-import { PersonalinfoComponent } from './settings/personalinfo/personalinfo.component';
+import { SettingsComponent } from './feature/settings/settings.component';
+import { PersonalinfoComponent } from './feature/settings/personalinfo/personalinfo.component';
 
 import { ProjectdetailsComponent } from './teamproject/projectdetails/projectdetails.component';
 import { TeamprojectComponent } from './Projects/teamproject/teamproject.component';
@@ -18,7 +18,6 @@ import { DocumentInputComponent } from './Projects/2publicproject/document-input
 import { TestcomponentComponent } from './testcomponent/testcomponent.component';
 import { DynamicprojectdetailsComponent } from './teamproject/dynamicprojectdetails/dynamicprojectdetails.component';
 import { CollaboratorComponent } from './Projects/3publicproject/collaborator.component';
-import { OAuthCallbackComponent } from './oauth-callback/oauth-callback.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { AddCollaboratorComponent } from './Projects/add-collaborator/add-collaborator.component';
@@ -34,6 +33,9 @@ import { PasswordresetComponent } from './auth/passwordreset/passwordreset.compo
 import { JoinprojectComponent } from './Projects/joinproject/joinproject.component';
 import { ColloboratorDocComponent } from './teamproject/colloborator-doc/colloborator-doc.component';
 import { EditprojectComponent } from './Projects/editproject/editproject.component';
+import { LoginsecurityComponent } from './feature/settings/loginsecurity/loginsecurity.component';
+import { PaymentandpayoutsComponent } from './feature/settings/paymentandpayouts/paymentandpayouts.component';
+import { PricingplanComponent } from './common/pricingplan/pricingplan.component';
 
 
 export const routes: Routes = [
@@ -57,13 +59,16 @@ export const routes: Routes = [
     { path: 'teams/teaminformation', component: CreateteaminformationComponent },
     { path: 'Notification', component: NotificationComponent },
     { path: 'createproject', component: CreateProjectsComponent },
-    { path: 'Settings', component: SettingsComponent},
+    { path: 'settings', component: SettingsComponent},
+    { path: 'pricingplan', component: PricingplanComponent},
+    { path: 'settings/payment-and-payouts', component: PaymentandpayoutsComponent},
     
     { path: 'project/createindependentproject/project-start/:id', component: DocumentInputComponent },
     { path: 'projects/projectdetail', component: ProjectdetailsComponent },
     { path: 'projects/:id', component: DynamicprojectdetailsComponent},
     { path: 'projectlist', component: ProjectlistComponent},
-    { path: 'Settings/profile', component: PersonalinfoComponent },
+    { path: 'settings/personal-info', component: PersonalinfoComponent },
+    { path: 'settings/login-security', component: LoginsecurityComponent },
     { path: 'project/createindependentproject/project-start/collaborator/:id', component: CollaboratorComponent},
     { path: 'project/createindependentproject', component: GetProjectDetailsComponent },
     { path: 'project/createprivateproject', component: GetProjectDetailsComponent },

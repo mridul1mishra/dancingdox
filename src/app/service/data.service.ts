@@ -17,12 +17,8 @@ export class DataService {
   constructor(private http: HttpClient) { }
   private apiUrl = 'http://localhost:3000/api';
   getAllProjects(): Observable<Project[]> {
-    return this.http.get(`${this.apiUrl}/csv-to-json`, {
-      responseType: 'text' as const
-    }).pipe(
-      map(csv => this.parseCsvToProjects(csv)),  // Parse CSV to Project array
-    );
-  }
+  return this.http.get<Project[]>(`${this.apiUrl}/csv-to-json`);
+}
 parseCsvToProjects(csv: string): Project[] {
     const lines = csv.trim().split('\n');
     const headers = this.smartSplit(lines[0]);  
@@ -53,6 +49,7 @@ parseCsvToProjects(csv: string): Project[] {
     });
   }
 
+
   // Smart CSV Splitter that respects quotes
 private smartSplit(line: string): string[] {
   const result: string[] = [];
@@ -80,20 +77,33 @@ private smartSplit(line: string): string[] {
   return result;
 }
 getProjectById(id: number): Observable<Project> {
-  return this.http.get<Project>(`${this.apiUrl}/project/${id}`);
-}
-  
+  return this.http.get<{ project: Project }>(`${this.apiUrl}/project/${id}`)
+  .pipe(map(response => response.project));
+} 
   updateProjectAssignedCollab(id: number, data: { docassigned: DocumentCollab[] }) {
     return this.http.patch(`${this.apiUrl}/assigned-collaborators/${id}`, data);
   }
   updateProject(project: any){
     return this.http.post(`${this.apiUrl}/update-project`, project);
   }
+  updateProjectCollab(project: any): Observable<any>{
+    return this.http.post(`${this.apiUrl}/update-project-collab`, project);
+  }
+  updateProjectDocAssigned(project: any, projectID: string): Observable<any>{
+    const payload = {
+    docassigned: project,
+    projectID: projectID
+  };
+    return this.http.post(`${this.apiUrl}/update-project-docAssigned`, payload);
+  }
   addProject(projectData: Project, file: File){
     const formData = new FormData();
     formData.append('file', file); // file key for multer or your backend
     formData.append('project', JSON.stringify(projectData)); // send project as a JSON string
     return this.http.post(`${this.apiUrl}/add-project`, formData);
+  }
+  deleteProjects(id: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/delete-project`, {id});
   }
   uploadDocsWithMetadata(formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/upload-multiple`, formData); // Adjust URL to match your backend route

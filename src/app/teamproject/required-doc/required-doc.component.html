@@ -20,23 +20,21 @@
           <th>Actions</th>
         </tr>
       </thead>
-      
-      
-        <tbody *ngIf="docData?.samplefile?.length; else noSampleFile">
-          <tr *ngFor="let file of filteredSampleFiles; let idx = index">
+        <tbody  *ngIf="otherFilesOnly.length; else  noSampleFile">
+          <tr *ngFor="let file of otherFilesOnly; let idx = index">
             <td>{{ ('0' + (idx + 1)).slice(-2) }}</td>
             <td>{{ file.fieldName }}</td>
             <td>{{ file.type || '—' }}</td>
             <td>{{ file.sizeUnit ? file.maxSize + ' ' + file.sizeUnit : '—' }}</td>
             <td>{{ file.uploadTime ? (file.uploadTime | date:'medium') : '—' }}</td>
             <td>
-              <ng-container *ngIf="docData?.Host === userID">
+              <ng-container *ngIf="docData?.host === userID">
                   sample data
               </ng-container>
               <ng-template #pendingBlock let-fileFromContext="file">
                 {{ fileStatuses[fileFromContext.fieldName?.trim()?.toLowerCase()] || '—' }}
               </ng-template>
-              <ng-container *ngIf="docData?.Host !== userID">
+              <ng-container *ngIf="docData?.host !== userID">
                 <ng-container *ngTemplateOutlet="pendingBlock; context: { file: file }"></ng-container>
               </ng-container>
             </td>

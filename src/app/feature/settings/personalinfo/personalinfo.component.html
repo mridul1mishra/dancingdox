@@ -1,0 +1,87 @@
+<link  rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+<div class="personal-info-container">
+  <h2>Personal Info</h2>
+
+  <div class="profile-picture-section">
+    <img
+      src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80"
+      alt="Profile picture"
+      class="profile-picture"
+    />
+    <div class="photo-actions">
+      <button class="btn-change">Change Photo</button>
+      <button class="btn-remove" aria-label="Remove Photo">
+        <i class="fas fa-trash"></i>
+        Remove
+      </button>
+    </div>
+  </div>
+
+  <div class="personal-form">
+    <div class="form-row">
+      <label for="firstName">First Name</label>
+      <input id="firstName" name="firstName" type="text" placeholder="First Name" [(ngModel)]="firstName" />
+    </div>
+    <div class="form-row">
+      <label for="lastName">Last Name</label>
+      <input id="lastName" name="lastName" type="text" placeholder="Last Name" [(ngModel)]="lastName" />
+    </div>
+
+    <div class="form-row">
+      <label for="address1">Address Line 1 (or organization name)</label>
+      <input id="address1" type="text" [(ngModel)]="address1" placeholder="Address Line 1"  />
+    </div>
+    <div class="form-row">
+      <label for="address2">Address Line 2</label>
+      <input id="address2" type="text" [(ngModel)]="address2" placeholder="Address Line 2"  />
+    </div>
+
+    <div class="form-row">
+      <label for="city">Town / City</label>
+      <input id="city" type="text" [(ngModel)]="city" placeholder="Town / City"  />
+    </div>
+    <div class="form-row">
+      <label for="country">Country</label>
+      <select id="country">
+        <option value="US" selected>🇺🇸 United States</option>
+        <option value="CA">Canada</option>
+        <option value="GB">United Kingdom</option>
+        <!-- Add more countries as needed -->
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="postcode">Postcode:</label>
+      <input id="postcode" type="text" [(ngModel)]="postcode" placeholder="Postcode"  />
+    </div>
+
+    <div class="form-row">
+      <label for="organization">Organization</label>
+      <input id="organization" name="organization" type="text" [(ngModel)]="organization" placeholder="organization"  />
+    </div>
+
+    <div class="form-row">
+      <label for="designation">Designation</label>
+      <input id="designation" name="designation" type="text" placeholder="designation" [(ngModel)]="designation"/>
+    </div>
+
+    <fieldset class="form-row radio-group">
+      <legend>Is this address also your invoice address?</legend>
+      <label>
+        <input type="radio" name="invoiceAddress" checked /> Yes
+      </label>
+      <label>
+        <input type="radio" name="invoiceAddress" /> No
+      </label>
+    </fieldset>
+
+    <div class="form-buttons">
+      <button type="button" class="btn-cancel" (click)="redirectProfile()">Cancel</button>
+      <button type="submit" class="btn-update" (click)="updateProfile()">Update profile</button>
+      
+    </div>
+    <div></div><div *ngIf="message" [class]="messageClass">{{ message }}</div>
+  </div>
+  
+</div>

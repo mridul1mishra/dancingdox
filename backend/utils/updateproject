@@ -1,0 +1,46 @@
+const fs = require('fs');
+const { parse } = require('csv-parse/sync');
+const { stringify } = require('csv-stringify/sync');
+
+function updateProjectInCSV(csvPath, updatedProject) {
+  if (!updatedProject || !updatedProject.id) {
+    return { status: 400, error: 'Invalid project data' };
+  }
+
+  const input = fs.readFileSync(csvPath, 'utf8');
+
+  const records = parse(input, {
+    columns: true,
+    skip_empty_lines: true,
+    relax_column_count: true,
+    trim: true
+  });
+
+  const updatedRecords = records.map(project => {
+    if (project.id === String(updatedProject.id)) {
+      let collabData = updatedProject.Collaborator;
+      if (typeof collabData === 'string') {
+        try {
+          collabData = JSON.parse(collabData);
+        } catch {
+          collabData = []; // fallback
+        }
+      }
+
+      return {
+        ...project,
+        ...updatedProject,
+        Collaborator: JSON.stringify(collabData)
+      };
+    }
+    return project;
+  });
+
+  const updatedCsv = stringify(updatedRecords, { header: true });
+  fs.writeFileSync(csvPath, updatedCsv, 'utf8');
+
+  console.log(`Project ${updatedProject.id} updated successfully.`);
+  return { status: 200, message: 'Project updated successfully' };
+}
+
+module.exports = { updateProjectInCSV };

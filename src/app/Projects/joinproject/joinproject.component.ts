@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../service/data.service';
-import { NullValidationHandler } from 'angular-oauth2-oidc';
 import { AuthService } from '../../service/auth.service';
 import { CommonModule } from '@angular/common';
 import { Project } from '../../service/project.interface.service';
 import { Router } from '@angular/router';
+import { UserProfile } from '../../service/document.interface.service';
 
 @Component({
   selector: 'app-joinproject',
@@ -18,22 +18,12 @@ export class JoinprojectComponent {
   collabMessage: string ="";
 
   project: Project | any;
-  user: any;
-projectId: number | null = null;
-constructor(private dataService: DataService, private authService: AuthService,private router: Router) {}
-ngOnInit(): void {
-    this.user = this.authService.getUserDetails();
+  user: UserProfile  | null = null;
+  projectId: number | null = null;
+  constructor(private dataService: DataService, private authService: AuthService,private router: Router) {}
+  ngOnInit(): void {
+    this.user = this.authService.getUserProfile();
 
-    if (this.user && this.user.email) {
-      this.authService.getUserName(this.user.email).subscribe(
-        data => {
-          this.user.name = data.name;
-        },
-        error => {
-          console.error('Failed to fetch user name', error);
-        }
-      );
-    }
   }
 
 searchProject(){
@@ -54,7 +44,7 @@ searchProject(){
       }
       }
     const alreadyExists = this.project.Collaborator?.some(
-    (collab: any) => collab.email?.trim().toLowerCase() === this.user.email?.trim().toLowerCase()
+    (collab: any) => collab.email?.trim().toLowerCase() === this.user?.email?.trim().toLowerCase()
     );
     if (alreadyExists) {
       this.collabMessage = 'Collaborator already added.';
@@ -67,23 +57,16 @@ searchProject(){
   }
 }
 joinProject(){
-      if (this.project) {
-      console.log('Found Project:', this.project.Collaborator);
-      if (typeof this.project.Collaborator === 'string') {
-        try {
-          this.project.Collaborator = JSON.parse(this.project.Collaborator);
-        } catch {
-          this.project.Collaborator = [];
-        }
-      }
-      if (!Array.isArray(this.project.Collaborator)) {
-        this.project.Collaborator = [];
-      }
-      this.project.Collaborator.push({
-        name: this.user.name,
-        email: this.user.email
-      });
-      this.dataService.updateProject(this.project).subscribe(() => {
+  const updatedcollaborator = {
+  collaborators: [
+    { firstname: this.user?.firstName, lastname: this.user?.lastName, email: this.user?.email }
+  ],
+  projectId: this.projectId
+};
+console.log('joinproject',this.projectId);
+      if (updatedcollaborator) {
+      console.log('collaborator',updatedcollaborator);
+      this.dataService.updateProjectCollab(updatedcollaborator).subscribe(() => {
         console.log('Project updated successfully');
       });
       console.log('Updated collaborators:', this.project.Collaborator);

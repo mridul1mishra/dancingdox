@@ -1,0 +1,189 @@
+.personal-info-container {
+  max-width: 1050px;  
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #222;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.profile-picture-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.photo-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-change {
+  padding: 6px 16px;
+  border: 1.5px solid #5c47f9;
+  background-color: transparent;
+  color: #5c47f9;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-change:hover {
+  background-color: #5c47f9;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.btn-remove {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  border: none;
+  background: none;
+  color: #444;
+  cursor: pointer;
+}
+
+.btn-remove svg {
+  stroke: #555;
+}
+
+.btn-remove:hover {
+  color: #d9534f;
+  transition: 0.3s ease;
+}
+
+.personal-form {
+  background: #fafafa;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgb(0 0 0 / 0.08);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #555;
+}
+
+input[type='text'],
+select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222;
+  transition: border-color 0.25s ease;
+}
+
+input[type='text']:focus,
+select:focus {
+  outline: none;
+  border-color: #5c47f9;
+  box-shadow: 0 0 8px rgb(92 71 249 / 0.3);
+}
+
+fieldset.radio-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #555;
+}
+.custom-alert {
+  padding: 12px 16px;
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 14px;
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.custom-alert-info {
+  background-color: #d9edf7;
+  color: #31708f;
+  padding-left: 350px;
+}
+
+.custom-alert-error {
+  background-color: #f2dede;
+  color: #a94442;
+  border: 1px solid #ebccd1;
+}
+fieldset.radio-group legend {
+  margin-right: 16px;
+  font-weight: 600;
+}
+
+fieldset.radio-group label {
+  font-weight: 400;
+  color: #222;
+  cursor: pointer;
+}
+
+.form-buttons {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.btn-cancel {
+  border: 1px solid #ddd;
+  background-color: transparent;
+  color: #444;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background-color: #eee;
+}
+
+.btn-update {
+  background-color: #5c47f9;
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-update:hover {
+  background-color: #4a36c8;
+  transition: 0.3s ease;
+}

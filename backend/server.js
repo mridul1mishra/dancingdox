@@ -13,7 +13,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(cors());
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // ✅ Place this BEFORE body parsers
 app.use('/api', uploadRoute);   // multer routes (upload-multiple)
 

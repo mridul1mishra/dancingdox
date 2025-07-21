@@ -29,18 +29,15 @@ export class ColloboratorDocComponent {
     constructor(private collabService: colloboratorService,private route: ActivatedRoute,private authService: AuthService,private dataService: DataService) {}
     ngOnInit(): void {
       
-      const id = Number(this.route.snapshot.paramMap.get('id'));
-      const user = this.authService.getUserDetails();
-      if (user?.email) {
-        this.authService.getUserName(user.email).subscribe(data => {
-          this.collaboratorName = data.name;
-
-          this.collaboratorImage = data.image;
-        });
+      const stored = localStorage.getItem('project');
+      if (stored) {
+        const project = JSON.parse(stored);
+        this.collaborators = this.parseCollaborators(project.collaborator);
+        
+      } else {
+        this.collaborators = [];
       }
-      this.getProjectById(id);
-      console.log("This is my ID",id);
-      
+      console.log(this.collaborators);
     }
     getUserDocumentStats(email: string): { total: number, complete: number, pending: number, filenames: string } {
       let total = 0;
@@ -100,12 +97,12 @@ export class ColloboratorDocComponent {
             }
           }
           // Parse Collaborator if it's a string
-          if (typeof this.project.Collaborator === 'string') {
+          if (typeof this.project.collaborator === 'string') {
             try {
-              this.project.Collaborator = JSON.parse(this.project.Collaborator);
+              this.project.collaborator = JSON.parse(this.project.collaborator);
             } catch {
-              console.warn('Invalid Collaborator format:', this.project.Collaborator);
-              this.project.Collaborator = [];
+              console.warn('Invalid Collaborator format:', this.project.collaborator);
+              this.project.collaborator = [];
             }
           }
           
@@ -124,7 +121,7 @@ export class ColloboratorDocComponent {
             }
           }
             this.documents = this.project.documents;
-            this.collaborators = this.project.Collaborator;
+            this.collaborators = this.project.collaborator ?? [];
             this.docassigned = this.project.docassigned;
             // Parse docassigned if it's a string
           } else {
@@ -136,6 +133,9 @@ export class ColloboratorDocComponent {
         }
       });
     }
+    get hasCollaborators(): boolean {
+  return !!(this.project?.collaborator && this.project.collaborator.length > 0);
+}
     Modalbox(member: any) 
     {
       const colors = ['blue', 'green', 'orange'];
@@ -158,5 +158,20 @@ export class ColloboratorDocComponent {
     closeModal() {
       this.showModal = false;
     }
-    
+    private parseCollaborators(data: any): Collaborator[] {
+      if (Array.isArray(data)) {
+        return data;
+      }
+
+      if (typeof data === 'string') {
+        try {
+          const parsed = JSON.parse(data);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
+
+      return [];
+  }
 }

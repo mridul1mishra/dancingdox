@@ -14,7 +14,7 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="collaborators.length > 0 else noSampleFile">
         <tr *ngFor="let member of collaborators">
           <td>
             <img [src]="collaboratorImage" alt="avatar" class="avatar" />
@@ -38,6 +38,15 @@
           </td>
         </tr>
       </tbody>
+      <ng-template #noSampleFile>
+          <tbody>
+            <tr>
+              <td colspan="7" style="text-align:center; font-style: italic;">
+                No collaborators have joined the project.
+              </td>
+            </tr>
+          </tbody>
+        </ng-template>
     </table>
   </div>
   

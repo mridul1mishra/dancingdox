@@ -58,7 +58,7 @@ export class GetProjectDetailsComponent {
   if (!this.uploadedFile) {
   console.log('Please upload a file before continuing.');
   return;
-}
+  }
   const projectData = {
     ...this.projectForm.value,
     id: Math.floor(Date.now() / 1000),
@@ -68,7 +68,7 @@ export class GetProjectDetailsComponent {
       ? this.projectForm.value.members.split(',').map((m: string) => m.trim())
       : [],
   };
-
+console.log('ProjectData for payload', this.uploadedFile);
   // Step 4: Submit via existing service
   this.dataService.addProject(projectData, this.uploadedFile).subscribe({
     next: (res) => {

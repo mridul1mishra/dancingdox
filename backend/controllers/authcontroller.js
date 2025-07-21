@@ -3,6 +3,11 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
+const { insertUser } = require('../utils/users/createUsers'); // adjust path
+const { loginUser } = require('../utils/users/loginUser'); // adjust path as needed
+const { getUser } = require('../utils/users/getUser'); 
+const { updateUser } = require('../utils/users/updateUser'); 
+const { updatePass } = require('../utils/users/updatePass'); 
 
 const csvFilePath = path.join(__dirname, '../public/data/users.csv');
 
@@ -12,129 +17,67 @@ if (!fs.existsSync(csvFilePath)) {
 }
 
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  
+  const result = await loginUser(email, password);
 
+  if (!result.success) {
+    return res.status(401).json(result);
+  }
 
-  fs.readFile(csvFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Failed to read CSV:', err);
-      return res.status(500).json({ message: 'Server error' });
-    }
-
-    const lines = data.trim().split('\n');
-    const users = lines.slice(1).map(line => {
-      const [storedEmail, storedPassword] = line.split(',');
-      return { email: storedEmail.trim(), password: storedPassword.trim() };
-    });
-
-    const user = users.find(u => u.email === email);
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err) {
-        console.error('Error comparing password:', err);
-        return res.status(500).json({ message: 'Server error' });
-      }
-
-      if (!isMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-
-      const token = jwt.sign(
-        { email: user.email },
+  const token = jwt.sign(
+        { email: email },
         process.env.JWT_SECRET || 'your_default_secret',
         { expiresIn: process.env.JWT_EXPIRATION || '1h' }
       );
 
       res.json({ token });
-    });
-  });
 };
 
 
 
 
-exports.register = (req, res) => {
-  const { email, password, name } = req.body;
+exports.register = async (req, res) => {
+  const { email, password, firstname, lastname, designation, organization  } = req.body;
+  console.log(req.body);
+  try{
+    const userId = Math.floor(Date.now() / 1000);
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const isSubscribed = false; // boolean
+  const user = {
+      userId: userId, // or a UUID if preferred
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      password: hashedPassword,
+      designation: designation,
+      organization: organization
+    };
+  const result = await insertUser(user);
+  res.json({ success: true, message: 'User created', insertId: result.insertId });
+}catch (err) {
+    res.status(500).json({ success: false, message: 'Internal server error', err });
+  }
   
-
-  if (!email || !password || !name) {
-    return res.status(400).json({ message: 'Email, password, and name are required' });
-  }
-
-  fs.readFile(csvFilePath, 'utf8', async (err, data) => {
-    if (err) {
-      console.error('Error reading CSV:', err);
-      return res.status(500).json({ message: 'Server error while checking users' });
-    }
-
-    const lines = data.trim().split('\n');  // Remove trailing whitespace
-    const emails = lines.slice(1).map(line => line.split(',')[0].trim());
-
-    if (emails.includes(email)) {
-      return res.status(409).json({ message: 'User with this email already exists' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const isSubscribed = false; // boolean
-    let newLine = `${email},${hashedPassword},${name},${isSubscribed}`;
-
-    // Ensure the file ends with a newline
-    const needsNewline = data.length > 0 && !data.endsWith('\n');
-    const lineToAdd = (needsNewline ? '\n' : '') + newLine + '\n';
-
-    fs.appendFile(csvFilePath, lineToAdd, (err) => {
-      if (err) {
-        console.error('Error appending to CSV:', err);
-        return res.status(500).json({ message: 'Failed to register user' });
-      }
-
-      res.status(201).json({ message: 'User registered and saved to CSV' });
-    });
-  });
 };
 
-exports.getCSV = (req, res) => {
+exports.getCSV = async (req, res) => {
   const { email } = req.query;
+   try {
+    const user = await getUser(email);
 
-  if (!email) {
-    return res.status(400).json({ error: 'Email query parameter is required' });
-  }
-
-  const results = [];
-let responseSent = false;
-  fs.createReadStream(csvFilePath)
-    .pipe(csv())
-    .on('data', (row) => {
-      const csvEmail = row.email?.trim().toLowerCase();
-      const inputEmail = email.trim().toLowerCase();
-       
-       if (csvEmail === inputEmail) {
-        results.push(row);
-      }
-    })
-    .on('end', () => {
-      if (responseSent) return;
-      if (results.length > 0) {
-      const { name, image, email, isSubscribed } = results[0];
-      res.json({ name, image, email, isSubscribed });
-    } else {
-        res.status(404).json({ error: 'User not found' });
-      }
-       responseSent = true;
-    })
-    .on('error', (err) => {
-      if (!responseSent) {
-      console.error('Error reading CSV:', err);
-      res.status(500).json({ error: 'Server error while reading CSV' });
-      responseSent = true;
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
-    });
+
+    res.json(user);
+
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+  
 };
 
 exports.passReset = async (req, res) => {
@@ -187,4 +130,29 @@ exports.passReset = async (req, res) => {
       return res.status(200).json({ message: 'Password updated successfully' });
     });
   });
+};
+exports.updateProfile = async (req, res) => {
+  const user = req.body;
+  try{
+    console.log(user);
+    const result = await updateUser(user);
+    
+    res.json({ success: true, message: 'User updated' });
+  }catch (err) {
+    res.status(500).json({ success: false, message: 'Internal server error', err });
+  }
+};
+
+exports.passUpdate = async (req, res) => {
+  const {email, password, existingPass} = req.body;
+  try{
+    console.log(email);
+    const result = await updatePass({email, password, existingPass});
+    console.log(result);
+    res.status(result.status).json({ message: result.message });
+  }catch (err) {
+    return res.status(err.status).json({ message: err.message });
+  }
+
+  
 };

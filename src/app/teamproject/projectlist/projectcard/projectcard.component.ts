@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Project } from '../../../service/project.interface.service';
+import { DataService } from '../../../service/data.service';
 
 
 
@@ -15,13 +16,22 @@ import { Project } from '../../../service/project.interface.service';
 export class ProjectcardComponent {
   @Input() project!: Project;
   showModal = false;
-  constructor(private router: Router){}
+  constructor(private router: Router, private dataService: DataService){}
   editProject(){
-    this.router.navigate([`/editproject/${this.project.id}`]);
+    this.router.navigate([`/editproject/${this.project.ID}`]);
   }
   confirmDelete() {
-    // your delete logic or confirmation popup
-    console.log('Delete project:', this.project.id);
-    this.showModal = false;
+    if (confirm('Are you sure you want to delete?')) {
+    this.dataService.deleteProjects(this.project.ID).subscribe({
+      next: () => {
+        alert('Project deleted successfully');
+        this.router.navigate(['/dashboard'])
+      },
+      error: err => {
+        console.error('Delete project failed:', err);
+        alert('Failed to delete project');
+      }
+    });
+  }
   }
 }

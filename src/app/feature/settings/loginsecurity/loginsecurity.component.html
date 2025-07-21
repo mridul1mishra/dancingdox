@@ -1,0 +1,42 @@
+<div class="settings-card">
+  <h2>Login & Security</h2>
+
+  <!-- Password Section -->
+  <section class="settings-section">
+    <div class="section-header">
+      <h3>Password</h3>
+      <button class="btn" (click)="showUpdatePassword = true">Set new password</button>
+    </div>
+    <p>
+      Update your password through the button below. You will be redirected to a new page and must follow the instructions.
+    </p>
+  </section>
+
+
+
+
+  <!-- Notifications -->
+  <section class="settings-section">
+    <div class="section-header">
+      <h3>Notifications</h3>
+      <label class="custom-toggle">
+        <input type="checkbox" [(ngModel)]="isToggled" (change)="onToggleChange()" />
+        <div class="toggle-track">
+            <span class="icon off">✕</span>
+            <span class="icon on">✓</span>
+            <div class="thumb"></div>
+        </div>
+    </label>
+    </div>
+    <p>Receive newsletters, promotions and news from DancingDoc Company</p>
+    <p class="subtext">
+      DancingDoc processes your data to send product updates, promotions, and surveys (legitimate interest), plus creator news (with consent). Data isn’t shared but may be transferred internationally. Opt-out anytime via slider. Details in our 
+      <a href="#">Privacy Policy</a>.
+    </p>
+  </section>
+
+
+
+  
+</div>
+<app-updatepassword  *ngIf="showUpdatePassword" (close)="showUpdatePassword = false"></app-updatepassword>

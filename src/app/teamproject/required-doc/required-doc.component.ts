@@ -13,6 +13,8 @@ import { DataService } from '../../service/data.service';
   styleUrl: './required-doc.component.css'
 })
 export class RequiredDocComponent {
+  projectData: any;  // or strongly type if you prefer
+  otherFilesOnly: any[] = [];
   documents: DocumentMetadata[] = [];
   @Input() docData!: Project | undefined;
   fileNamePart: string = '';
@@ -21,7 +23,7 @@ export class RequiredDocComponent {
   filesize: string = "";
   fileUploaded: boolean = false;
   uploadStatus: string = 'No Action';
-  projectId!: string;
+  projectId!: Number;
   private lastDocDataJson = '';
   fileStatuses: { [fieldName: string]: string } = {};
   uploadedFilenames: { [fieldName: string]: string } = {};
@@ -37,6 +39,12 @@ ngDoCheck(): void {
 }
 ngOnInit() {
   this.userID = localStorage.getItem('userID');
+  const raw = localStorage.getItem('project');
+  if (!raw) throw new Error('No project data found');
+  const projectData = JSON.parse(raw);  
+  this.otherFilesOnly = JSON.parse(projectData.samplefile);
+  console.log('otherfilesonly',this.otherFilesOnly);
+  this.projectId = Number(this.route.snapshot.paramMap.get('id'));
 }
 normalizeDocData(): void {
   if (!this.docData) return;
@@ -67,7 +75,7 @@ normalizeDocData(): void {
   });
 }
 viewAllDocuments(id: number | undefined) {
-  this.router.navigate([`projects/${id ?? ''}/documents`]);
+  this.router.navigate([`projects/${this.projectId ?? ''}/documents`]);
 }
 
 
@@ -150,9 +158,7 @@ computeUploadedFilenames(): void {
     if (key) this.uploadedFilenames[key] = doc.filename || '';
   });
 }  
-get filteredSampleFiles() {
-  return this.docData?.samplefile?.filter(file => file.fieldName !== 'supportingfile') || [];
-}
+
 triggerFileInput(fileInput: HTMLInputElement) {
     fileInput.click();
 }
@@ -197,7 +203,7 @@ console.log("Length",this.docData?.documents);
 
 
   handleViewClick(file: any, fileInput: HTMLInputElement) {
-  if (this.docData?.Host === localStorage.getItem('userID')) {
+  if (this.docData?.host?.replace(/"/g, '').trim().toLowerCase() === localStorage.getItem('userID')?.trim().toLowerCase()) {
     // Host: open the file
     const url = file.uploadedFilePath || file.filePath;
       if (url) {

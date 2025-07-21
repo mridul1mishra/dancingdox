@@ -1,0 +1,33 @@
+const fs = require('fs');
+const { parse } = require('csv-parse/sync');
+const { stringify } = require('csv-stringify/sync');
+const pool = require('../utils/sql');
+
+async function updateSqlWithEnrichedDocs(projectId, enrichedDocs, docCount){
+  try{
+    const [rows] = await pool.execute(
+      'SELECT samplefile FROM projects WHERE ID = ?',
+      [projectId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+    const newFile = JSON.stringify(enrichedDocs);
+    const currentSamplefile = rows[0].samplefile || '';
+
+    // Step 2: Append new value
+    let updatedSamplefile = newFile;
+    // Step 3: Update samplefile column
+    await pool.execute(
+      'UPDATE projects SET samplefile = ?, docCount = ? WHERE ID = ?',
+      [updatedSamplefile, docCount, projectId]
+    );
+  } catch (error) {
+    console.error('Update error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+
+}
+
+module.exports = {updateSqlWithEnrichedDocs};

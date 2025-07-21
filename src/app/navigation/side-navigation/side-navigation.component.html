@@ -2,7 +2,7 @@
     <div class="profile">
       
       <div class="profile-info">
-        <h4 class="profile-info-name">{{userProfile?.name}}</h4>
+        <h4 class="profile-info-name">{{userProfile?.firstName}} {{userProfile?.lastName}}</h4>
         <p class="profile-info-type"></p>
         <img src="logout.png" class="logout" (click)="onLogout()" />
       </div>
@@ -26,7 +26,7 @@
             <span class="teams"><a [routerLink]="['Notification']">Notifications</a></span></li>
           <li class="active">
             <span class="material-symbols-outlined custom-icon">settings</span>
-            <span class="teams"><a [routerLink]="['Settings']">Settings</a></span></li>
+            <span class="teams"><a [routerLink]="['settings']">Settings</a></span></li>
         </ul>
       </div>
       <div class="menu-section">

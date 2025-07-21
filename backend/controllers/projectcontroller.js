@@ -5,6 +5,12 @@ const { stringify } = require('csv-stringify/sync');
 const os = require('os');
 const { saveUploadedFile } = require('../utils/fileUploader');
 const pool = require('../utils/sql');
+const { updateProjectInCSV } = require('../utils/updateproject');
+const { updateCollabInSQL } = require('../utils/updateprojectsql');
+const { updateProjectInSQL } = require('../utils/updateprojectsql');
+const { getProjectByIdFromCSV } = require('../utils/getprojectfromcsv');
+const { getProjectByIdFromSQL } = require('../utils/getprojectfromsql');
+const { updatedocAssignedInSQL } = require('../utils/updateprojectsql');
 
 const csvPath = path.join(__dirname, '../public/projects.csv');
 
@@ -21,41 +27,40 @@ exports.addProject = async (req, res) => {
       filePath = await saveUploadedFile(file);
       project.uploadedFilePath = filePath;
   }
-  project.samplefile = {
+  project.supportingfile = {
       filename: file.filename,
-      originalname: file.originalname,
-      fieldName: "supportingfile",
-      filePath: project.uploadedFilePath
+  originalname: file.originalname,
+  fieldName: "supportingfile",
+  filePath: project.uploadedFilePath,
+  uploadedFilePath: project.uploadedFilePath,
+  type: '.' + file.originalname.split('.').pop(), // e.g. '.pdf'
+  maxSize: 100,
+  sizeUnit: 'Mb',
+  status: 'uploaded',
+  uploadTime: new Date().toISOString(),
   };
-  function sanitizeParams(params) {
-  return params.map(value => value === undefined ? null : value);
-}
+  
   // Sanitize commas and newlines in string fields
- const escape = (value) => {
-  if (typeof value === 'string') {
-    return `"${value.replace(/"/g, '""').replace(/\r?\n|\r/g, ' ')}"`;  // also remove newlines
-  }
-  return value;
-  };
+ 
 console.log('project name',escape(project.supportStaff));
  const params = [
   project.id,
-  escape(project.projectName),
+  project.projectName,
   project.startDate,
   project.endDate,
-  escape(project.projectScope),
-  escape(project.projectDetails),
-  escape(project.supportStaff),
-  escape(project.Host),
-  escape(project.status),
+  project.projectScope,
+  project.projectDetails,
+  project.supportStaff,
+  project.Host,
+  project.status,
   project.reminder,
-  escape(JSON.stringify(project.samplefile)),
+  project.supportingfile,
 ];
 
 const sanitizedParams = sanitizeParams(params);
 
 const [result] = await pool.execute(
-  'INSERT INTO projects (ID, ProjectName, startDate, endDate, visibility, projectdetails, members, host, status, reminder, samplefile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+  'INSERT INTO projects (ID, ProjectName, startDate, endDate, visibility, projectdetails, members, host, status, reminder, supportingfiles) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
   sanitizedParams
 );
   res.status(201).json({ message: 'Project created successfully', insertId: result.insertId });
@@ -65,16 +70,98 @@ const [result] = await pool.execute(
   }
 
 };
-
-exports.getCSV = (req, res) => {
-  fs.readFile(csvPath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading CSV:', err);
-      return res.status(500).send('Error reading CSV file');
+exports.deleteProject = async (req, res) => {
+  const ID = req.body.id;
+  console.log(ID);
+ const [result] = await pool.execute('DELETE FROM projects WHERE id = ?', [Number(ID)]);
+ if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Project not found' });
     }
-    res.type('text/plain').send(data);
-  });
+    res.status(200).json({ message: 'Project deleted successfully' });
 };
+function sanitizeParams(params) {
+  return params.map(value => value === undefined ? null : value);
+}
+exports.getCSV = async (req, res) => {
+  try{
+    const [rows] = await pool.execute('SELECT * FROM projects');
+    const cleanedProjects1 = rows.map(p => {
+  const sf = parseSampleFile(p.samplefile);
+  console.log('samplefile:', sf);
+  return { ...p, samplefile: sf };
+});
+    
+  res.json(cleanedProjects1);
+  }catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+  
+};
+// Helpers
+function cleanString(str) {
+  try {
+    return JSON.parse(str);
+  } catch {
+    return str;
+  }
+}
+
+function parseJSON(str, fallback) {
+  try {
+    return JSON.parse(str);
+  } catch {
+    return fallback;
+  }
+}
+
+function parseSampleFile(raw) {
+  console.log("⚙️ parseSampleFile called");
+  if (!raw) {
+    console.warn("⚠️ samplefile is empty or null");
+    return null;
+  }
+
+  let str = raw.trim();
+
+  let attempts = 0;
+  while (
+    (str.startsWith('"') && str.endsWith('"')) &&
+    attempts < 5 // safety limit
+  ) {
+    str = str.slice(1, -1).replace(/""/g, '"');
+    attempts++;
+    console.log(`🧹 Unwrapped and unescaped string (attempt ${attempts}):`, str);
+  }
+
+  const splitIndex = str.indexOf('}",[');
+  console.log("🔍 splitIndex:", splitIndex);
+
+  if (splitIndex === -1) {
+    console.error("❌ No valid separator found, returning null");
+    return null;
+  }
+
+  const firstPart = str.slice(0, splitIndex + 2);
+  const secondPart = str.slice(splitIndex + 3);
+const firstPartUnescaped = firstPart.slice(1, -1).replace(/""/g, '"');
+const parsedFirst = JSON.parse(firstPartUnescaped);
+  console.log("🧩 First JSON part:", firstPart);
+  console.log("🧩 Second JSON part:", secondPart);
+  const parsedSecond = JSON.parse(secondPart);
+
+  console.log("✅ Successfully parsed both parts:");
+  console.log("   First:", parsedFirst);
+  console.log("   Second:", parsedSecond);
+
+  return [parsedFirst, ...parsedSecond];
+}
+
+
+
+
+
+
 
 exports.updateProjects = (req, res) => {
   const projects = req.body;
@@ -215,89 +302,67 @@ function writeCSV(projects) {
     }
   });
 }
-exports.updateSingleProject = (req, res) => {
+exports.updateSingleProject = async (req, res) => {
   try {
-    const updatedProject = req.body;
-    const collab = req.body.Collaborator;
-    const {projectId, collabCount, status} = req.body;
-    if (!updatedProject || !updatedProject.id) {
-      return res.status(400).json({ error: 'Invalid project data' });
+    updatedProject = req.body;
+    const {projectId, collabCount, Status} = req.body;
+    if (updatedProject.Collaborator) {
+    const result = updateProjectInCSV(csvPath, updatedProject);
+    if (result.status !== 200) {
+      return res.status(result.status).json({ error: result.error });
     }
-
-    const input = fs.readFileSync(csvPath, 'utf8');
-
-    const records = parse(input, {
-      columns: true,
-      skip_empty_lines: true,
-      relax_column_count: true,
-      trim: true
-    });
-
-    const updatedRecords = records.map(project => {
-      if (project.id === String(updatedProject.id)) {
-         console.log('✅ Matched project:', project);
-         console.log('Updated Collaborator:', updatedProject.Collaborator);
-         let collabData = updatedProject.Collaborator;
-          if (typeof collabData === 'string') {
-            try {
-              collabData = JSON.parse(collabData);
-            } catch {
-              collabData = []; // fallback
-            }
-          }
-        return {
-          ...project,
-          ...updatedProject,
-          Collaborator: JSON.stringify(collabData)
-        };
-      }
-      return project;
-    });
-
-    const updatedCsv = stringify(updatedRecords, { header: true });
-    fs.writeFileSync(csvPath, updatedCsv, 'utf8');
-
-    console.log(`Project ${updatedProject.id} updated successfully.`);
-    return res.json({ message: 'Project updated successfully' });
-
+    return res.json({ message: result.message });
+  }    
+    await updateProjectInSQL(projectId, collabCount, Status, res);
   } catch (error) {
     console.error('Failed to update project:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-exports.getProjectById = (req, res) => {
-  const id = req.params.id;
-  try {
-    // Read and parse the CSV
-    const fileContent = fs.readFileSync(csvPath, 'utf8');
-    const records = parse(fileContent, {
-  columns: true,
-  skip_empty_lines: true,
-  trim: true,
-  relax_quotes: true,       // ← allows improperly closed quotes
-  quote: '"',
-  escape: '"'
-});
-    // Find the project by ID (note: all CSV values are strings)
-    const project = records.find(p => p.id.trim() === id.toString().trim());
-if (project) {
-  // Parse the documents field after finding the project
-  try {
-    project.documents = JSON.parse(project.documents.replace(/""/g, '"'));
-  } catch (error) {
-    console.error('Error parsing documents:', error);
-    project.documents = [];  // or set to null depending on your requirement
-  }
-} else {
-  console.log('Project not found');
-}
-    if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+exports.updateCollaboraborforProject = async (req, res) => {
+  const collab = req.body;
+  try{
+  const project = await updateCollabInSQL(collab);
+  console.log(project)
+  if (project) {
+    res.status(200).json({ project });
     }
-    res.json(project);
-  } catch (err) {
-    console.error('Error reading project:', err);
+    return res.status(404).json({ message: 'Project not found' });
+  }catch (err) {
+    console.error('Error in /project/:id:', err); // This helps!
     res.status(500).json({ message: 'Internal server error' });
   }
+};
+exports.getProjectById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const project = await getProjectByIdFromCSV(csvPath, id);
+    if (project) {
+    return res.json({ source: 'csv', project });
+    }
+    const projectsql = await getProjectByIdFromSQL(id);
+    console.log(projectsql);
+     if (projectsql) {
+      return res.json({ source: 'sql', project: projectsql });
+    }
+
+    return res.status(404).json({ message: 'Project not found' });
+  } catch (err) {
+    console.error('Error in /project/:id:', err); // This helps!
+    res.status(500).json({ message: 'Internal server error' });
+  }
+  
+};
+exports.updatedocAssignedforProject = async (req, res) => {
+const {docassigned, projectID} = req.body;
+try{
+await updatedocAssignedInSQL(docassigned, projectID);
+return res.json({ success: true, message: 'Documents assigned successfully' });
+
+}catch (err) {
+    console.error('Error in /project/:id:', err); // This helps!
+    res.status(500).json({ message: 'Internal server error' });
+  }
+
 };

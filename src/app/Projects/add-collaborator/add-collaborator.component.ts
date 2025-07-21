@@ -72,9 +72,9 @@ export class AddCollaboratorComponent {
       this.dataService.getProjectById(Number(this.route.snapshot.paramMap.get('id'))).subscribe({
         next: (data) => {
           console.log("project collaborator on proceed",data);
-          data.Collaborator = this.collaborators;
-          console.log("onproceed collaborator",data.Collaborator);
-          this.dataService.updateProject(data).subscribe({
+          data.collaborator = this.collaborators;
+          console.log("onproceed collaborator",data.collaborator);
+          this.dataService.updateProjectCollab(data).subscribe({
             next: () => console.log('CSV updated successfully'),
             error: err => console.error('Error updating CSV:', err)
           });
@@ -87,6 +87,16 @@ export class AddCollaboratorComponent {
       this.router.navigate([`project/createprivateproject/project-start/${Number(this.route.snapshot.paramMap.get('id'))}`]);
     }
   }
+  onProceedPrivate(){
+    const updatedCollaborator = {
+      collaborators: this.collaborators,
+      projectId: Number(this.route.snapshot.paramMap.get('id'))
+    };
+    this.dataService.updateProjectCollab(updatedCollaborator).subscribe(() => {
+        console.log('Project updated successfully');
+      });
+      this.router.navigate([`project/createprivateproject/project-start/${Number(this.route.snapshot.paramMap.get('id'))}`]);
+    }
 
   onBack() {
     alert('Back clicked!');

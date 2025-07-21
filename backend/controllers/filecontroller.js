@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const pool = require('../utils/sql');
+const { updateSqlWithEnrichedDocs } = require('../utils/updateSqlWithEnrichedDocs');
 
 const uploadMultipleFiles = async (req, res) => {
   try {
@@ -47,38 +47,7 @@ async function enrichDocsWithFiles(docs, files) {
 
 const csvPath = path.join(__dirname, '../public/projects.csv');
 
-async function updateSqlWithEnrichedDocs(projectId, enrichedDocs, docCount){
-  try{
-    const [rows] = await pool.execute(
-      'SELECT samplefile FROM projects WHERE ID = ?',
-      [projectId]
-    );
 
-    if (rows.length === 0) {
-      return res.status(404).json({ message: 'Project not found' });
-    }
-    const newFile = JSON.stringify(enrichedDocs);
-    const currentSamplefile = rows[0].samplefile || '';
-
-    // Step 2: Append new value
-    let updatedSamplefile = currentSamplefile
-      ? `${currentSamplefile},${newFile}`
-      : newFile;
-
-    // Optional: avoid duplicates
-    const fileArray = updatedSamplefile.split(',').filter(Boolean);
-    updatedSamplefile = [...new Set(fileArray)].join(',');
-    // Step 3: Update samplefile column
-    await pool.execute(
-      'UPDATE projects SET samplefile = ?, docCount = ? WHERE ID = ?',
-      [updatedSamplefile, docCount, projectId]
-    );
-  } catch (error) {
-    console.error('Update error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-
-}
 
 const uploadSupportingFiles = (req, res) => {
   try {

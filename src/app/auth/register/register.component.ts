@@ -16,8 +16,8 @@ export class RegisterComponent {
   submitted: boolean = false;
   email: string = '';
   password: string = '';
-  firstName: string = '';
-  lastName: string = '';
+  firstname: string = '';
+  lastname: string = '';
   designation: string = '';
   organization: string =''; 
   otp: string = '';
@@ -40,7 +40,7 @@ export class RegisterComponent {
       return;
     }
 
-    const newUser = { email: this.email, password: this.password, name: this.name };
+    const newUser = { email: this.email, password: this.password, firstname: this.firstname, lastname: this.lastname, designation: this.designation, organization: this.organization  };
     console.log('Registering user:', newUser);
 
     this.authService.register(newUser).subscribe({
@@ -56,9 +56,11 @@ export class RegisterComponent {
   completeStep1(form: NgForm) {
     if (form.valid) {
       localStorage.setItem('userData', JSON.stringify({
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email
+      firstName: this.firstname,
+      lastName: this.lastname,
+      email: this.email,
+      designation: this.designation,
+      organization: this.organization
     }));
       localStorage.setItem('step1Completed', 'true');
       this.currentStep = 2;
@@ -98,15 +100,19 @@ export class RegisterComponent {
 
   if (!valid) return;
     const stored = JSON.parse(localStorage.getItem('userData') || '{}');
-    console.log(this.email);
     const payload = {
-      name: stored.firstName + ' ' + stored.lastName,
+    firstname: stored.firstName,
+    lastname: stored.lastName,
     email: stored.email,
-    password: this.password
+    password: this.password,
+    designation: this.designation,
+    organization: this.organization
     };
+    console.log('payload',payload);
     this.authService.register(payload).subscribe({
       next: (res) => {
         alert( 'Registration successful!');
+        localStorage.setItem('token', res.token )
         console.log(res.token);
         this.router.navigate(['/dashboard']);
       },

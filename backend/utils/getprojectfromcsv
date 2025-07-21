@@ -1,0 +1,34 @@
+const fs = require('fs');
+const { parse } = require('csv-parse/sync');
+
+function getProjectByIdFromCSV(csvPath, id) {
+  try {
+    const fileContent = fs.readFileSync(csvPath, 'utf8');
+    const records = parse(fileContent, {
+      columns: true,
+      skip_empty_lines: true,
+      trim: true,
+      relax_quotes: true,
+      quote: '"',
+      escape: '"'
+    });
+
+    const project = records.find(p => p.id.trim() === id.toString().trim());
+
+    if (!project) return null;
+
+    try {
+      project.documents = JSON.parse(project.documents.replace(/""/g, '"'));
+    } catch (err) {
+      console.error('Error parsing documents:', err);
+      project.documents = []; // fallback
+    }
+
+    return project;
+  } catch (err) {
+    console.error('Error reading/parsing CSV:', err);
+    throw err;
+  }
+}
+
+module.exports = { getProjectByIdFromCSV };

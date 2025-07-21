@@ -1,16 +1,16 @@
 <div class="project-card">
   <div class="menu" (click)="showModal = true" style="cursor: pointer;">⋮</div>
   
-  <a [routerLink]="['/projects', project.id]">
-    <div class="card-header">{{ project.Name }}</div>
+  <a [routerLink]="['/projects', project.ID]">
+    <div class="card-header">{{ project.ProjectName }}</div>
     <div class="info">
       <div class="rating">
         <p class="icon"><i class="material-icons" style="color: lightgray;">task</i></p>
-        <p>{{ project.docCount }}/{{ project.docCounttotal }}</p>
+        <p>{{ project.docCount }}/{{ project.docCount }}</p>
       </div>
       <div class="rating">
         <p class="icon"><i class="material-icons" style="color: lightgray;">message</i></p>
-        <p>{{ project.comments }}</p>
+        <p>{{ project.collabcount }}</p>
         <i class="material-icons" style="color: lightgray; padding-left: 94px;">people</i>
         <p>5</p>
       </div>

@@ -4,10 +4,11 @@ export interface Project {
     collabName: any;
     documentNamesString: any;    
     id: number;
-    Name: string;
+    ID: number;
+    ProjectName: string;
     Details: string;
     scope: string;
-    title: string;
+    projectdetails: string;
     participants: number;
     docCount: number;
     docCounttotal: number;
@@ -16,12 +17,12 @@ export interface Project {
     endDate: string;
     visibility: 'public' | 'private';
     members: string[];
-    collabCount: number;
+    collabcount: number;
     documents: DocumentMetadata[];
-    Host: string;
+    host: string;
     reminder: string;
     samplefile: samplefile[];
-    Collaborator: Collaborator[];
+    collaborator?: Collaborator[];
     docassigned: DocumentCollab[];
     status: string;
   }
@@ -36,10 +37,10 @@ export interface Project {
     status: string,
     sizeUnit: string
     uploadedFile?: File;
-  fileNamePart?: string;
-  filesize?: string;
-  filename: string;
-  size?: number;
+    fileNamePart?: string;
+    filesize?: string;
+    filename: string;
+    size?: number;
   }
   export interface Collaborator {
     name: string;
@@ -81,4 +82,5 @@ export interface Project {
   expMonth: number;
   expYear: number;
   billingName: string;
+  subscriptiontype: string;
 }
