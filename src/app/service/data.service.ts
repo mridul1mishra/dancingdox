@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { DocumentCollab, Project } from './project.interface.service';
+import { DocumentCollab, Project, AppNotification } from './project.interface.service';
 import { tap } from 'rxjs/operators'; // make sure tap is imported
 
 
@@ -110,6 +110,12 @@ getProjectById(id: number): Observable<Project> {
   }
   CollabDocument(formData: FormData): Observable<CollabUploadResponse> {
   return this.http.post<CollabUploadResponse>(`${this.apiUrl}/upload-supporting-file`, formData);
+  }
+  getNotifications(userEmail: string): Observable<AppNotification[]> {
+    const headers = new HttpHeaders({
+      'x-user-email': userEmail, // or pass in query param if preferred
+    });
+    return this.http.get<AppNotification[]>(`${this.apiUrl}/get-notification`, { headers });
   }
 }
 function tryToFixMalformedDocumentJson(value: string): any[] {

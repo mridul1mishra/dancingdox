@@ -8,9 +8,9 @@
 </ng-container>
 <!-- Confirmation Dialog -->
 <div *ngIf="showDialog">
- <div *ngIf="showSubscribe" class="dialog-backdrop">
+ <div *ngIf="showPaymentPage" class="dialog-backdrop">
   <div class="dialog-box">
-    <p>To start a project, please subscribe.</p>
+    <p> To start a project, please subscribe(Payment). </p>
     <div class="confirm">
       <button class="confirm-btn" (click)="goToPricing()">Continue</button>
       <button class="cancel" (click)="cancel()">No</button>
@@ -18,12 +18,13 @@
   </div>
 </div>
 </div>
-
-    <div class="dialog-box" *ngIf="isSubscribed && showDialog">
+<div *ngIf="showDialog">
+    <div class="dialog-box" *ngIf="canCreateProject">
       <p>Are you sure you want to create a project?</p>
     <div class="confirm">
         <button class="confirm-btn" (click)="addDocuments()">Yes</button>
         <button class="cancel" (click)="cancel()">No</button>
+    </div>
     </div>
     </div>
  

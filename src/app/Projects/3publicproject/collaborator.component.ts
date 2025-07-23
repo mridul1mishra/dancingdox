@@ -21,8 +21,9 @@ import { ChangeDetectorRef } from '@angular/core';
 export class CollaboratorComponent {
   projects: Project[] = [];
   isSubscribed: string = '';
+  canCreateProject: boolean = false;
   showPricingPlan: boolean = false;
-  showSubscribe: boolean = false;
+  showPaymentPage: boolean = false;
   lastProject!: Project;
   collabCount: number = 1;
   documents: any[] = [];
@@ -38,12 +39,21 @@ export class CollaboratorComponent {
 
 confirm() {
   console.log("Checking subscription...");
+  this.showDialog = true;
+  console.log('showsubscribe',this.showPaymentPage);
   const stored = localStorage.getItem('userData') || '';
     if (stored) {
   const parsed = JSON.parse(stored); // convert string to object
-    if (parsed.isSubscribed) {
-      this.showDialog = true;
-      this.showSubscribe = true;
+  console.log('parsed.issubscribed',parsed.isSubscribed);
+  this.isSubscribed = parsed.isSubscribed;
+    if (parsed.isSubscribed === true) {
+      this.canCreateProject = true;
+      this.showPaymentPage = false;
+    }
+    else{
+      console.log(this.showPaymentPage);      
+      this.showPaymentPage = true;
+      this.canCreateProject = false
     }
   }
   else{

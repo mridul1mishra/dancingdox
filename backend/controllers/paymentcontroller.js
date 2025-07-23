@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { storePayment } = require('../utils/users/storePayment.js'); 
 const { getstorePayment } = require('../utils/users/storePayment.js'); 
-
+const notificationService   = require('../utils/nofitication/notificationservice');
 const fs = require('fs');
 const path = require('path');
 const csvPath = path.join(__dirname, '../public/data/users.csv');
@@ -27,7 +27,7 @@ exports.storeData = async (req, res) => {
     console.log(email);
     const result = await storePayment({paymentMethodId, brand, last4, expMonth, expYear, billingName, subscriptiontype, email })
       
-
+    notificationService.insertNotification(email, 'Susbription to the app successful', 'success');
     return ({status: 200, message: result.message });
   } catch (err) {
     console.error('Error updating users.csv:', err);

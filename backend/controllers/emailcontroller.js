@@ -4,10 +4,11 @@ const tokenStore = new Map();
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const notificationService   = require('../utils/nofitication/notificationservice');
 const sesClient = new SESClient({
   region: 'us-east-2',
   credentials: {
- 
+    
   }
 
 });
@@ -35,7 +36,7 @@ exports.sendEmail = async (req, res) => {
     const command = new SendEmailCommand(params);
     await sesClient.send(command);
     console.log(`OTP sent to ${to}: ${otp}`);
-
+    notificationService.insertNotification(to, 'OTP sent to the email', 'success');
     res.status(200).json({ message: 'Email sent successfully!' });
   } catch (err) {
     console.error('SES Error:', err);
@@ -44,7 +45,7 @@ exports.sendEmail = async (req, res) => {
 };
 
 
-exports.verifyOtp =  (req, res) => {
+exports.verifyOtp =  async(req, res) => {
   const { to, otp, reset  } = req.body;
   console.log('Received:', { to, otp, reset });
   const storedOtp = otpStore.get(to);
@@ -59,6 +60,7 @@ exports.verifyOtp =  (req, res) => {
         token: token
       });
     }
+    notificationService.insertNotification(to, 'OTP has been successfully verified.', 'success');
     return res.status(200).json({
       valid: true,
       message: 'User verified successfully!'
@@ -124,6 +126,7 @@ exports.sendResetLinkEmail = async (req, res) => {
     const command = new SendEmailCommand(params);
     await sesClient.send(command);
     console.log(`Reset link sent to ${to}: ${resetUrl}`);
+    notificationService.insertNotification(to, 'Password reset email sent.', 'success');
     res.status(200).json({ message: 'Email sent successfully!' });
   } catch (err) {
     console.error('SES Error:', err);

@@ -11,6 +11,7 @@ const { updateProjectInSQL } = require('../utils/updateprojectsql');
 const { getProjectByIdFromCSV } = require('../utils/getprojectfromcsv');
 const { getProjectByIdFromSQL } = require('../utils/getprojectfromsql');
 const { updatedocAssignedInSQL } = require('../utils/updateprojectsql');
+const notificationService   = require('../utils/nofitication/notificationservice');
 
 const csvPath = path.join(__dirname, '../public/projects.csv');
 
@@ -41,8 +42,6 @@ exports.addProject = async (req, res) => {
   };
   
   // Sanitize commas and newlines in string fields
- 
-console.log('project name',escape(project.supportStaff));
  const params = [
   project.id,
   project.projectName,
@@ -63,6 +62,7 @@ const [result] = await pool.execute(
   'INSERT INTO projects (ID, ProjectName, startDate, endDate, visibility, projectdetails, members, host, status, reminder, supportingfiles) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
   sanitizedParams
 );
+notificationService.insertNotification(project.Host, 'Project Added successfully', 'success');
   res.status(201).json({ message: 'Project created successfully', insertId: result.insertId });
 } catch (error) {
     console.error('Error inserting project:', error);
@@ -74,6 +74,7 @@ exports.deleteProject = async (req, res) => {
   const ID = req.body.id;
   console.log(ID);
  const [result] = await pool.execute('DELETE FROM projects WHERE id = ?', [Number(ID)]);
+ notificationService.insertNotification(email, 'Project was deleted', 'success');
  if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Project not found' });
     }

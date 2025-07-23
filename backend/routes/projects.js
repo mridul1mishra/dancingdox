@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const projectController = require('../controllers/projectcontroller');
+const notificationController = require('../controllers/getnotificationcontroller');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
@@ -20,6 +21,7 @@ router.post('/update-project-collab', upload.none(), projectController.updateCol
 router.post('/update-project-docAssigned', upload.none(), projectController.updatedocAssignedforProject);
 router.post('/delete-project', projectController.deleteProject);
 router.get('/project/:id', projectController.getProjectById);
+router.get('/get-notification', notificationController.getNotifications);
 
 
 module.exports = router;

@@ -8,6 +8,7 @@ const { loginUser } = require('../utils/users/loginUser'); // adjust path as nee
 const { getUser } = require('../utils/users/getUser'); 
 const { updateUser } = require('../utils/users/updateUser'); 
 const { updatePass } = require('../utils/users/updatePass'); 
+const notificationService   = require('../utils/nofitication/notificationservice');
 
 const csvFilePath = path.join(__dirname, '../public/data/users.csv');
 
@@ -25,7 +26,7 @@ exports.login = async (req, res) => {
   if (!result.success) {
     return res.status(401).json(result);
   }
-
+ notificationService.insertNotification(email, 'You have successfully logged in.', 'success');
   const token = jwt.sign(
         { email: email },
         process.env.JWT_SECRET || 'your_default_secret',
@@ -55,6 +56,7 @@ exports.register = async (req, res) => {
       organization: organization
     };
   const result = await insertUser(user);
+   notificationService.insertNotification(email, 'Welcome! Your account has been successfully created.', 'success');
   res.json({ success: true, message: 'User created', insertId: result.insertId });
 }catch (err) {
     res.status(500).json({ success: false, message: 'Internal server error', err });
@@ -136,7 +138,7 @@ exports.updateProfile = async (req, res) => {
   try{
     console.log(user);
     const result = await updateUser(user);
-    
+    notificationService.insertNotification(email, 'Your profile has been successfully updated.', 'success');
     res.json({ success: true, message: 'User updated' });
   }catch (err) {
     res.status(500).json({ success: false, message: 'Internal server error', err });
@@ -148,7 +150,7 @@ exports.passUpdate = async (req, res) => {
   try{
     console.log(email);
     const result = await updatePass({email, password, existingPass});
-    console.log(result);
+    notificationService.insertNotification(email, 'Your password has been successfully updated.', 'success');
     res.status(result.status).json({ message: result.message });
   }catch (err) {
     return res.status(err.status).json({ message: err.message });

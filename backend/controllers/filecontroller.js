@@ -6,6 +6,7 @@ const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const { updateSqlWithEnrichedDocs } = require('../utils/updateSqlWithEnrichedDocs');
 
+
 const uploadMultipleFiles = async (req, res) => {
   try {
     console.log('Files received:', req.files);
@@ -23,7 +24,7 @@ const uploadMultipleFiles = async (req, res) => {
     const enrichedDocs = await enrichDocsWithFiles(parsedDocs, files);
     await updateSqlWithEnrichedDocs(projectId, enrichedDocs, docCount);
     // Now do your CSV update or DB save with enrichedDocs
-
+    
     res.status(200).json({ message: 'Upload successful' });
   } catch (err) {
     console.error(err);
