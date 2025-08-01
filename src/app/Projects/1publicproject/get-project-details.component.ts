@@ -21,6 +21,7 @@ export class GetProjectDetailsComponent {
   showModal = false; // Ensure this is initialized
   documents: any[] = [];
   lastProject!: Project;
+  today: string = new Date().toISOString().split('T')[0];
   statusMessage: string = '';
   openModal() {
     this.showModal = true;

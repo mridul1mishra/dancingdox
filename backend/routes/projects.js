@@ -13,8 +13,6 @@ router.post('/add-project', (req, res, next) => {
   }
 }, projectController.addProject);
 router.get('/csv-to-json', projectController.getCSV);
-router.post('/update-projects', projectController.updateProjects);
-router.post('/updateProjectDocuments', projectController.updateProjectDocuments);
 router.patch('/assigned-collaborators/:id', projectController.updateProjectDocumentsCollabs);
 router.post('/update-project', upload.none(), projectController.updateSingleProject);
 router.post('/update-project-collab', upload.none(), projectController.updateCollaboraborforProject);

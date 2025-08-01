@@ -76,7 +76,7 @@ console.log('joinproject',this.projectId);
         console.log('Project not found');
         this.projectFound = false;
       }
-      this.router.navigate(['/projects', this.project.id]);
+      this.router.navigate(['/projects', this.project.ID]);
       
     }
 }

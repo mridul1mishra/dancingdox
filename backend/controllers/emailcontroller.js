@@ -5,43 +5,26 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const notificationService   = require('../utils/nofitication/notificationservice');
-const sesClient = new SESClient({
-  region: 'us-east-2',
-  credentials: {
-    
-  }
+const sendEmail  = require('../utils/sendemail/zohoemailservice');
 
-});
+
 exports.sendEmail = async (req, res) => {
-  const { to } = req.body;
-  const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
-  otpStore.set(to, otp);
-  console.log('Stored OTP for', to, ':', otpStore.get(to));
-  console.log('Stored OTP for', otp, ':', otpStore.get(otp));
-    // Custom subject and body (override any sent by client)
-  const subject = 'Your OTP Code for DashDoxs';
-  const templatePath = path.join(__dirname, 'templates', 'html/otp.html');
-  let body = fs.readFileSync(templatePath, 'utf8');
-  body = body.replace('{{ActionLink}}', otp);
-  const params = {
-    Source: 'DashDoxs<info@dashdoxs.com>', // replace with your verified SES email
-    Destination: { ToAddresses: [to] },
-    Message: {
-      Subject: { Data: subject },
-      Body: { Html: { Charset: "UTF-8", Data: body } }
-    }
-  };
-
-  try {
-    const command = new SendEmailCommand(params);
-    await sesClient.send(command);
-    console.log(`OTP sent to ${to}: ${otp}`);
-    notificationService.insertNotification(to, 'OTP sent to the email', 'success');
-    res.status(200).json({ message: 'Email sent successfully!' });
-  } catch (err) {
-    console.error('SES Error:', err);
-    res.status(500).send('Failed to send email: ' + err.message);
-  }
+  try{
+      const { to } = req.body;
+      const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+      otpStore.set(to, otp);
+      console.log('Stored OTP for', to, ':', otpStore.get(to));
+      console.log('Stored OTP for', otp, ':', otpStore.get(otp));
+        // Custom subject and body (override any sent by client)
+      const subject = 'Your OTP Code for DashDoxs';
+      const templatePath = path.join(__dirname, 'templates', 'html/otp.html');
+      let body = fs.readFileSync(templatePath, 'utf8');
+      body = body.replace('{{ActionLink}}', otp);
+      await sendEmail.sendEmail(to, subject, body); 
+      res.status(200).json({ success: true, message: 'OTP Email Sent' });
+  }catch (err) {
+    res.status(500).json({ success: false, message: 'Internal server error', err });
+  } 
 };
 
 
@@ -76,24 +59,7 @@ exports.quoteEmail = async (req, res) => {
   const subject = 'Thank you for contacting us';
   const templatePath = path.join(__dirname, 'templates', 'html/contactus.html');
   let body = fs.readFileSync(templatePath, 'utf8');
-  const params = {
-    Source: 'DashDoxs<info@dashdoxs.com>', // replace with your verified SES email
-    Destination: { ToAddresses: [to] },
-    Message: {
-      Subject: { Data: subject },
-      Body: { Html: { Charset: "UTF-8", Data: body } }
-    }
-  };
-
-  try {
-    const command = new SendEmailCommand(params);
-    await sesClient.send(command);
-
-    res.status(200).json({ message: 'Email sent successfully!' });
-  } catch (err) {
-    console.error('SES Error:', err);
-    res.status(500).send('Failed to send email: ' + err.message);
-  }
+  await sendEmail.sendEmail(to, subject, body); 
 };
 function generateResetToken(to) {
   const token = crypto.randomBytes(64).toString('hex');
@@ -102,37 +68,6 @@ function generateResetToken(to) {
   tokenStore.set(token, { token, expiresAt });
   return token;
 }
-
-exports.sendResetLinkEmail = async (req, res) => {
-  const { to } = req.body;
-  
-  const resetUrl = `http://localhost:3000/reset-password?email=${to}&token=${token}`;
-  const templatePath = path.join(__dirname, 'templates', 'html/reset-password.html');
-    // Custom subject and body (override any sent by client)
-  const subject = 'Reset your password';
-  let body = fs.readFileSync(templatePath, 'utf8');
-  body = body.replace('{{ActionLink}}', resetUrl);
-  console.log(body);
-  const params = {
-    Source: 'DashDoxs<info@dashdoxs.com>', // replace with your verified SES email
-    Destination: { ToAddresses: [to] },
-    Message: {
-      Subject: { Data: subject },
-      Body: { Html: { Charset: "UTF-8", Data: body } }
-    }
-  };
-
-  try {
-    const command = new SendEmailCommand(params);
-    await sesClient.send(command);
-    console.log(`Reset link sent to ${to}: ${resetUrl}`);
-    notificationService.insertNotification(to, 'Password reset email sent.', 'success');
-    res.status(200).json({ message: 'Email sent successfully!' });
-  } catch (err) {
-    console.error('SES Error:', err);
-    res.status(500).send('Failed to send email: ' + err.message);
-  }
-};
 
 exports.validateResetToken = (req, res) => {
   const { token } = req.body;

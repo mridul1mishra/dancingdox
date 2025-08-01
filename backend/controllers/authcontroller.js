@@ -9,13 +9,11 @@ const { getUser } = require('../utils/users/getUser');
 const { updateUser } = require('../utils/users/updateUser'); 
 const { updatePass } = require('../utils/users/updatePass'); 
 const notificationService   = require('../utils/nofitication/notificationservice');
+const sendEmail  = require('../utils/sendemail/zohoemailservice');
 
-const csvFilePath = path.join(__dirname, '../public/data/users.csv');
+//const csvFilePath = path.join(__dirname, '../public/data/users.csv');
 
-// Ensure CSV file exists with headers
-if (!fs.existsSync(csvFilePath)) {
-  fs.writeFileSync(csvFilePath, 'email,password\n'); // headers
-}
+
 
 
 exports.login = async (req, res) => {
@@ -56,6 +54,10 @@ exports.register = async (req, res) => {
       organization: organization
     };
   const result = await insertUser(user);
+  const subject = 'DashDoxs: Account Creation';
+  const templatePath = path.join(__dirname, './templates/html/signupcomplete.html');
+  let body = fs.readFileSync(templatePath, 'utf8');
+  await sendEmail.sendEmail(email, subject, body);
    notificationService.insertNotification(email, 'Welcome! Your account has been successfully created.', 'success');
   res.json({ success: true, message: 'User created', insertId: result.insertId });
 }catch (err) {

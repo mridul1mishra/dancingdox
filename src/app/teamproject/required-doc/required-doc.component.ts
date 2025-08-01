@@ -74,7 +74,8 @@ normalizeDocData(): void {
     file.filesize = file.size ? (file.size / 1024).toFixed(1) + ' KB' : '—';
   });
 }
-viewAllDocuments(id: number | undefined) {
+viewAllDocuments() {
+  console.log(this.projectData);
   this.router.navigate([`projects/${this.projectId ?? ''}/documents`]);
 }
 
@@ -119,7 +120,7 @@ onFileSelected(event: Event, file: samplefile){
       formData.append('fieldName', file.fieldName);
       formData.append('file', uploaded);
       formData.append('filesize', file.filesize);
-      formData.append('projectId', String(this.docData?.id));
+      formData.append('projectId', String(this.docData?.ID));
       formData.append('actions', 'Uploaded');
       this.dataService.CollabDocument(formData).subscribe({
         next: (res) => {

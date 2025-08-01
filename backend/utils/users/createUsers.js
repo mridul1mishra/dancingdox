@@ -1,16 +1,24 @@
-const pool = require('../sql');
+const pool = require('../sql').default;
 
 
 async function insertUser({ userId, firstname, lastname, email, password, designation, organization }){
     try {
+      const [rows] = await pool.execute('SELECT 1 FROM users WHERE email = ?', [email]);
+
     const sql = `
-  INSERT INTO dashdoxs.users (
+  INSERT INTO users (
     UserId, firstname, lastname, Email, Password, Designation, Organization, isSubscribed
   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 `;
 
 const values = [  userId,  firstname ?? null,  lastname ?? null,  email ?? null,  password ?? null,  designation ?? null,  organization ?? null,  'false'];
-const [result] = await pool.execute(sql, values);
+if (rows.length === 0) {
+    const [result] = await pool.execute(sql, values);
+    return { inserted: true, insertId: result.insertId };
+  } else {
+    return { inserted: false, message: 'Email already exists' };
+  }
+
 return result;
   } catch (err) {
     console.error('Error inserting user:', err);

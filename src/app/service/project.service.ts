@@ -19,7 +19,7 @@ export class ProjectService {
   getLastProjectId(): number {
     if (this.projects.length > 0) {
       // Get the last project ID using the last element of the array
-      return this.projects[this.projects.length - 1].id;
+      return this.projects[this.projects.length - 1].ID;
     }
     return 0; // or null, depending on your preference for handling empty arrays
   }

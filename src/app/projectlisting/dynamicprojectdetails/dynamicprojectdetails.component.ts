@@ -4,8 +4,8 @@ import { DataService } from '../../service/data.service';
 import { Observable } from 'rxjs';
 import { Project, samplefile } from '../../service/project.interface.service';
 import { CommonModule } from '@angular/common';
-import { ColloboratorDocComponent } from "../colloborator-doc/colloborator-doc.component";
-import { RequiredDocComponent } from "../required-doc/required-doc.component";
+import { ColloboratorDocComponent } from "../../teamproject/colloborator-doc/colloborator-doc.component";
+import { RequiredDocComponent } from "../../teamproject/required-doc/required-doc.component";
 import { AuthService } from '../../service/auth.service';
 @Component({
   selector: 'app-dynamicprojectdetails',

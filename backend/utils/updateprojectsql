@@ -10,7 +10,60 @@ async function updateProjectInSQL(projectId, collabCount, Status, res) {
       'UPDATE projects SET collabcount = ?, status = ? WHERE ID = ?',
       [collabCount, Status, projectId]
     );
+    const [rows] = await pool.execute(
+    'SELECT * FROM projects WHERE ID = ?',
+    [projectId]
+    );
+    let docAssigned = [];
+    if (rows.length > 0 && rows[0].docassigned) {
+      try {
+        docAssigned = JSON.parse(rows[0].docassigned);
+        if (!Array.isArray(docAssigned)) docAssigned = [];
+      } catch (err) {
+        console.warn('Invalid docassigned JSON:', err);
+        docAssigned = [];
+      }
+    }
+    const emailMap = new Map();
+    for (const item of docAssigned) {
+    const email = item.collabemail?.toLowerCase();
+    const name = item.collabName || 'Collaborator';
+    const field = item.fieldName;
+    const status = item.uploadstatus || 'pending';
 
+    if (!email) continue;
+
+    if (!emailMap.has(email)) {
+      emailMap.set(email, { email, name, assignments: [] });
+    }
+
+    emailMap.get(email).assignments.push({ field, status });
+  }
+  const uniqueCollaborators = Array.from(emailMap.values());
+  for (const collab of uniqueCollaborators) {
+    try{
+      const assignmentList = collab.assignments.map(a => `<li><strong>${a.field}</strong> – ${a.status}</li>`).join('');
+      
+      const endDate = rows[0].endDate;
+      const hostName = rows[0].host;
+      const formatted = new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short',  day: 'numeric'});
+      const subject = `DashDoxs: Submit Documents (Deadline: ${formatted})`;
+      const templatePath = path.join(__dirname, 'templates', 'html/collabwelcomeemail.html');
+      let body = fs.readFileSync(templatePath, 'utf8');
+      body = body
+      .replace('{collabname}', collab.name)
+      .replace('{collabemail}', collab.email)
+      .replace('{formatted}', formatted)
+      .replace('{Host}', hostName)
+      .replace('{assignmentlist}', assignmentListHTML)
+      .replace('{projectname}', projectName); // if needed
+
+      await sendEmail(collab.email, subject,body);
+      return{status: 'success', message:'email sent successfully'};
+    }catch (err) {
+    console.error(`Failed to send email to ${collab.email}:`, err);
+  }
+  }
     if (result.affectedRows === 0) {
       return res.status(404).json({ success: false, message: `No project found with ID ${projectId}` });
     }
@@ -48,16 +101,20 @@ async function updateCollabInSQL(collab, res){
     }
 
     // 2. Append new collaborator
-    existingCollabs.push(...collaborators);
+    const existingEmails = new Set(existingCollabs.map(c => typeof c === 'string' ? c : c.email?.toLowerCase()));
+    const newUniqueCollabs = collaborators.filter(c => {const email = c.email?.toLowerCase(); return email && !existingEmails.has(email);});
+    existingCollabs.push(...newUniqueCollabs);
 
     // 3. Update the collab column with new array
-    const newCollabJSON = JSON.stringify(existingCollabs);
-    const collabCount = existingCollabs.length;
-    await pool.execute(
-      'UPDATE projects SET collaborator = ?, collabcount = ?, status = ? WHERE ID = ?',
-      [newCollabJSON, collabCount, 'Active', projectId]
-    );
+    if (newUniqueCollabs.length > 0) {
+      const newCollabJSON = JSON.stringify(existingCollabs);
+      const collabCount = existingCollabs.length;
+      await pool.execute(
+        'UPDATE projects SET collaborator = ?, collabcount = ?, status = ? WHERE ID = ?',
+        [newCollabJSON, collabCount, 'Active', projectId]
+      );
     return { success: true, message: `Collaborator added successfully` };
+    }
   } catch (err) {
     console.error('Error in updateCollabInSQL:', err);
     throw err;

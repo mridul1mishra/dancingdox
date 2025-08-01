@@ -38,10 +38,10 @@
       <div class="form-container">
         <div class="form-group1">
         <label>Start Date</label>
-        <input type="date" formControlName="startDate" style="width: 537px;font-family: 'Plus Jakarta Sans';"/></div>
+        <input type="date" min="{{ today }}" formControlName="startDate" style="width: 537px;font-family: 'Plus Jakarta Sans';"/></div>
         <div class="form-group1">
           <label>End Date</label>
-        <input type="date" formControlName="endDate" style="width: 537px;font-family: 'Plus Jakarta Sans';" />
+        <input type="date" min="{{ today }}" formControlName="endDate" style="width: 537px;font-family: 'Plus Jakarta Sans';" />
       </div>
       </div>
   

@@ -27,8 +27,8 @@ exports.storeData = async (req, res) => {
     console.log(email);
     const result = await storePayment({paymentMethodId, brand, last4, expMonth, expYear, billingName, subscriptiontype, email })
       
-    notificationService.insertNotification(email, 'Susbription to the app successful', 'success');
-    return ({status: 200, message: result.message });
+    //notificationService.insertNotification(email, 'Susbription to the app successful', 'success');
+    res.json({ success: true, affectedRows: result.affectedRows });
   } catch (err) {
     console.error('Error updating users.csv:', err);
     return ({status: 500, message: err.message });

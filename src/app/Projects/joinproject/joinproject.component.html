@@ -25,7 +25,7 @@
 
   <div class="project-card">
     <div class="project-header">
-      <h3 class="project-title">{{project?.Name}}</h3>
+      <h3 class="project-title">{{project.ProjectName}}</h3>
       <span class="status active">● {{project.status}}</span>
     </div>
 
@@ -36,28 +36,28 @@
       </div>
       <div class="info-item">
         <p class="label">Participants</p>
-        <p class="value">{{project.collabCount}}</p>
+        <p class="value">{{project.collabcount}}</p>
       </div>
       <div class="info-item">
         <p class="label">Author</p>
-        <p class="value ">{{project.Host}}</p>
+        <p class="value ">{{project.host}}</p>
       </div>
       <div class="info-item">
         <p class="label">Created on</p>
-        <p class="value">{{project.startDate}}</p>
+        <p class="value">{{project.startDate  | date:'MMM dd yyyy' }}</p>
       </div>
       <div class="info-item">
         <p class="label">Due Date</p>
-        <p class="value">{{project.endDate}}</p>
+        <p class="value">{{project.endDate  | date:'MMM dd yyyy' }}</p>
       </div>
       <div class="info-item">
         <p class="label">Project ID</p>
-        <p class="value">{{project.id}}</p>
+        <p class="value">{{project.ID}}</p>
       </div>
     </div>
 <div class="label"><b>Description</b></div>
     <div class="project-description">
-      {{project.title}}
+      {{project.projectdetails}}
     </div>
 
     <div class="button-group">

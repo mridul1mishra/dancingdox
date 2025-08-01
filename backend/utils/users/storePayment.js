@@ -1,15 +1,27 @@
 const pool = require('../sql');
 
-async function storePayment({paymentMethodId, brand, last4, expMonth, expYear, billingName, subscription, email }){
-    try {
+async function storePayment({paymentMethodId, brand, last4, expMonth, expYear, billingName, subscriptiontype, email }){
+    
     const sql = `
-  UPDATE dashdoxs.users
+  UPDATE users
 SET  paymentMethodId = ?,  brand = ?,  last4 = ?,  expMonth = ?,  expYear = ?, billingName = ?, isSubscribed = ?, subscriptiontype = ? WHERE Email = ?;`;
 
 const values = [  paymentMethodId ?? null,  brand ?? null,  last4 ?? null,  expMonth ?? null,  expYear ?? null,  billingName ?? null,  'true', subscriptiontype, email ?? null];
-const [result] = await pool.execute(sql, values);
+values.forEach((v, i) => {
+  if (v === undefined) {
+    console.warn(`Warning: Parameter at index ${i} is undefined`);
+  }
+});
+
+const sanitizedValues = values.map(v => v === undefined ? null : v);
+try {
+const [res] = await pool.execute(sql, values);
+
 return result.length > 0 ? result[0] : null;
   } catch (err) {
+    console.error('Error executing SQL:', err.message);
+  console.error('Query:', sql);
+  console.error('Values:', values);
     return { status: 500, message: 'data not updated successfully' };
   }
 }

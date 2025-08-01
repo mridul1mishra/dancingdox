@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { colloboratorService } from '../../service/colloborator.service';
 import { Collaborator, DocumentCollab, DocumentMetadata, Project } from '../../service/project.interface.service';
 import { NgModule } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { DataService } from '../../service/data.service';
 import { Observable, of } from 'rxjs';
@@ -26,13 +26,14 @@ export class ColloboratorDocComponent {
   docTotal: string | undefined;
   projects$: Observable<Project[]> = of([]);
   selectedMember: any;
-    constructor(private collabService: colloboratorService,private route: ActivatedRoute,private authService: AuthService,private dataService: DataService) {}
+    constructor(private collabService: colloboratorService, private router: Router,private route: ActivatedRoute,private authService: AuthService,private dataService: DataService) {}
     ngOnInit(): void {
       
       const stored = localStorage.getItem('project');
       if (stored) {
-        const project = JSON.parse(stored);
-        this.collaborators = this.parseCollaborators(project.collaborator);
+        this.project = JSON.parse(stored);
+        
+        this.collaborators = this.parseCollaborators(this.project?.collaborator);
         
       } else {
         this.collaborators = [];
@@ -83,6 +84,10 @@ export class ColloboratorDocComponent {
       const filenames = filenamesArray.join('; ');
       console.log("Filename:", filenames);
       return { total, complete, pending, filenames };
+    }
+    redirectProject(){
+      console.log(this.project);
+      this.router.navigate([`projects/${this.project?.ID}`]);
     }
     getProjectById(id: number): void {
       this.dataService.getProjectById(id).subscribe({

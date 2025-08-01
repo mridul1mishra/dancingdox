@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashdoxs Notification</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f5f8fa;
+      margin: 0;
+      padding: 0;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .header {
+      background-color: #473acb;
+      padding: 20px;
+      text-align: center;
+    }
+    .header img {
+      max-height: 65px;
+    }
+    .content {
+      padding: 30px;
+      color: #333333;
+    }
+    .content h1 {
+      font-size: 24px;
+      margin-top: 0;
+      color: #0044cc;
+    }
+    .content p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #473acb;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #888888;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="email-container">
+    <div class="header">
+      <img src="http://localhost:3000/DashdoxsLogoMain-file_white.png" alt="Dashdoxs Logo">
+    </div>
+    <div class="content">
+      <p>Dear {collabname},</p>
+      <p>
+        Greetings from DashDoxs, a cloud-based platform for collecting documents in a secure manner across known (private projects) and unknown (public projects) collaborators to beat the submission deadlines.
+      </p>
+      <p>
+        {Host} has created a project (project name) at DashDoxs and is requesting the following documents from you before the deadline of {formatted}. Please create an account using {collabemail} to access the project and to submit the documents before the deadline.
+      </p>
+{assignmentlist}
+
+      <p>Sincerely,<br>
+		Support Team  </p>
+    </div>
+    <div class="footer">
+      &copy; 2025 DashDoxs, Inc. All rights reserved.
+    </div>
+  </div>
+
+</body>
+</html>

@@ -48,7 +48,7 @@ metadocument: DocumentMetadata[] | undefined;
       console.error('Projects data is missing');
       return;  // Exit the function if `this.projects` is undefined
     }
-    this.projects.id = Number(this.route.snapshot.paramMap.get('id'));
+    this.projects.ID = Number(this.route.snapshot.paramMap.get('id'));
     console.log('project document', this.projects);  
   if (!Array.isArray(this.projects?.documents)) {
     this.projects.documents = [];// Ensure that documents is always an array
@@ -60,7 +60,7 @@ metadocument: DocumentMetadata[] | undefined;
     this.http.post('http://localhost:3000/api/updateProjectDocuments', payload)
         .subscribe({
           next: () => {console.log('Projects updated successfully in CSV')
-            this.router.navigate([`/project/${this.projects?.id}`]);
+            this.router.navigate([`/project/${this.projects?.ID}`]);
           },
           error: (err) => console.error('Error updating CSV:', err)
         });

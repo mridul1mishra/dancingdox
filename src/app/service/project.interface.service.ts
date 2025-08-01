@@ -3,7 +3,6 @@ import { Observable } from "rxjs";
 export interface Project {
     collabName: any;
     documentNamesString: any;    
-    id: number;
     ID: number;
     ProjectName: string;
     Details: string;

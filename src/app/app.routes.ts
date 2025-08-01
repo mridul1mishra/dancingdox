@@ -16,7 +16,7 @@ import { IndependentprojectComponent } from './Projects/independentproject/indep
 import { CreateteaminformationComponent } from './teamlist/createteams/createteaminformation/createteaminformation.component';
 import { DocumentInputComponent } from './Projects/2publicproject/document-input.component';
 import { TestcomponentComponent } from './testcomponent/testcomponent.component';
-import { DynamicprojectdetailsComponent } from './teamproject/dynamicprojectdetails/dynamicprojectdetails.component';
+import { DynamicprojectdetailsComponent } from './projectlisting/dynamicprojectdetails/dynamicprojectdetails.component';
 import { CollaboratorComponent } from './Projects/3publicproject/collaborator.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
@@ -61,8 +61,7 @@ export const routes: Routes = [
     { path: 'createproject', component: CreateProjectsComponent },
     { path: 'settings', component: SettingsComponent},
     { path: 'pricingplan', component: PricingplanComponent},
-    { path: 'settings/payment-and-payouts', component: PaymentandpayoutsComponent},
-    
+    { path: 'settings/payment-and-payouts', component: PaymentandpayoutsComponent},    
     { path: 'project/createindependentproject/project-start/:id', component: DocumentInputComponent },
     { path: 'projects/projectdetail', component: ProjectdetailsComponent },
     { path: 'projects/:id', component: DynamicprojectdetailsComponent},

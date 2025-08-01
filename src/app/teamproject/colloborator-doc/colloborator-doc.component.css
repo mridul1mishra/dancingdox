@@ -71,6 +71,12 @@
   .pending {
     color: orange;
   }
+  .close{
+    color: #555;
+    right: 100px;
+    position: absolute;
+    font-size: xx-small;
+  }
   
   /* Placeholder icons, replace with real icons or a library like Font Awesome */
   .download-icon::before { content: '⬇️'; }
