@@ -38,6 +38,7 @@ export class AddCollaboratorComponent {
     const selected = this.allCollaborators.find(c => c.email === this.email);
     if (selected && !this.collaborators.some(c => c.email === selected.email)) {
     this.collaborators.push(selected);
+    this.email = ''
   }
   }
   onEmailChange(value: string) {

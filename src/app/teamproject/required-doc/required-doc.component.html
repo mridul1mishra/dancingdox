@@ -29,7 +29,7 @@
             <td>{{ file.uploadTime ? (file.uploadTime | date:'medium') : '—' }}</td>
             <td>
               <ng-container *ngIf="docData?.host === userID">
-                  sample data
+                  {{file.status}}
               </ng-container>
               <ng-template #pendingBlock let-fileFromContext="file">
                 {{ fileStatuses[fileFromContext.fieldName?.trim()?.toLowerCase()] || '—' }}
@@ -39,10 +39,13 @@
               </ng-container>
             </td>
             <td>
-                <input type="file" hidden #fileInput (change)="onFileSelected($event, file)" />
-                <button (click)="handleViewClick(file, fileInput)" class="link-button">
-                {{ uploadedFilenames[file.fieldName.trim().toLowerCase()] || '—' }}   📎 View<br/>
+              <button (click)="handleViewClick(file, fileInput)" class="link-button">
+                {{ uploadedFilenames[file.fieldName.trim().toLowerCase()] || file.filename.length > 5 ? (file.filename | slice:0:5) + '...' : file.filename }}   <br/>
                 </button>
+                <input type="file" hidden #fileInput (change)="onFileSelected($event, file)" />
+                <button (click)="fileInput.click()" class="link-button">📎 Attach</button>
+                
+                
             </td>
           </tr>
         </tbody>

@@ -79,6 +79,7 @@ cancel() {
 goToPricing() {
   this.showDialog = false;
   this.showPricingPlan = true;
+  
 }
 
 }

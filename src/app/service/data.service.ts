@@ -102,8 +102,8 @@ getProjectById(id: number): Observable<Project> {
     formData.append('project', JSON.stringify(projectData)); // send project as a JSON string
     return this.http.post(`${this.apiUrl}/add-project`, formData);
   }
-  deleteProjects(id: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/delete-project`, {id});
+  deleteProjects(id: number, email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/delete-project`, {id, email} );
   }
   uploadDocsWithMetadata(formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/upload-multiple`, formData); // Adjust URL to match your backend route

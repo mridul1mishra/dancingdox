@@ -21,8 +21,9 @@ export class ProjectcardComponent {
     this.router.navigate([`/editproject/${this.project.ID}`]);
   }
   confirmDelete() {
+    console.log(this.project.host);
     if (confirm('Are you sure you want to delete?')) {
-    this.dataService.deleteProjects(this.project.ID).subscribe({
+    this.dataService.deleteProjects(this.project.ID, this.project.host).subscribe({
       next: () => {
         alert('Project deleted successfully');
         this.router.navigate(['/dashboard'])

@@ -28,6 +28,7 @@
     "mysql2": "^3.14.2",
     "nodemailer": "^7.0.3",
     "sequelize": "^6.37.7",
-    "stripe": "^18.2.1"
+    "stripe": "^18.2.1",
+    "zeptomail": "^6.2.1"
   }
 }

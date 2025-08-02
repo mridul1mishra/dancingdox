@@ -78,9 +78,9 @@ notificationService.insertNotification(project.Host, 'Project Added successfully
 };
 exports.deleteProject = async (req, res) => {
   const ID = req.body.id;
-  console.log(ID);
- const [result] = await pool.execute('DELETE FROM projects WHERE id = ?', [Number(ID)]);
- notificationService.insertNotification(email, 'Project was deleted', 'success');
+  const email = req.body.email;
+  const [result] = await pool.execute('DELETE FROM projects WHERE id = ?', [Number(ID)]);
+  notificationService.insertNotification(email, 'Project was deleted', 'success');
  if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Project not found' });
     }

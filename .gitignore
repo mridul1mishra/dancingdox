@@ -36,6 +36,8 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+backend/utils/sendemail/zohoemailservice.js
+backend/utils/sql.js
 
 # System files
 .DS_Store

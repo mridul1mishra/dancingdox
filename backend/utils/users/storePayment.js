@@ -1,7 +1,7 @@
 const pool = require('../sql');
 
 async function storePayment({paymentMethodId, brand, last4, expMonth, expYear, billingName, subscriptiontype, email }){
-    
+    console.log('storepayment triggered');
     const sql = `
   UPDATE users
 SET  paymentMethodId = ?,  brand = ?,  last4 = ?,  expMonth = ?,  expYear = ?, billingName = ?, isSubscribed = ?, subscriptiontype = ? WHERE Email = ?;`;
@@ -14,8 +14,10 @@ values.forEach((v, i) => {
 });
 
 const sanitizedValues = values.map(v => v === undefined ? null : v);
+console.log(sanitizedValues);
 try {
 const [res] = await pool.execute(sql, values);
+
 
 return result.length > 0 ? result[0] : null;
   } catch (err) {

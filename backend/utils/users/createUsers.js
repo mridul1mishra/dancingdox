@@ -1,4 +1,4 @@
-const pool = require('../sql').default;
+const pool = require('../sql');
 
 
 async function insertUser({ userId, firstname, lastname, email, password, designation, organization }){
